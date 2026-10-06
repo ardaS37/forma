@@ -91,7 +91,7 @@
   function selectionFor(subject){
     const saved=selections[subject]||{},program=programsFor(subject).find(p=>p.id===saved.program)||programsFor(subject)[0];
     const topic=program.topics.find(t=>t.id===saved.topic)||program.topics[0];
-    const subtopic=topic.subtopics.find(s=>s.id===saved.subtopic)||topic.subtopics[0];
+    const subtopic=saved.subtopic==='mixed'&&program.id==='physics-1'?{id:'mixed',label:'Konudan karma'}:topic.subtopics.find(s=>s.id===saved.subtopic)||topic.subtopics[0];
     return {program,topic,subtopic};
   }
   function select(subject,level,id){
@@ -104,20 +104,20 @@
     try{localStorage.setItem(KEY,JSON.stringify(selections));}catch{}
   }
   function render(subject){
-    const {program,topic,subtopic}=selectionFor(subject);
+    const {program,topic,subtopic}=selectionFor(subject),ready=program.id==='physics-1'&&!!globalThis.Physics1Bank;
     $('education-badge').textContent=t('Üniversite modu')+' · '+t(program.label);
     $('university-program').hidden=false;
     $('university-program-options').innerHTML=programsFor(subject).map(p=>`<button data-science-program="${p.id}" aria-pressed="${p.id===program.id}">${t(p.label)}</button>`).join('');
-    $('topics').innerHTML=program.topics.map(p=>`<button class="topic ${p.id===topic.id?'active':''}" data-science-topic="${p.id}" aria-pressed="${p.id===topic.id}"><span>${t(p.label)}</span><span class="soon">${t('yakında')}</span></button>`).join('');
+    $('topics').innerHTML=program.topics.map(p=>`<button class="topic ${p.id===topic.id?'active':''}" data-science-topic="${p.id}" aria-pressed="${p.id===topic.id}"><span>${t(p.label)}</span>${ready?'':`<span class="soon">${t('yakında')}</span>`}</button>`).join('');
     $('university-subtopics').hidden=false;
-    $('university-subtopic-options').innerHTML=topic.subtopics.map(p=>`<button data-science-subtopic="${p.id}" aria-pressed="${p.id===subtopic.id}">${t(p.label)}</button>`).join('');
+    $('university-subtopic-options').innerHTML=(ready?[{id:'mixed',label:'Konudan karma'},...topic.subtopics]:topic.subtopics).map(p=>`<button data-science-subtopic="${p.id}" aria-pressed="${p.id===subtopic.id}">${t(p.label)}</button>`).join('');
     $('university-status').hidden=false;
-    $('university-status').textContent=t('Bu dersin konu başlıkları taslak olarak eklendi. Sorular ve çözümler hazırlanıyor.');
+    $('university-status').textContent=ready?'Fizik 1: 9 konu, 32 alt konu. Açık uçlu hesaplama, yorumlama ve çizim soruları; her konu için simülasyon.':t('Bu dersin konu başlıkları taslak olarak eklendi. Sorular ve çözümler hazırlanıyor.');
     $('session-subject').textContent=t(subject).toLocaleUpperCase(I18n.locale());
     $('session-topic').textContent=t(program.label);
     $('session-subtopic').hidden=false;
     $('session-subtopic').textContent=t(topic.label)+' · '+t(subtopic.label);
-    $('start').disabled=true;
+    $('start').disabled=!ready;
   }
   Object.assign(translations,{
     'Fizik 1':'Physics 1','Fizik 2':'Physics 2','Fizik 3':'Physics 3',
@@ -125,5 +125,6 @@
     'Organik Kimya':'Organic Chemistry','Analitik Kimya':'Analytical Chemistry','Fizikokimya':'Physical Chemistry','Anorganik Kimya':'Inorganic Chemistry',
     'Bu dersin konu başlıkları taslak olarak eklendi. Sorular ve çözümler hazırlanıyor.':'The topic outline is a draft. Questions and solutions are being prepared.'
   });
-  globalThis.ScienceCatalog={programs,programsFor,selectionFor,select,render};
+  function restore(subject,state){if(!state)return;selections[subject]={...state};select(subject,'subtopic',selectionFor(subject).subtopic.id);}
+  globalThis.ScienceCatalog={programs,programsFor,selectionFor,select,render,restore};
 })();

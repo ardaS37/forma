@@ -137,3 +137,5 @@
     if (suppressClick) { event.preventDefault(); event.stopImmediatePropagation(); }
   }, true);
 })();
+
+(() => {if(!window.FormaAndroid?.setLauncherAccent)return;const note=document.createElement('p');note.className='launcher-accent-note';note.textContent='Telefon simgesi de seçili renk tonunu izler. Özel renkte en yakın hazır ton kullanılır. Değişiklik ana ekrana döndüğünde görünür.';document.querySelector('.accent-options').after(note);})();

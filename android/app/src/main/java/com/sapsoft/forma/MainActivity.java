@@ -1,7 +1,10 @@
-package app.forma.study;
+package com.sapsoft.forma;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.ComponentName;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Insets;
 import android.graphics.RectF;
@@ -9,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.MotionEvent;
 import android.view.WindowInsets;
@@ -41,6 +45,7 @@ public final class MainActivity extends Activity {
     private FrameLayout root;
     private byte[] pendingPng;
     private boolean exportBusy;
+    private String pendingLauncherAccent;
     private boolean stylusButtonPressed;
     private RectF nativeCanvasBounds;
     private List<RectF> nativeInkExclusions = new ArrayList<>();
@@ -49,6 +54,8 @@ public final class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        pendingLauncherAccent = LauncherIconPalette.select(
+                getSharedPreferences("forma-launcher", MODE_PRIVATE).getString("launcherAccent", "lavender"), null);
         root = new FrameLayout(this);
         root.setBackgroundColor(Color.WHITE);
         webView = new DrawingWebView(this);
@@ -87,6 +94,9 @@ public final class MainActivity extends Activity {
         webView.setBackgroundColor(Color.WHITE);
         webView.addJavascriptInterface(new NativeBridge(), "FormaAndroid");
         webView.setWebViewClient(new WebViewClient() {
+            @Override public void onPageFinished(WebView view, String url) {
+                if (HOME.equals(url)) notifySystemTheme();
+            }
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return !isLocal(request.getUrl());
             }
@@ -108,7 +118,7 @@ public final class MainActivity extends Activity {
                 } catch (IOException error) { return blocked(); }
             }
         });
-        applyTheme("light");
+        applyTheme(systemTheme());
         if (Build.VERSION.SDK_INT >= 33) {
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
                     android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT, this::handleBack);
@@ -234,9 +244,25 @@ public final class MainActivity extends Activity {
                 Collections.emptyMap(), new ByteArrayInputStream(new byte[0]));
     }
 
+    private String systemTheme() {
+        return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                == Configuration.UI_MODE_NIGHT_YES ? "dark" : "light";
+    }
+
+    private void notifySystemTheme() {
+        if (webView != null) webView.evaluateJavascript(
+                "window.setAndroidSystemTheme?.('" + systemTheme() + "')", null);
+    }
+
+    @Override public void onConfigurationChanged(Configuration configuration) {
+        super.onConfigurationChanged(configuration);
+        notifySystemTheme();
+    }
+
     private void applyTheme(String mode) {
-        boolean dark = "dark".equals(mode);
-        int color = dark ? Color.rgb(26, 35, 45) : Color.WHITE;
+        boolean amoled = "amoled".equals(mode);
+        boolean dark = amoled || "dark".equals(mode);
+        int color = amoled ? Color.BLACK : dark ? Color.rgb(26, 35, 45) : Color.WHITE;
         root.setBackgroundColor(color);
         webView.setBackgroundColor(color);
         getWindow().setStatusBarColor(color);
@@ -278,7 +304,62 @@ public final class MainActivity extends Activity {
         webView.onPause();
         super.onPause();
     }
-    @Override protected void onResume() { super.onResume(); if (webView != null) webView.onResume(); }
+    @Override protected void onStop() {
+        super.onStop();
+        // Commit after leaving the app: some launchers restart a task when its alias changes.
+        if (!isChangingConfigurations() && !exportBusy) applyLauncherAccent();
+    }
+
+    private void applyLauncherAccent() {
+        PackageManager manager = getPackageManager();
+        String selected = LauncherIconPalette.alias(pendingLauncherAccent);
+        try {
+            boolean matches = true;
+            for (String alias : LauncherIconPalette.ALIASES)
+                if (launcherAliasEnabled(manager, alias) != alias.equals(selected)) matches = false;
+            if (matches) return;
+            if (Build.VERSION.SDK_INT >= 33) {
+                List<PackageManager.ComponentEnabledSetting> changes = new ArrayList<>();
+                for (String alias : LauncherIconPalette.ALIASES) {
+                    ComponentName component = new ComponentName(this, getPackageName() + "." + alias);
+                    int desired = alias.equals(selected) ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                            : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+                    boolean enabled = launcherAliasEnabled(manager, alias);
+                    if (enabled != alias.equals(selected)) changes.add(new PackageManager.ComponentEnabledSetting(
+                            component, desired, PackageManager.DONT_KILL_APP));
+                }
+                if (!changes.isEmpty()) manager.setComponentEnabledSettings(changes);
+            } else {
+                // Enable the replacement first, keeping a launchable entry throughout the swap.
+                ComponentName target = new ComponentName(this, getPackageName() + "." + selected);
+                if (manager.getComponentEnabledSetting(target) != PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
+                    manager.setComponentEnabledSetting(target, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                            PackageManager.DONT_KILL_APP);
+                for (String alias : LauncherIconPalette.ALIASES) {
+                    if (alias.equals(selected)) continue;
+                    ComponentName component = new ComponentName(this, getPackageName() + "." + alias);
+                    int state = manager.getComponentEnabledSetting(component);
+                    if (state != PackageManager.COMPONENT_ENABLED_STATE_DISABLED)
+                        manager.setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                PackageManager.DONT_KILL_APP);
+                }
+            }
+        } catch (RuntimeException error) {
+            Log.w("Forma", "Launcher icon update deferred", error);
+        }
+    }
+
+    private boolean launcherAliasEnabled(PackageManager manager, String alias) {
+        int state = manager.getComponentEnabledSetting(new ComponentName(this, getPackageName() + "." + alias));
+        return state == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                || state == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT && alias.equals("LauncherLavender");
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        if (webView != null) webView.onResume();
+        notifySystemTheme();
+    }
     @Override protected void onDestroy() {
         if (webView != null) { webView.removeJavascriptInterface("FormaAndroid"); webView.destroy(); }
         fileWorker.shutdown();
@@ -315,6 +396,16 @@ public final class MainActivity extends Activity {
     }
 
     public final class NativeBridge {
+        @JavascriptInterface public void setLauncherAccent(String accent, String customColor) {
+            final String selected = LauncherIconPalette.select(accent, customColor);
+            runOnUiThread(() -> {
+                pendingLauncherAccent = selected;
+                getSharedPreferences("forma-launcher", MODE_PRIVATE).edit().putString("launcherAccent", selected).apply();
+            });
+        }
+        @JavascriptInterface public String getSystemTheme() {
+            return systemTheme();
+        }
         @JavascriptInterface public void setDrawingBounds(String json) {
             try {
                 JSONObject value = new JSONObject(json);
@@ -333,7 +424,7 @@ public final class MainActivity extends Activity {
             } catch (Exception ignored) { }
         }
         @JavascriptInterface public void setTheme(String mode) {
-            if ("light".equals(mode) || "dark".equals(mode)) runOnUiThread(() -> applyTheme(mode));
+            if ("light".equals(mode) || "dark".equals(mode) || "amoled".equals(mode)) runOnUiThread(() -> applyTheme(mode));
         }
         @JavascriptInterface public void savePng(String dataUrl, String fileName) {
             if (dataUrl == null || !dataUrl.startsWith("data:image/png;base64,") || dataUrl.length() > 40_000_000) {

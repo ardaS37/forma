@@ -1,0 +1,117 @@
+{
+  "passed": true,
+  "assets": [
+    {
+      "file": "icon-512.png",
+      "width": 512,
+      "height": 512,
+      "channels": 4,
+      "bytes": 10063,
+      "sha256": "b957158cceca3904c85fb1902d6720e383222254f6a4e85eec50b0955412465e"
+    },
+    {
+      "file": "feature-1024x500.png",
+      "width": 1024,
+      "height": 500,
+      "channels": 3,
+      "bytes": 763538,
+      "sha256": "bce434235c610cca553da4d295456e74f56256ba79138114d8667095feaaa649"
+    },
+    {
+      "file": "phone/01-home.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 104052,
+      "sha256": "a794e8322b105cd1da81e649128e7f0de7f8ab9496f12c153efdac0a80bdb742"
+    },
+    {
+      "file": "phone/02-notebook.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 87269,
+      "sha256": "e85e11c55ad1eb866f7bb19f03df951383d22efd89c98f8dfdd6dbcb6172256f"
+    },
+    {
+      "file": "phone/03-solution.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 69906,
+      "sha256": "a4dd971b0f79a620838399eb74475b48e362dfe884cdf613d31309943bb059e4"
+    },
+    {
+      "file": "phone/04-modules.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 110581,
+      "sha256": "a95745650788a80090eab5057a0e89777aade70ab0e54d08d8cd3e6a4b8398d8"
+    },
+    {
+      "file": "tablet-7/01-home.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 109055,
+      "sha256": "8a5dc9bd8e6539c27fe0fad3b9ed66c9a10e0c0fd182a72a995b55f290fd9d94"
+    },
+    {
+      "file": "tablet-7/02-notebook.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 70734,
+      "sha256": "a775e8c1a85db06cc11d27439e4b180fe4659274c6fcbd086ebcb80da146a71a"
+    },
+    {
+      "file": "tablet-7/03-solution.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 79449,
+      "sha256": "30e14c0af844623467165b18881e44b6d6bed27cab7ded5e6ac9de6390373ae9"
+    },
+    {
+      "file": "tablet-7/04-modules.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 117061,
+      "sha256": "fec7a566d51a4c08841bd6aa5504c5dda77f17446a7114e852f95548adf58607"
+    },
+    {
+      "file": "tablet-10/01-home.png",
+      "width": 2560,
+      "height": 1440,
+      "channels": 3,
+      "bytes": 113788,
+      "sha256": "801426b425736e2cbd6ee371b61fb497e0bb4962b808b4ce9d8bf8850eb523df"
+    },
+    {
+      "file": "tablet-10/02-notebook.png",
+      "width": 2560,
+      "height": 1440,
+      "channels": 3,
+      "bytes": 115757,
+      "sha256": "d517b0b6b98d64732248b83b5f0d8a16be7bbb683cbe44022a690719af8fd457"
+    },
+    {
+      "file": "tablet-10/03-solution.png",
+      "width": 2560,
+      "height": 1440,
+      "channels": 3,
+      "bytes": 136190,
+      "sha256": "98318821ea69ce0274695f912217073716c3d5e2f1de1e66e8012f8ad7b7548a"
+    },
+    {
+      "file": "tablet-10/04-modules.png",
+      "width": 2560,
+      "height": 1440,
+      "channels": 3,
+      "bytes": 230055,
+      "sha256": "a7a41d24fc6c9aa0757c99a8ff86bb57655381cac521629949a0798d691733d1"
+    }
+  ]
+}

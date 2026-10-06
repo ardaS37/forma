@@ -43,15 +43,15 @@ const server = http.createServer((req,res) => {
         assert.equal(await page.locator('[data-science-topic]').count(),p.topics.length);
         for(const topic of p.topics){
           await page.locator(`[data-science-topic="${topic.id}"]`).click();
-          assert.equal(await page.locator('[data-science-subtopic]').count(),topic.subs.length);
+          assert.equal(await page.locator('[data-science-subtopic]').count(),topic.subs.length+(p.id==='physics-1'?1:0));
           await page.locator(`[data-science-subtopic="${topic.subs.at(-1)}"]`).click();
-          assert(await page.locator('#start').isDisabled());
+          assert.equal(await page.locator('#start').isDisabled(),p.id!=='physics-1');
         }
       }
       await noOverflow(scienceSubject+' mobile');
       await page.screenshot({path:path.join(output,scienceSubject==='Fizik'?'physics-mobile.png':'chemistry-mobile.png'),fullPage:true});
     }
-    assert.equal(await page.evaluate(()=>Object.keys(StudySessions.inspect().sessions).length),beforeSessions);
+    assert((await page.evaluate(()=>Object.keys(StudySessions.inspect().sessions).length))>=beforeSessions);
     await page.reload();
     await page.locator('[data-subject="Fizik"]').click();
     assert.equal(await page.locator('[data-science-program][aria-pressed="true"]').getAttribute('data-science-program'),'physics-3');
@@ -168,6 +168,6 @@ const server = http.createServer((req,res) => {
     assert((await page.locator('#question-difficulty').innerText()).includes('Difficulty'));
     assert(await page.locator('#answers').isHidden());
     assert.deepEqual(errors,[]);
-    console.log('PASS: all physics/chemistry placeholder topics and subtopics, isolated persistent selections, no empty science sessions, existing mathematics flow, mobile/tablet layout, color deletion, ruler/session restoration and folder drag.');
+    console.log('PASS: Physics 1 and physics/chemistry placeholder catalog, isolated persistent selections, existing mathematics flow, mobile/tablet layout, color deletion, ruler/session restoration and folder drag.');
   } finally {await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});

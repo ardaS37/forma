@@ -1,5 +1,59 @@
 # Forma — Android
 
+## 1.36.5 — AMOLED sayfa rengi ve varsayılanı
+
+AMOLED yeni ayarlarda varsayılan açık; kaydedilmiş kapatma tercihi korunur. Koyu sayfa rengi de AMOLED açıkken gerçek siyah, kapalıyken önceki koyu renktir; renk seçeneğinin önizlemesi aynı şekilde değişir. Tema testi varsayılanı, tercih kaydını ve sayfa rengini doğrular. APK: build/forma-android-1.36.5-debug.apk.
+
+## 1.36.4 — AMOLED koyu tema
+
+Ayarlara kalıcı AMOLED anahtarı eklendi. Koyu temada ana arka plan, otomatik defter rengi ve Android sistem çubukları gerçek siyah olur; açık tema ve özel sayfa rengi korunur. Tema testi kayıt, sistem geçişleri ve kapatma davranışını doğrular. APK: build/forma-android-1.36.4-debug.apk.
+
+## 1.36.3 — Koyu mod ikon daireleri
+
+Koyu modda ikonların beyaz daireleri kalem gibi şeffaf, ince çerçeveli hale getirildi. Arka plan ve çerçeve eşitliği tema testinde doğrulandı. APK: build/forma-android-1.36.3-debug.apk.
+
+## 1.36.2 — Koyu mod ikonları
+
+Koyu modda araç, menü ve ayar ikonları kalemin vurgu rengiyle eşitlendi. `verify-theme.cjs` renk eşitliğini ve tema geçişlerini doğrular. APK: `build/forma-android-1.36.2-debug.apk`.
+
+## 1.36.1 — Simülasyon erişimi
+
+Ana sayfa kutusu ve modül gezginindeki simülasyon girişi kaldırıldı; araç satırındaki ikon korunur. `verify-simulation-windows.cjs` ve `verify-physics-ui.cjs` geçti. APK: `build/forma-android-1.36.1-debug.apk`.
+
+## 1.36.0 — Simülasyon pencereleri
+
+Yeni araç satırı simülasyon ikonu ve mevcut yan menü girişi katalogdan bağımsız pencereler açar. Her pencerede ayrı parametre/zaman/animasyon vardır; kablo portu bulunmaz. Başlıktan taşıma, küçültme ve kapatma diğer modüllerle aynı davranışı kullanır. Çalışma oturumları pencere durumu ve parametreleri saklar; animasyon geri yüklenirken durur. Küçültmede, kapatmada ve arka planda animasyonlar durdurulur. Ana sayfa kutusu da aynı pencereleri soru oturumu açmadan gösterir.
+
+Test: `verify-simulation-windows.cjs` (bağımsız pencereler, menü erişimi, kayıt, taşıma/küçültme/kapatma ve mobil sınırlar). APK: `build/forma-android-1.36.0-debug.apk`.
+
+## 1.35.0 — Telefon simgesi renkleri
+
+Altı adaptif ikon ve LauncherLavender/Green/Blue/Amber/Rose/Gray etkinlik takma adları. Varsayılan yalnızca mor giriş açıktır. Vurgu rengi Android köprüsüne iletilir ve uygulama arka plana geçince ikon değiştirilir. Özel renkte en yakın hazır RGB tonu kullanılır. Tercih tüm takma adlar için ortak `forma-launcher` kaydında saklanır; kullanıcı notları aynı pakette kalır. Kaynak: https://developer.android.com/guide/topics/manifest/activity-alias-element
+
+`verify-icon-ui.cjs` renk ayarlarını ve köprü çağrılarını doğrular. Saf Java palet testi: `javac -d build/icon-tests android/app/src/main/java/com/sapsoft/forma/LauncherIconPalette.java android/LauncherIconPaletteTest.java` ve `java -cp build/icon-tests com.sapsoft.forma.LauncherIconPaletteTest` (kök klasörden). APK: `build/forma-android-1.35.0-debug.apk`.
+
+`verify-icon-device.cjs` geçici emulator-5580 oturumunda gerçek PackageManager geçişlerini test eder. API 37 emülatöründe altı renk ve özel renk için her seferinde tek etkin başlatma girişi ve uygulamanın o girişten açılması doğrulandı. Sonuç: `build/icon-device-verification.json`. Eski Android sürümlerindeki sıralı geçiş fiziksel cihazda test edilmedi. Ana Activity `singleTask` ile aynı çalışma oturumuna döner; PNG dışa aktarımı sürerken ikon değişimi ertelenir.
+
+## 1.34.1 — Android sistem teması
+
+Android köprüsünün `getSystemTheme()` metodu gerçek cihaz `uiMode` tercihini bildirir. Tema değişikliği ve uygulamaya dönüş web katmanına iletilir. Sistem tercihinde görünüm güncellenir; elle seçilen açık/koyu görünüm korunur. Tema testi: `android/verify-theme.cjs`. APK: `build/forma-android-1.34.1-debug.apk`.
+
+## 1.34.0 — Fizik 1 ve simülasyonlar
+
+Fizik 1'in dokuz konusu/32 alt konusu açık uçlu sorular, çözümler ve formüller içerir. 64 parametreli soru varyantı ve her ana konu için bir simülasyon eklendi. Ayrı Simülasyonlar kutusu Matematik/Fizik/Kimya sekmelerine ayrılır; şimdilik dokuz Fizik modeli vardır. Çalışma alanındaki modül gezgini bütün derslerde tüm araçları gösterir. Yeni vektör çizici vektör/matris modülleriyle bağlanabilir; oturum kaydı bileşenleri ve bağlantıları korur.
+
+Testler: `verify-physics.cjs` (sorular ve korunumlar), `verify-physics-ui.cjs` (Chrome: sorular, formüller, kayıt, aktarım, simülasyonlar), mevcut Matematik ve arayüz testleri. APK kökten `powershell -ExecutionPolicy Bypass -File .\build-android.ps1` ile `build/forma-android-1.34.0-debug.apk` konumuna yazılır.
+
+## 1.33.0 — Play Store release hazırlığı
+
+- Paket kimliği ve Java namespace: `com.sapsoft.forma`.
+- `versionName 1.33.0`, `versionCode 34`; minimum API 26, compile/target API 36.
+- Proje kökünden imzalı AAB: `powershell -ExecutionPolicy Bypass -File .\build-android.ps1 -Mode Release` → `build/forma-android-1.33.0-release.aab`.
+- İmza bilgilerini Android Studio'dan veya yerel `android/keystore.properties` dosyasından gir. Şablon: `android/keystore.properties.example`.
+- İmzasız doğrulama: `-Mode ReleaseUnsigned`; debug APK: `-Mode Debug`.
+- [İmzalama ve Play Console rehberi](PLAY-STORE.md). Yeni paket eski uygulamadan ayrı kurulur; yerel kayıtlar otomatik taşınmaz.
+- Sürümün kaynağı `app/build.gradle`; kaynak manifesti proje kökündeki `update-source-manifest.ps1` ile yenilenir. Aşağıdaki eski sürüm notları ve raporlar tarihsel kayıtlardır.
+
 ## 1.32 değişiklikleri
 
 - Genel Matematik 1: 11 ana konu, 95 alt konu; mevcut kaynak sorularına ek olarak 95 yeni parametreli açık uçlu soru şablonu. Yeni tipler mevcut alt konu akışlarına da dönüşümlü dağıtılır; genel karma tüm ana konuları kapsar.
@@ -37,7 +91,7 @@ Telefon ve tablet için çevrimdışı çalışma uygulaması. Android 8.0 (API 
 
 ## APK kurulumu
 
-1. `forma-android-1.29.apk` dosyasını Android cihazına indir.
+1. `forma-android-1.33.0-debug.apk` dosyasını Android cihazına indir.
 2. Dosyayı aç. Android istediğinde dosyayı açtığın uygulama için “Bu kaynaktan izin ver” seçeneğini etkinleştir.
 3. Forma'yı aç; dersini ve konunu seç.
 
@@ -74,7 +128,7 @@ APK geliştirme anahtarıyla imzalanmış bir deneme sürümüdür. Play Store'a
 
 ## Android Studio
 
-Bu klasörü Android Studio'da aç. Android SDK Platform 35 ve JDK 17 veya 21 ile Gradle eşitlemesini tamamla. Java tabanlı kabuk ek uygulama bağımlılığı kullanmaz.
+Bu klasörü Android Studio'da aç. Android SDK Platform 36 ve JDK 17 veya 21 ile Gradle eşitlemesini tamamla. Java tabanlı kabuk ek uygulama bağımlılığı kullanmaz.
 
 ```sh
 ./gradlew assembleDebug
@@ -86,7 +140,7 @@ Mağaza sürümü için Android Studio'da **Generate Signed Bundle / APK → And
 
 ## Yapı
 
-- `app/src/main/java/app/forma/study/MainActivity.java`: yerel varlık sunumu, sistem çubuğu teması, geri tuşu, dosya kaydetme köprüsü.
+- `android/app/src/main/java/com/sapsoft/forma/MainActivity.java`: yerel varlık sunumu, sistem çubuğu teması, geri tuşu, dosya kaydetme köprüsü.
 - `app/src/main/assets/web/`: paket içindeki arayüz, çizim ve kayıt kodu.
 - `app/src/main/assets/web/fonts/`: çevrimdışı yazı tipleri ve SIL OFL lisansları.
 
@@ -243,3 +297,4 @@ Aynı menüyü açan ikinci renk paleti düğmesi kaldırıldı. Kalem türleri 
 - Oturum silinirse ona ait sorular ve yerel modül kayıt/geçmişi silinir; genele açık değer/fonksiyonlar korunur. Yeni oturum başlatmak mevcut kaydedilmiş oturumu silmez.
 - Defter yazımı yeni kurulumda soru/çözüm/formüllerde ve hesap makinesinde açık gelir. Önceden kapatılan tercih korunur.
 - Veriler cihazın yerel depolamasında tutulur. APK, önceki geliştirme sürümleriyle aynı anahtarla imzalanmıştır. Fiziksel Samsung/S Pen testi henüz yapılmadı.
+

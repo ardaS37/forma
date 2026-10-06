@@ -1,0 +1,8 @@
+<resources>
+    <color name="launcher_lavender">#8578a0</color>
+    <color name="launcher_green">#6c8c77</color>
+    <color name="launcher_blue">#6888ae</color>
+    <color name="launcher_amber">#aa8658</color>
+    <color name="launcher_rose">#a87588</color>
+    <color name="launcher_gray">#737b86</color>
+</resources>

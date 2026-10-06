@@ -1,4 +1,4 @@
-package app.forma.study;
+package com.sapsoft.forma;
 
 /** Retain button state when Samsung contact events omit the barrel bits. */
 final class StylusButtonState {

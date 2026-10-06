@@ -5,13 +5,57 @@
         android:roundIcon="@mipmap/ic_launcher" android:theme="@style/AppTheme"
         android:allowBackup="false" android:usesCleartextTraffic="false"
         android:supportsRtl="true" android:enableOnBackInvokedCallback="true">
-        <activity android:name=".MainActivity" android:exported="true"
+        <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTask"
             android:configChanges="orientation|screenSize|keyboardHidden|uiMode"
             android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity-alias android:name=".LauncherLavender" android:targetActivity=".MainActivity"
+            android:enabled="true" android:exported="true" android:label="Forma"
+            android:icon="@mipmap/ic_launcher_lavender">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
+        </activity-alias>
+        <activity-alias android:name=".LauncherGreen" android:targetActivity=".MainActivity"
+            android:enabled="false" android:exported="true" android:label="Forma"
+            android:icon="@mipmap/ic_launcher_green">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:name=".LauncherBlue" android:targetActivity=".MainActivity"
+            android:enabled="false" android:exported="true" android:label="Forma"
+            android:icon="@mipmap/ic_launcher_blue">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:name=".LauncherAmber" android:targetActivity=".MainActivity"
+            android:enabled="false" android:exported="true" android:label="Forma"
+            android:icon="@mipmap/ic_launcher_amber">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:name=".LauncherRose" android:targetActivity=".MainActivity"
+            android:enabled="false" android:exported="true" android:label="Forma"
+            android:icon="@mipmap/ic_launcher_rose">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:name=".LauncherGray" android:targetActivity=".MainActivity"
+            android:enabled="false" android:exported="true" android:label="Forma"
+            android:icon="@mipmap/ic_launcher_gray">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
     </application>
 </manifest>

@@ -1,0 +1,102 @@
+{
+  "source": "Packaged Android web UI rendered in Chrome at device viewport sizes; not physical Android device captures.",
+  "version": "1.33.0",
+  "screenshots": [
+    {
+      "file": "phone/01-home.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 104052,
+      "alt": "Matematik dersleri, konu ve alt konu seçimi bulunan Forma ana ekranı."
+    },
+    {
+      "file": "phone/02-notebook.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 87269,
+      "alt": "Parabol sorusu ve çizim araçlarıyla dijital defter çalışma alanı."
+    },
+    {
+      "file": "phone/03-solution.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 69906,
+      "alt": "Parabol sorusunun adım adım çözümü ve koordinat düzlemindeki grafiği."
+    },
+    {
+      "file": "phone/04-modules.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 110581,
+      "alt": "Çalışma alanında bilimsel hesap makinesi ve büyük ekranda fonksiyon grafiği."
+    },
+    {
+      "file": "tablet-7/01-home.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 109055,
+      "alt": "Matematik dersleri, konu ve alt konu seçimi bulunan Forma ana ekranı."
+    },
+    {
+      "file": "tablet-7/02-notebook.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 70734,
+      "alt": "Parabol sorusu ve çizim araçlarıyla dijital defter çalışma alanı."
+    },
+    {
+      "file": "tablet-7/03-solution.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 79449,
+      "alt": "Parabol sorusunun adım adım çözümü ve koordinat düzlemindeki grafiği."
+    },
+    {
+      "file": "tablet-7/04-modules.png",
+      "width": 1080,
+      "height": 1920,
+      "channels": 3,
+      "bytes": 117061,
+      "alt": "Çalışma alanında bilimsel hesap makinesi ve büyük ekranda fonksiyon grafiği."
+    },
+    {
+      "file": "tablet-10/01-home.png",
+      "width": 2560,
+      "height": 1440,
+      "channels": 3,
+      "bytes": 113788,
+      "alt": "Matematik dersleri, konu ve alt konu seçimi bulunan Forma ana ekranı."
+    },
+    {
+      "file": "tablet-10/02-notebook.png",
+      "width": 2560,
+      "height": 1440,
+      "channels": 3,
+      "bytes": 115757,
+      "alt": "Parabol sorusu ve çizim araçlarıyla dijital defter çalışma alanı."
+    },
+    {
+      "file": "tablet-10/03-solution.png",
+      "width": 2560,
+      "height": 1440,
+      "channels": 3,
+      "bytes": 136190,
+      "alt": "Parabol sorusunun adım adım çözümü ve koordinat düzlemindeki grafiği."
+    },
+    {
+      "file": "tablet-10/04-modules.png",
+      "width": 2560,
+      "height": 1440,
+      "channels": 3,
+      "bytes": 230055,
+      "alt": "Çalışma alanında bilimsel hesap makinesi ve büyük ekranda fonksiyon grafiği."
+    }
+  ]
+}

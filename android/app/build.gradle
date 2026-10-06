@@ -1,20 +1,66 @@
 plugins { id 'com.android.application' }
+
+// Credentials stay in the ignored android/keystore.properties file or environment.
+def signingProperties = new Properties()
+def signingFile = rootProject.file('keystore.properties')
+if (signingFile.isFile()) {
+    signingFile.withInputStream { signingProperties.load(it) }
+}
+def signingValue = { String name ->
+    def injectedNames = [storeFile: 'store.file', storePassword: 'store.password', keyAlias: 'key.alias', keyPassword: 'key.password']
+    providers.gradleProperty('android.injected.signing.' + injectedNames[name]).orNull ?:
+        System.getenv('FORMA_' + name.replaceAll(/([a-z])([A-Z])/, '$1_$2').toUpperCase()) ?:
+        signingProperties.getProperty(name)
+}
+def signingValues = ['storeFile', 'storePassword', 'keyAlias', 'keyPassword'].collectEntries {
+    [(it): signingValue(it)]
+}
+def hasReleaseSigning = signingValues.values().every { it != null && !it.trim().isEmpty() }
+def unsignedRelease = providers.gradleProperty('formaUnsignedRelease').orNull == 'true'
+
 android {
-    namespace 'app.forma.study'
-    compileSdk 35
+    namespace 'com.sapsoft.forma'
+    compileSdk 36
     defaultConfig {
-        applicationId 'app.forma.study'
+        applicationId 'com.sapsoft.forma'
         minSdk 26
-        targetSdk 35
-        versionCode 33
-        versionName '1.32.0'
+        targetSdk 36
+        versionCode 43
+        versionName '1.36.5'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    signingConfigs {
+        if (hasReleaseSigning && !unsignedRelease) {
+            release {
+                storeFile rootProject.file(signingValues.storeFile)
+                storePassword signingValues.storePassword
+                keyAlias signingValues.keyAlias
+                keyPassword signingValues.keyPassword
+            }
+        }
+    }
     buildTypes {
         debug { debuggable true }
-        release { minifyEnabled false }
+        release {
+            debuggable false
+            minifyEnabled false
+            if (hasReleaseSigning && !unsignedRelease) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+// Explicit unsigned builds are for local verification, never for Play upload.
+tasks.configureEach { task ->
+    if (task.name == 'bundleRelease' || task.name == 'assembleRelease') {
+        task.doFirst {
+            if (!hasReleaseSigning && !unsignedRelease) {
+                throw new GradleException('Release signing is missing. Configure keystore.properties, use Android Studio Generate Signed Bundle / APK, or pass -PformaUnsignedRelease=true for verification only.')
+            }
+        }
     }
 }
