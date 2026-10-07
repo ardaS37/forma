@@ -80,7 +80,7 @@ function enter(){if(!universityReady())return;setScreen('workspace');$('notes-pa
 function home(){closePenPalette(false);closeEraserPalette(false);setScreen('home');$('notes-page').hidden=true;if(!$('workspace').hidden)save();window.ModuleWorkspace?.suspend();closeAllFloatingWindows();$('workspace').hidden=true;$('home').hidden=false;window.scrollTo(0,0)}
 $('start').onclick=enter;$('back').onclick=home;$('home-nav').onclick=()=>{if(!$('notes-page').hidden&&returnToStudy)enter();else home();};document.querySelector('.brand').onclick=e=>{e.preventDefault();home()};
 function loadQuestion(carry=null){clearTimeout(saveTimeout);if(!activeQuestion)selectGeneratedQuestion(streamFor(streamScope()).cursor);const existing=database[key()],entry=existing||carry||{};if(existing?.question)activeQuestion=structuredClone(existing.question);resizeUnsavedChoices(false);strokes=structuredClone(entry.strokes||[]);documentHeight=entry.documentHeight||3600;undoStack=[];redoStack=[];inkDirty=true;renderQuestionContent();resizeCanvas();if(entry.coordinatesVersion!==2){strokes=strokes.map(stroke=>({...stroke,width:stroke.width/documentScale,points:stroke.points.map(p=>({...p,x:p.x*DOCUMENT_WIDTH,y:p.y*ch/documentScale}))}));}documentHeight=Math.max(documentHeight,ch/documentScale*3);for(const stroke of strokes)for(const point of stroke.points)documentHeight=Math.max(documentHeight,point.y+1200);updateSheet();$('paper-scroll').scrollTop=entry.scrollTop||0;inkDirty=true;render();window.ModuleWorkspace?.ensureStudy();save();}
-function renderQuestionContent(preserve=false){const q=currentQuestion();if(formulaFollowsQuestion&&settings.educationMode==='university'&&(formulaSubject==='Matematik'||formulaSubject==='Fizik'&&q.program==='physics-1')){formulaProgram=q.program||'general-math-1';formulaTopic=Math.max(0,UniversityQuestions.bankFor(formulaProgram).topics.findIndex(topic=>topic.id===q.topicId));}const entry=database[key()]||{},wasOpen=$('solution').dataset.open==='true'||(!$('solution').hidden&&$('solution').dataset.open===undefined);$('workspace-subject').textContent=t(subject);$('workspace-topic').textContent=t(questionTopicLabel());$('qnumber').textContent=String(qi+1).padStart(2,'0');QuestionDifficulty.render(q);QuestionMath.render($('question-text'),q.text,settings.questionWriting);QuestionMath.render($('question-equation'),q.eq,settings.questionWriting);$('question-diagram').innerHTML=q.diagram||'';$('question-diagram').hidden=!q.diagram;$('question-diagram').classList.toggle('has-analytic-diagram',['analytic-geometry','geometry','solid-geometry','discrete-math'].includes(q.program)&&!!q.diagram);$('answers').hidden=settings.questionMode==='open'||q.supportsChoices===false;$('answers').replaceChildren();if(!$('answers').hidden)q.choices.forEach((value,i)=>{const button=document.createElement('button');button.className='answer';button.dataset.answer=i;const letter=document.createElement('span'),content=document.createElement('span');letter.textContent='ABCDEFG'[i];content.className='answer-value';QuestionMath.render(content,value,settings.questionWriting);button.append(letter,content);$('answers').append(button);});$('feedback').hidden=true;$('solution').getAnimations().forEach(animation=>animation.cancel());$('solution').hidden=true;$('solution').dataset.open='false';QuestionMath.render($('solution'),q.solution,settings.questionWriting);if(q.solutionDiagram){const visual=document.createElement('div');visual.className='math1-solution-visual';visual.innerHTML=q.solutionDiagram;$('solution').append(visual);}$('solution-toggle').innerHTML=t('İpucu')+' <span>+</span>';$('prev').disabled=legacyQuestion||qi===0;$('next').innerHTML=t('Sonraki')+' '+icon('arrow');renderFormulas();if(settings.questionMode==='multiple'&&q.supportsChoices!==false&&Number.isInteger(entry.answer))showAnswer(entry.answer);if(preserve&&wasOpen){$('solution').hidden=false;$('solution').dataset.open='true';}renderSolutionToggle();}
+function renderQuestionContent(preserve=false){const q=currentQuestion();if(formulaFollowsQuestion&&settings.educationMode==='university'&&(formulaSubject==='Matematik'||formulaSubject==='Fizik'&&q.program==='physics-1')){formulaProgram=q.program||'general-math-1';formulaTopic=Math.max(0,UniversityQuestions.bankFor(formulaProgram).topics.findIndex(topic=>topic.id===q.topicId));}const entry=database[key()]||{},wasOpen=$('solution').dataset.open==='true'||(!$('solution').hidden&&$('solution').dataset.open===undefined);$('workspace-subject').textContent=t(subject);$('workspace-topic').textContent=t(questionTopicLabel());$('qnumber').textContent=String(qi+1).padStart(2,'0');QuestionDifficulty.render(q);QuestionMath.render($('question-text'),q.text,settings.questionWriting);QuestionMath.render($('question-equation'),q.eq,settings.questionWriting,q.eqLatex);$('question-diagram').innerHTML=q.diagram||'';$('question-diagram').hidden=!q.diagram;$('question-diagram').classList.toggle('has-question-graph',q.questionType==='graph'&&!!q.diagram);$('question-diagram').classList.toggle('has-analytic-diagram',['analytic-geometry','geometry','solid-geometry','discrete-math'].includes(q.program)&&!!q.diagram);$('answers').hidden=settings.questionMode==='open'||q.supportsChoices===false;$('answers').replaceChildren();if(!$('answers').hidden)q.choices.forEach((value,i)=>{const button=document.createElement('button');button.className='answer';button.dataset.answer=i;const letter=document.createElement('span'),content=document.createElement('span');letter.textContent='ABCDEFG'[i];content.className='answer-value';QuestionMath.render(content,value,settings.questionWriting);button.append(letter,content);$('answers').append(button);});$('feedback').hidden=true;$('solution').getAnimations().forEach(animation=>animation.cancel());$('solution').hidden=true;$('solution').dataset.open='false';QuestionMath.render($('solution'),q.solution,settings.questionWriting);if(q.solutionDiagram){const visual=document.createElement('div');visual.className='math1-solution-visual'+(q.graph?' question-diagram has-question-graph':'');visual.innerHTML=q.solutionDiagram;$('solution').append(visual);}$('solution-toggle').innerHTML=t('İpucu')+' <span>+</span>';$('prev').disabled=legacyQuestion||qi===0;$('next').innerHTML=t('Sonraki')+' '+icon('arrow');renderFormulas();if(settings.questionMode==='multiple'&&q.supportsChoices!==false&&Number.isInteger(entry.answer))showAnswer(entry.answer);if(preserve&&wasOpen){$('solution').hidden=false;$('solution').dataset.open='true';}renderSolutionToggle();}
 function renderSolutionToggle(){const open=$('solution').dataset.open==='true';$('solution-toggle').innerHTML=t(open?'Çözüm':'Çözümü görmek için tıklayın')+`<span>${open?'−':'+'}</span>`;$('solution-toggle').setAttribute('aria-expanded',String(open));}
 function showAnswer(index){if(settings.questionMode!=='multiple')return;const q=currentQuestion();if(q.supportsChoices===false||!Number.isInteger(index)||index<0||index>=q.choices.length)return;document.querySelectorAll('.answer').forEach((el,i)=>{el.classList.toggle('correct',i===q.correct);el.classList.toggle('wrong',i===index&&index!==q.correct)});$('feedback').hidden=false;$('feedback').classList.toggle('error',index!==q.correct);$('feedback').textContent=index===q.correct?t('✓ Doğru.'):`${t('Doğru cevap: ')}${'ABCDEFG'[q.correct]}.`;QuestionMath.render($('solution'),q.solution,settings.questionWriting)}
 $('answers').onclick=e=>{if(settings.questionMode!=='multiple'||currentQuestion().supportsChoices===false)return;const btn=e.target.closest('button');if(!btn)return;const index=Number(btn.dataset.answer);if(index<0||index>=currentQuestion().choices.length)return;database[key()]={...database[key()],answer:index};showAnswer(index);save()};
@@ -113,21 +113,90 @@ let scrollFrame;
 scrollArea.addEventListener('scroll',()=>{inkDirty=true;if(scrollArea.scrollTop+ch*2>scrollArea.scrollHeight){documentHeight+=Math.max(1600,ch/documentScale*2);updateSheet();}if(!scrollFrame)scrollFrame=requestAnimationFrame(()=>{scrollFrame=null;render();});scheduleSave();},{passive:true});
 function point(e,r=canvas.getBoundingClientRect()){return {x:(e.clientX-r.left)/documentScale,y:(e.clientY-r.top+scrollArea.scrollTop)/documentScale,p:e.pointerType==='pen'?Math.max(.15,e.pressure):.5}}
 // Barrel-button erasing is temporary; the selected toolbar tool is never changed.
-let nativeStylusButton=false,webStylusButton=false,drawingUndo=null,penResumeAfter=0,nativeSampleEraser=false;
-function observeWebStylusButton(e){if(e.pointerType!=='pen')return;const was=webStylusButton;if(e.buttons&(2|32)||e.button===5&&(e.buttons&1))webStylusButton=true;else if(e.button===2||e.button===5)webStylusButton=false;else if(!drawing&&e.type==='pointermove'&&e.buttons===0&&e.pressure===0)webStylusButton=false;if(was&&!webStylusButton)penResumeAfter=performance.now()+250;}
-function stylusTool(e){if(e.native)return e.eraser?'eraser':tool;return e.pointerType==='pen'&&(nativeStylusButton||webStylusButton||(e.buttons&2)||(e.buttons&32)||e.button===5)?'eraser':tool;}
+let nativeStylusButton=false,webStylusButton=false,drawingUndo=null,nativeSampleEraser=false,penResumeAfter=0;
+function nativeOwnsPen(e){return !e.native&&e.pointerType==='pen'&&!!window.FormaAndroid?.setDrawingBounds;}
+function observeWebStylusButton(e){if(e.pointerType!=='pen')return;const was=webStylusButton;webStylusButton=!!(e.buttons&(2|32));if(was&&!webStylusButton)protectPenRelease();}
+function stylusTool(e){if(e.native)return e.eraser?'eraser':tool;return e.pointerType==='pen'&&(nativeStylusButton||webStylusButton||(e.buttons&(2|32)))?'eraser':tool;}
 function inkSuppressed(e){return e.pointerType==='pen'&&stylusTool(e)==='pen'&&performance.now()<penResumeAfter;}
-function pauseDrawingInk(){if(!drawing||drawing.inkPaused)return;const {pointerId,pointerType,native,gestureId,...segment}=drawing;if(segment.points.length&&(segment.tool!=='eraser'||segment.eraserMode!=='stroke'))strokes.push(segment);drawing={pointerId,pointerType,native,gestureId,...brushStroke('pen'),points:[],inkPaused:true};inkDirty=true;}
+function pauseDrawingInk(){
+ if(!drawing||drawing.inkPaused)return;
+ const {pointerId,pointerType,native,gestureId,...segment}=drawing;
+ if(segment.points.length&&(segment.tool!=='eraser'||segment.eraserMode!=='stroke'))strokes.push(segment);
+ drawing={pointerId,pointerType,native,gestureId,...brushStroke('pen'),points:[],inkPaused:true};inkDirty=true;
+}
+function protectPenRelease(){
+ // Lifting the pen and releasing its barrel button can leave contact samples.
+ // Suppress pen ink for 250 ms; a new eraser contact remains immediately usable.
+ penResumeAfter=performance.now()+250;
+ if(drawing?.pointerType==='pen'&&tool==='pen')pauseDrawingInk();
+}
 function indicateTool(value){if(lastIndicatedTool===value)return;lastIndicatedTool=value;$('pen-tool').classList.toggle('selected',value==='pen');$('eraser-tool').classList.toggle('selected',value==='eraser');canvas.style.cursor=value==='eraser'?'cell':'crosshair';}
-function changeDrawingTool(value){if(!drawing||drawing.tool===value)return;const {pointerId,pointerType,...segment}=drawing;if(segment.points.length&&(segment.tool!=='eraser'||segment.eraserMode!=='stroke'))strokes.push(segment);inkDirty=true;drawing={pointerId,pointerType,gestureId:segment.gestureId,...brushStroke(value),points:drawing.points.length?[drawing.points.at(-1)]:[]};if(value==='eraser'&&drawing.eraserMode==='stroke'&&drawing.points.length)eraseWholeStrokes(drawing.points[0],drawing.points[0]);}
-function setStylusButtonPressed(pressed){const was=nativeStylusButton;nativeStylusButton=pressed===true;if(was&&!nativeStylusButton){penResumeAfter=performance.now()+250;if(drawing?.pointerType==='pen'&&tool==='pen')pauseDrawingInk();}if(drawing?.native){indicateTool(nativeStylusButton?'eraser':tool);return;}if(drawing?.pointerType==='pen'){const value=nativeStylusButton||webStylusButton?'eraser':tool;if(!(value==='pen'&&performance.now()<penResumeAfter))changeDrawingTool(value);indicateTool(value);queueRender();}else indicateTool(nativeStylusButton?'eraser':tool);}
-canvas.onpointerdown=e=>{if(drawing||panGesture||(e.pointerType!=='pen'&&e.button!==0))return;if(!e.native&&e.pointerType==='pen'&&e.pressure===0&&!(e.buttons&1)&&!(e.buttons&32))return;closePenPalette();closeEraserPalette();window.closeRulerPalette?.();const pan=e.pointerType==='touch'&&!settings.fingerDrawing;e.preventDefault();if(!e.native)canvas.setPointerCapture(e.pointerId);if(pan){panGesture={pointerId:e.pointerId,y:e.clientY};canvas.style.cursor='grabbing';return;}if(!e.native)observeWebStylusButton(e);const value=stylusTool(e);clearTimeout(saveTimeout);drawingUndo=strokes.slice();drawing={pointerId:e.pointerId,pointerType:e.pointerType,native:e.native===true,gestureId:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),...brushStroke(value),points:inkSuppressed(e)?[]:[point(e)],inkPaused:inkSuppressed(e)};if(value==='eraser'&&drawing.eraserMode==='stroke'&&drawing.points.length)eraseWholeStrokes(drawing.points[0],drawing.points[0]);indicateTool(value);queueRender();};
-canvas.onpointermove=e=>{if(panGesture?.pointerId===e.pointerId){e.preventDefault();scrollArea.scrollTop+=panGesture.y-e.clientY;panGesture.y=e.clientY;return;}if(e.pointerType==='pen'){if(!e.native)observeWebStylusButton(e);indicateTool(stylusTool(e));}if(!drawing&&!panGesture&&e.pointerType==='pen'&&((e.buttons&1)||(e.buttons&32)||(e.pressure>0&&(e.buttons&2))))canvas.onpointerdown(e);if(!drawing||drawing.pointerId!==e.pointerId)return;e.preventDefault();const events=e.getCoalescedEvents?.()||[],rect=canvas.getBoundingClientRect();for(const item of events.length?events:[e]){if(inkSuppressed(item)){pauseDrawingInk();continue;}drawing.inkPaused=false;changeDrawingTool(stylusTool(item));if(drawing.tool==='eraser'&&drawing.eraserMode==='stroke'){const next=point(item,rect);eraseWholeStrokes(drawing.points.at(-1)||next,next);drawing.points=[next];}else if(drawing.ruler&&drawing.points.length){drawing.points=[drawing.points[0],point(item,rect)];}else drawing.points.push(point(item,rect));}queueRender();};
-function finishDrawing(e){if(panGesture?.pointerId===e.pointerId){panGesture=null;indicateTool(tool);return;}if(!drawing||drawing.pointerId!==e.pointerId)return;if(!drawing.points.length&&strokes.length===drawingUndo.length&&strokes.every((s,i)=>s===drawingUndo[i])){drawing=null;drawingUndo=null;render();return;}undoStack.push(drawingUndo);if(undoStack.length>100)undoStack.shift();drawingUndo=null;redoStack=[];const {pointerId,pointerType,...stroke}=drawing;if(stroke.points.length&&(stroke.tool!=='eraser'||stroke.eraserMode!=='stroke'))strokes.push(stroke);drawing=null;if(!inkDirty)paint(stroke,inkContext);webStylusButton=false;indicateTool(nativeStylusButton?'eraser':tool);render();scheduleSave();}
-canvas.onpointerup=finishDrawing;canvas.onpointercancel=finishDrawing;
+function changeDrawingTool(value){
+ if(!drawing||drawing.tool===value)return;
+ const {pointerId,pointerType,native,gestureId,...segment}=drawing;
+ if(segment.points.length&&(segment.tool!=='eraser'||segment.eraserMode!=='stroke'))strokes.push(segment);
+ inkDirty=true;
+ // A resumed pen starts at the next sample, without joining the eraser path.
+ drawing={pointerId,pointerType,native,gestureId,...brushStroke(value),points:value==='eraser'&&segment.points.length?[segment.points.at(-1)]:[]};
+ if(value==='eraser'&&drawing.eraserMode==='stroke'&&drawing.points.length)eraseWholeStrokes(drawing.points[0],drawing.points[0]);
+}
+function setStylusButtonPressed(pressed){
+ // Native contact owns its tool state through the ordered sample queue.
+ if(drawing?.native)return;
+ const was=nativeStylusButton;nativeStylusButton=pressed===true;
+ if(was&&!nativeStylusButton)protectPenRelease();
+ const value=nativeStylusButton||webStylusButton?'eraser':tool;
+ if(drawing?.pointerType==='pen'){changeDrawingTool(value);queueRender();}
+ indicateTool(value);
+}
+canvas.onpointerdown=e=>{
+ if(nativeOwnsPen(e)||drawing||panGesture||(e.pointerType!=='pen'&&e.button!==0))return;
+ if(!e.native&&e.pointerType==='pen'&&e.pressure===0&&!(e.buttons&(1|32)))return;
+ closePenPalette();closeEraserPalette();window.closeRulerPalette?.();
+ const pan=e.pointerType==='touch'&&!settings.fingerDrawing;e.preventDefault();
+ if(!e.native)canvas.setPointerCapture(e.pointerId);
+ if(pan){panGesture={pointerId:e.pointerId,y:e.clientY};canvas.style.cursor='grabbing';return;}
+ if(!e.native)observeWebStylusButton(e);
+ const value=stylusTool(e);clearTimeout(saveTimeout);drawingUndo=strokes.slice();
+ drawing={pointerId:e.pointerId,pointerType:e.pointerType,native:e.native===true,gestureId:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),...brushStroke(value),points:inkSuppressed(e)?[]:[point(e)],inkPaused:inkSuppressed(e)};
+ if(value==='eraser'&&drawing.eraserMode==='stroke'&&drawing.points.length)eraseWholeStrokes(drawing.points[0],drawing.points[0]);
+ indicateTool(value);queueRender();
+};
+canvas.onpointermove=e=>{
+ if(nativeOwnsPen(e))return;
+ if(panGesture?.pointerId===e.pointerId){e.preventDefault();scrollArea.scrollTop+=panGesture.y-e.clientY;panGesture.y=e.clientY;return;}
+ if(e.pointerType==='pen'){if(!e.native)observeWebStylusButton(e);indicateTool(stylusTool(e));}
+ if(!drawing&&!panGesture&&e.pointerType==='pen'&&(e.native||e.pressure>0)&&((e.buttons&(1|32))||(e.pressure>0&&(e.buttons&2))))canvas.onpointerdown(e);
+ if(!drawing||drawing.pointerId!==e.pointerId||drawing.native!==(e.native===true))return;
+ e.preventDefault();const events=e.getCoalescedEvents?.()||[],rect=canvas.getBoundingClientRect();
+ for(const item of events.length?events:[e]){
+  if(!item.native)observeWebStylusButton(item);
+  if(inkSuppressed(item)){pauseDrawingInk();continue;}
+  drawing.inkPaused=false;
+  changeDrawingTool(stylusTool(item));
+  if(drawing.tool==='eraser'&&drawing.eraserMode==='stroke'){const next=point(item,rect);eraseWholeStrokes(drawing.points.at(-1)||next,next);drawing.points=[next];}
+  else if(drawing.ruler&&drawing.points.length)drawing.points=[drawing.points[0],point(item,rect)];
+  else drawing.points.push(point(item,rect));
+ }
+ queueRender();
+};
+function finishDrawing(e){
+ if(panGesture?.pointerId===e.pointerId){panGesture=null;indicateTool(tool);return;}
+ if(!drawing||drawing.pointerId!==e.pointerId)return;
+ const {pointerId,pointerType,native,...stroke}=drawing;
+ const changed=stroke.points.length&&(stroke.tool!=='eraser'||stroke.eraserMode!=='stroke')||strokes.length!==drawingUndo.length||strokes.some((s,i)=>s!==drawingUndo[i]);
+ if(changed){undoStack.push(drawingUndo);if(undoStack.length>100)undoStack.shift();redoStack=[];if(stroke.points.length&&(stroke.tool!=='eraser'||stroke.eraserMode!=='stroke'))strokes.push(stroke);}
+ drawing=null;drawingUndo=null;
+ if(changed&&!inkDirty)paint(stroke,inkContext);
+ indicateTool(nativeStylusButton||webStylusButton?'eraser':tool);render();if(changed)scheduleSave();
+}
+canvas.onpointerup=e=>{if(nativeOwnsPen(e))return;observeWebStylusButton(e);finishDrawing(e);};
+canvas.onpointercancel=e=>{if(nativeOwnsPen(e))return;webStylusButton=false;finishDrawing(e);};
 canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('lostpointercapture',e=>finishDrawing(e));
 function selectTool(value){tool=value;indicateTool(nativeStylusButton||webStylusButton?'eraser':tool);}
-window.addEventListener('blur',()=>{nativeStylusButton=false;webStylusButton=false;if(drawing)finishDrawing({pointerId:drawing.pointerId});indicateTool(tool);});
+function resetPenInput(){nativeStylusButton=false;webStylusButton=false;nativeSampleEraser=false;penResumeAfter=0;if(drawing)finishDrawing({pointerId:drawing.pointerId});panGesture=null;indicateTool(tool);}
+window.addEventListener('blur',resetPenInput);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)resetPenInput();});
 $('pen-tool').onclick=()=>{const selected=tool==='pen';selectTool('pen');closeEraserPalette();if(selected)togglePenPalette();};$('eraser-tool').onclick=()=>{const selected=tool==='eraser';selectTool('eraser');closePenPalette();if(selected)toggleEraserPalette();};
 $('pen-width').oninput=()=>{$('width-label').textContent=$('pen-width').value+' px';brushState.widths[brushState.kind]=Number($('pen-width').value);saveBrushState();renderBrushControls();};
 $('finger-drawing').onchange=()=>{settings.fingerDrawing=$('finger-drawing').checked;storeSettings();};
@@ -212,7 +281,30 @@ document.querySelectorAll('[data-education-choice]').forEach(button=>button.oncl
 document.querySelectorAll('[data-choice-count]').forEach(button=>button.onclick=()=>{settings.choiceCount=Number(button.dataset.choiceCount);resizeUnsavedChoices();storeSettings();applySettings();if(!$('workspace').hidden)renderQuestionContent(true);});
 
 // Android batches native contact samples once per frame; hover never paints ink.
-function handleNativePenBatch(samples){for(const [phase,x,y,pressure,pointerId,eraser] of samples){if(nativeSampleEraser&&!eraser)penResumeAfter=performance.now()+250;nativeSampleEraser=!!eraser;const e={native:true,eraser,pointerType:'pen',pointerId,button:0,buttons:phase==='up'||phase==='cancel'?0:eraser?3:1,pressure,clientX:x,clientY:y,preventDefault(){}};if(phase==='down')canvas.onpointerdown(e);else if(phase==='move')canvas.onpointermove(e);else{finishDrawing(e);nativeSampleEraser=false;}}}
+function handleNativePenBatch(samples){
+ for(const [phase,x,y,pressure,pointerId,eraser] of samples){
+  const was=nativeStylusButton;
+  nativeSampleEraser=!!eraser;nativeStylusButton=!!eraser;
+  if(was&&!nativeStylusButton)protectPenRelease();
+  const e={native:true,eraser:!!eraser,pointerType:'pen',pointerId,button:0,buttons:phase==='up'||phase==='cancel'?0:eraser?3:1,pressure,clientX:x,clientY:y,preventDefault(){}};
+  if(phase==='down'){
+   // A new Android contact is authoritative even after a lost end event.
+   if(drawing)finishDrawing({pointerId:drawing.pointerId});panGesture=null;
+   canvas.onpointerdown(e);
+  }else if(phase==='move')canvas.onpointermove(e);
+  else if(phase==='button'){
+   if(drawing?.native&&drawing.pointerId===pointerId){changeDrawingTool(stylusTool(e));indicateTool(stylusTool(e));queueRender();}
+  }else if(phase==='up'||phase==='cancel'){
+   if(phase==='up'&&drawing?.native&&drawing.pointerId===pointerId){
+    const last=drawing.points.at(-1),next=point(e);
+    // Include the final contact position but never stamp a new dot on release.
+    if(last&&(last.x!==next.x||last.y!==next.y))canvas.onpointermove(e);
+   }
+   if(phase==='cancel')nativeStylusButton=false;
+   finishDrawing(e);nativeSampleEraser=false;
+  }
+ }
+}
 function updateNativeDrawingBounds(){if(!window.FormaAndroid?.setDrawingBounds)return;const rect=canvas.getBoundingClientRect(),active=!$('workspace').hidden&&!document.hidden&&!document.querySelector('dialog[open]')&&!widgetExplorerOpen&&$('widget-explorer-shade').hidden;const excluded=[...document.querySelectorAll('.drawing-toolbar,.workspace-settings,.question-resize,.paper-bottom,.formula-drawer,#pen-palette,#eraser-palette,#ruler-palette,.floating-tool,.floating-stopwatch')].filter(el=>!el.hidden&&el.getClientRects().length).map(el=>{const r=el.getBoundingClientRect();return[r.left-3,r.top-3,r.right+3,r.bottom+3]});for(const path of document.querySelectorAll('#module-cables .cable-hit')){const length=path.getTotalLength();for(let distance=0;distance<=length+12;distance+=12){const point=path.getPointAtLength(Math.min(distance,length));excluded.push([point.x-11,point.y-11,point.x+11,point.y+11]);}}window.FormaAndroid.setDrawingBounds(JSON.stringify({scale:window.devicePixelRatio||1,bounds:active?[rect.left,rect.top,rect.right,rect.bottom]:null,excluded}));}
 let nativeBoundsFrame;function scheduleNativeBounds(){if(nativeBoundsFrame)return;nativeBoundsFrame=requestAnimationFrame(()=>{nativeBoundsFrame=null;updateNativeDrawingBounds();});}
 if(window.FormaAndroid?.setDrawingBounds){new MutationObserver(scheduleNativeBounds).observe(document.body,{subtree:true,attributes:true,attributeFilter:['hidden','style','open','class','data-open','data-screen']});window.addEventListener('scroll',scheduleNativeBounds,{capture:true,passive:true});window.addEventListener('resize',scheduleNativeBounds);document.addEventListener('visibilitychange',scheduleNativeBounds);scheduleNativeBounds();}

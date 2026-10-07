@@ -138,17 +138,18 @@ public final class MainActivity extends Activity {
             }
         }
         if (!stylus) return;
-        boolean wasPressed = stylusButtonPressed;
         updateStylusButton(stylusState.update(event.getActionMasked(),
                 event.getButtonState(), event.getActionButton()));
-        int action = event.getActionMasked();
-        if (wasPressed != stylusButtonPressed && (action == MotionEvent.ACTION_BUTTON_PRESS
-                || action == MotionEvent.ACTION_BUTTON_RELEASE) && webView instanceof DrawingWebView)
-            ((DrawingWebView) webView).queueButtonChange();
     }
     private void updateStylusButton(boolean pressed) {
         if (stylusButtonPressed == pressed) return;
         stylusButtonPressed = pressed;
+        // Contact samples and tool changes share one ordered queue. A separate
+        // JavaScript call could otherwise modify ink from an earlier frame.
+        if (webView instanceof DrawingWebView) {
+            ((DrawingWebView) webView).queueButtonChange();
+            return;
+        }
         if (webView != null) webView.evaluateJavascript(
                 "if(typeof setStylusButtonPressed==='function')setStylusButtonPressed(" + pressed + ");", null);
     }
@@ -189,7 +190,7 @@ public final class MainActivity extends Activity {
             if (!flushScheduled) { flushScheduled = true; postOnAnimation(flush); }
         }
         void queueButtonChange() {
-            if (nativeDrawing) queue("move",lastX,lastY,lastPressure,nativePointer,stylusButtonPressed);
+            queue("button",lastX,lastY,lastPressure,nativePointer,stylusButtonPressed);
         }
         void cancelNativeInk() {
             // Preserve samples already queued, including a completed tap in this frame.
@@ -203,10 +204,23 @@ public final class MainActivity extends Activity {
             int action = event.getActionMasked(), index = event.getActionIndex(), type = event.getToolType(index);
             boolean pen = type == MotionEvent.TOOL_TYPE_STYLUS || type == MotionEvent.TOOL_TYPE_ERASER;
             float x = event.getX(index) / nativeCssScale, y = event.getY(index) / nativeCssScale;
-            if (action == MotionEvent.ACTION_DOWN) {
-                nativeDrawing = pen && nativeCanvasBounds != null && nativeCanvasBounds.contains(x,y);
-                for (RectF r : nativeInkExclusions) if (r.contains(x,y)) nativeDrawing = false;
-                nativePointer = 1000 + event.getPointerId(index);
+            boolean starts = false;
+            if (!nativeDrawing && (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) && pen) {
+                boolean inside = nativeCanvasBounds != null && nativeCanvasBounds.contains(x,y);
+                for (RectF r : nativeInkExclusions) if (r.contains(x,y)) inside = false;
+                if (inside) {
+                    if (action == MotionEvent.ACTION_POINTER_DOWN) {
+                        // End WebView's finger/palm gesture before the pen takes ownership.
+                        MotionEvent cancel = MotionEvent.obtain(event);
+                        cancel.setAction(MotionEvent.ACTION_CANCEL);
+                        super.onTouchEvent(cancel);
+                        cancel.recycle();
+                    }
+                    nativeDrawing = true;
+                    starts = true;
+                    nativePointer = 1000 + event.getPointerId(index);
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                }
             }
             if (nativeDrawing) {
                 // Additional finger contacts never join the pen gesture.
@@ -220,7 +234,7 @@ public final class MainActivity extends Activity {
                     queue("move",event.getHistoricalX(index,h)/nativeCssScale,event.getHistoricalY(index,h)/nativeCssScale,
                             event.getHistoricalPressure(index,h),nativePointer,erase);
                 boolean ends = action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP && event.getActionIndex() == index;
-                String phase = action == MotionEvent.ACTION_DOWN ? "down" : action == MotionEvent.ACTION_CANCEL ? "cancel" : ends ? "up" : "move";
+                String phase = starts ? "down" : action == MotionEvent.ACTION_CANCEL ? "cancel" : ends ? "up" : "move";
                 queue(phase,x,y,event.getPressure(index),nativePointer,erase);
                 lastX = x; lastY = y; lastPressure = event.getPressure(index);
                 if (ends || action == MotionEvent.ACTION_CANCEL) nativeDrawing = false;
@@ -230,6 +244,7 @@ public final class MainActivity extends Activity {
         }
         @Override public boolean onGenericMotionEvent(MotionEvent event) {
             observeStylusButton(event);
+            if (nativeDrawing) return true;
             return super.onGenericMotionEvent(event);
         }
     }

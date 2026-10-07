@@ -10,7 +10,8 @@ $taskSources = @(
     'android/keystore.properties.example', 'android/verify-math1.cjs', 'android/verify-ui.cjs',
     'android/verify-physics.cjs', 'android/verify-physics-ui.cjs', 'android/verify-theme.cjs',
     'android/verify-icon-ui.cjs', 'android/verify-icon-device.cjs', 'android/LauncherIconPaletteTest.java',
-    'android/verify-simulation-windows.cjs'
+    'android/verify-simulation-windows.cjs', 'android/verify-stylus.cjs', 'android/StylusButtonStateTest.java',
+    'android/verify-math2.cjs', 'android/verify-math2-ui.cjs', 'android/verify-graphs.cjs', 'android/verify-graphs-ui.cjs', 'android/verify-geometry-expanded.cjs', 'android/verify-geometry-expanded-ui.cjs', 'android/verify-advanced.cjs', 'android/verify-advanced-ui.cjs', 'android/verify-matrix-ui.cjs'
 )
 foreach ($taskFolder in @('android/app/src/main', 'android/gradle', 'web/dist')) {
     $taskFolderPath = Join-Path $taskRoot $taskFolder

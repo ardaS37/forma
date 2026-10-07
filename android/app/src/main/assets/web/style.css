@@ -292,3 +292,20 @@ body[data-screen="workspace"] .work-layout{height:100dvh;min-height:0}.formula-d
 .formula-line .ML__latex{font-style:normal}.formula-line .question-math-expression{max-width:100%;vertical-align:middle}
 
 .session-reset-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;margin-top:24px}.session-reset-actions>button:not(.primary){padding:12px 14px;border:1px solid var(--line);border-radius:8px;font-size:12px}#session-reset-modal>p{font-size:13px;line-height:1.7}.session-question-list{border-top:1px solid var(--line);padding-top:14px;font-size:12px}.session-question-list>summary{cursor:pointer;color:var(--accent)}.session-question-list section{padding:17px 0;border-bottom:1px solid var(--line)}.session-question-list p{line-height:1.8;overflow-wrap:anywhere}.session-question-open{color:var(--accent);font-size:12px}.session-question-solution{border-top:1px solid var(--line);padding-top:12px}
+.question-diagram.has-question-graph{width:100%;max-width:480px;margin:12px auto;text-align:left}
+.question-diagram.has-question-graph:not([hidden]){display:block}
+.question-graph-figure{margin:0;padding:0}
+.question-diagram.has-question-graph svg{display:block;width:100%;height:auto;max-height:none;overflow:visible;stroke:none}
+.question-diagram.has-question-graph .graph-grid path{fill:none;stroke:var(--line)}
+.question-diagram.has-question-graph .graph-axes path,.question-diagram.has-question-graph .graph-arrow{fill:none;stroke:var(--ink)}
+.question-diagram.has-question-graph .graph-curve{fill:none;stroke:var(--accent)}
+.question-diagram.has-question-graph .graph-secondary{stroke:var(--ink)}
+.question-diagram.has-question-graph .graph-region{fill:var(--accent);stroke:none}
+.question-diagram.has-question-graph .graph-point{fill:var(--accent);stroke:var(--accent)}
+.question-diagram.has-question-graph .graph-open{fill:var(--paper)}
+.question-diagram.has-question-graph text{fill:var(--ink);stroke:none}
+.question-graph-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;font-size:12px;color:var(--ink)}
+.question-graph-legend span:before{content:'';display:inline-block;width:18px;border-top:2px solid var(--accent);margin-right:6px;vertical-align:middle}
+.question-graph-legend .legend-dashed:before{border-top-style:dashed}
+.question-graph-legend .legend-secondary:before{border-top-color:var(--ink)}
+.question-graph-figure figcaption{text-align:center;font-size:12px;color:var(--muted);margin-top:6px}

@@ -1,5 +1,57 @@
 # Forma — Android
 
+## 1.40.0 — Üç ders havuzu ve görsel matris aracı
+
+Lineer Cebir 24, Ayrık Matematik 27, Diferansiyel Denklemler 27 yeni alt başlık kazandı. 156 hesaplama/inceleme varyantı ve 26 verilen grafik/diyagram şablonu: toplam 182 yeni şablon. Alt başlık toplamları sırasıyla 64, 72, 72; eski sorular ve konu/genel karma akışları korunur. Yeni modeller Türkçe/İngilizce çözüm, zorluk, kayıt/geri yükleme ve şıksız görevleri destekler. Formül çekmecesine koşullarıyla 26 ek referans eklendi.
+
+Lineer cebir: komütatör, simetrik ayrışım, nilpotent/Jordan kuvvetleri, rank-one güncelleme, parametreye bağlı tekillik, yönlü alan, afin sistemler, interpolasyon, Cauchy–Schwarz, alt uzaylar, Householder, baz değişimi, karmaşık spektrum, QR, izdüşüm ve en küçük kareler. Ayrık matematik: niceleyici/parite, Venn ve dahil etme–çıkarma, sınırlı yıldız–çubuk, dairesel diziliş, keskin güvercin yuvası, Hasse, fonksiyon lifleri/örtenlik, kongrüans/CRT/Bézout, derece dizileri/Euler/Hamilton/en kısa yol, ağırlıklı ağaçlar ve yinelemeler. Diferansiyel: yön alanı, tek olmama, patlama/maksimal aralık/dal, karışım, tam denklemler/çarpan, Bernoulli/Riccati/kübik kararlılık, sönüm/sınır değer, rezonans/parametrelerin değişimi, gecikme/darbe/konvolüsyon, spiral/eyer/Euler–Heun.
+
+Matris/determinantlar yeni ve eski sorularda, çözümlerde ve kayıt önizlemelerinde satır-sütun düzeniyle gösterilir. Matris aracı 1–6 satır/sütun seçimi, hücrelere ifade/kesir girişi, toplu metin, A–D bellek, sıfır/birim/temizleme içerir. Toplama/çıkarma/çarpım/transpoz/kuvvet/ters/determinant yanında skaler çarpım, iz, rank, RREF ve Ax=b eklendi. Gauss–Jordan adımları ara matrislerle açılır; Ax=b tek/sonsuz/çözümsüz ayrımı ve serbest değişkenli ifadeler verir. Sonuçlar kayan noktalı ve yaklaşık; pivot eşiği katsayı ölçeğinin 1e-12 katıdır. Matris girdisi ve sonuç/adım görünümü oturumla saklanır; modüller arası veri aktarımı korunur. S Pen 250 ms bırakma korumasına dokunulmadı.
+
+Doğrulama: `verify-advanced.cjs` 8.580 soru/65.376 bağımsız kontrol; `verify-advanced-ui.cjs` 130 alt konu/208 soru, 26 verilen şekil, mobil/tablet, dil ve çizim kaydı; `verify-matrix-ui.cjs` hücre/boyut/bellek, işlemler, satır adımları, tekil ve dikdörtgen matrisler, 6×6, boş giriş, kayıtlı görünüm. Önceki geometri/grafik, genel arayüz ve 56 S Pen kontrolü de geçti. APK: `build/forma-android-1.40.0-debug.apk`. Fiziksel tablet testi yapılmadı.
+
+## 1.39.0 — Geometri, katı cisimler ve analitik geometri havuzları
+
+Üç havuza 84 yeni alt başlık eklendi: Geometri 24, Katı Cisimler 28, Analitik Geometri 32. Her alt başlık iki ayrı görev üretir: hesaplama ve gerekçelendirme/ispat/çizim. Toplam 168 parametreli açık uçlu varyant ve ana konu başına bir tane olmak üzere 21 verilen şekil/grafik şablonu bulunur. Yeni soru şablonu toplamı 189'dur. Alt konu toplamları Geometri 54, Katı Cisimler 63, Analitik Geometri 72; ana konu sayıları 6,7,8 olarak korundu. Eski temel sorular ayrı alt başlıklarında korunur; konu ve genel karma yeni katalogları kapsar.
+
+Geometri: cebirsel açı, açıortay/saat, Heron/kosinüs, iç/çevrel çember, kenarortay, yamuk/çembersel dörtgen/köşegen, düzgün ve içbükey çokgenler, kiriş/teğet/kesen, daire parçası, benzerlik/gölge/homoteti. Katı cisimler: köşe kesme, merkezî kesit, yüzey açılımında yol, su/taşma, küp yerleşimi, eğik ve birleşik prizmalar, kesik piramit/koni, dörtyüzlü, boru/levha açılımı, en az yüzey, içteğet küre, küre kapağı/kuşağı/peçete halkası ve iç küp. Analitik: yönlü alan/dış bölme/merkez/geometrik yer, izdüşüm/yansıma/doğru demeti, çember kesişimleri/kuvvet ekseni, ötelenmiş/döndürülmüş konikler, teğet ve özel kesişimler, Apollonius çemberi, doğru-düzlem, düzlem açıları, aykırı doğrular ve uzay çemberi.
+
+Şekilli sorularda SVG soru açılırken görünür. Uygun açık uçlu soruların çözümünde örnek şekil gösterilir; geometri şekillerinde eksen/ızgara gizlenebilir, koordinat grafiklerinde eşit birim ölçekleri kullanılır. Perspektif prizma görüntüleri uzaysal ölçüleri kenar etiketlerinde taşır; kesitler kendi düzlemlerinde çizilir. Hesaplama ve inceleme çözümleri Türkçe/İngilizce, zorluk tahmini, şıksız davranış ve soru/çizim oturumu kaydıyla çalışır. Formül çekmecesine koşulları belirtilmiş 23 referans formülü eklendi. S Pen bırakma koruması korunur.
+
+Kaynaklar: `geometry-exercises.js`, `plane-expanded.js`, `solid-expanded.js`, `analytic-expanded.js`, `geometry-reference.js` (Android web varlıkları). Doğrulama: `android/verify-geometry-expanded.cjs` (9.030 soru, 143.720 bağımsız sayısal kontrol); `android/verify-geometry-expanded-ui.cjs` (126 alt konu akışı, 210 soru, verilen/çözüm şekilleri, mobil/tablet, dil ve kayıtlı çizim geri yükleme); Matematik 1/2 grafik testleri ve genel arayüz regresyonları. APK: `build/forma-android-1.39.0-debug.apk`. Fiziksel Android cihaz testi yapılmadı.
+
+## 1.38.0 — Ortak grafik soru tipi
+
+Matematik 1 ve 2'ye 12'şer parametreli grafik okuma/yorumlama şablonu eklendi. İlgili yedişer konuda “Grafik içeren sorular” seçilebilir; konu karması ve genel karma da bu soruları içerir. Alt konu toplamları Matematik 1'de 102, Matematik 2'de 90 oldu. Grafik soru açılırken görünür, çözüm ayrıca açılır. Sorular açık uçludur; Türkçe/İngilizce ve kayıtlı oturum geri yükleme desteklenir.
+
+Matematik 1: tanım/değer kümesi, kök/işaret, ters fonksiyon, giderilebilir/sıçrama süreksizliği, türev işareti, teğet/köşe, sinüs/üstel grafik, işaretli alan ve iki eğri arası alan. Matematik 2: disk/kabuk hacmi, iç tekillik, kısmi toplam/integral testi, yakınsaklık aralığı, yönlü elips, kardiyoid/gül, izdüşüm, seviye eğrileri/gradyan ve çift integral bölgesi.
+
+`question-graphs.js`, fonksiyonlardan bağımsız, JSON ile saklanabilen ortak grafik biçimini SVG olarak çizer: sınırlar, eğriler, bölgeler, noktalar, açık uçlar, oklar ve iki dilde açıklamalar. Geometrik grafiklerde eşit birim ölçekleri kullanılır; fonksiyon grafiklerinde gerektiğinde farklı ölçek açıkça seçilir. `graph-questions.js` kayıt sistemi bu biçimi ders kataloğu ve karma soru akışına bağlar. Başka derslerin soruları da aynı `graph` verisi ve `QuestionGraphs.render()` API'sini kullanabilir. Karmaşık yeni denklemler isteğe bağlı `eqLatex` alanıyla gösterilir. Kaydedilmiş eski sorular özgün içeriklerini korur; S Pen'in 250 ms bırakma koruması korunur.
+
+Doğrulama: `node android/verify-graphs.cjs` (2.400 soru, 192.100 sayısal kontrol); `android/verify-graphs-ui.cjs` (24 şablon, çözümden önce grafik, mobil/tablet, dil/tema, kayıt geri yükleme); `android/verify-math2-ui.cjs` (90 alt konu) ve mevcut arayüz testleri. APK: `build/forma-android-1.38.0-debug.apk`. Fiziksel Android cihaz testi yapılmadı.
+
+## 1.37.0 — Genişletilmiş Genel Matematik 2
+
+Genel Matematik 2 havuzu 8 ana konu ve 83 alt konuya genişletildi. Mevcut 33 alt konu ve soru üreteçlerine ek olarak 50 yeni alt konuda 100 parametreli açık uçlu soru şablonu bulunur. Eski alt konuların akışlarında ilgili yeni sorular dönüşümlü üretilir; konu karması ve genel karma yeni katalogdan ilerler. Kayıtlı soru ve çözümler özgün içerikleriyle saklanır.
+
+Kapsam: indirgeme bağıntıları, tekrarlı kutuplar, yarım açı ve hiperbolik dönüşüm, ardışık kısmi integrasyon; kabuk/hacim/yüzey alanı, yay uzunluğu, ağırlık merkezi, iş; iç tekillikler, logaritmik yakınsaklık, kuyruk ve asal değer; monoton özyineleme, p-serisi, oran/kök testi, mutlak/koşullu yakınsaklık, teleskopik ve geometrik kalan; binom, Taylor hata sınırı, bileşke ve merkez kaydırma; sikloid, elips, kardiyoid, kutupsal gül, spiral ve helis; izdüşüm, alan/hacim, doğru-düzlem ve aykırı doğrular; gradyan, zincir kuralı, çok değişkenli limit/türevlenebilirlik, Lagrange, dejenere Hessian, bölge/sıralama değiştirme, kutupsal ve küresel çok katlı integraller.
+
+Yeni sorular hesaplama, ifade, gerekçelendirme, ispat ve çizim ister. Şık ve otomatik cevap kontrolü yoktur; çözümler ve gereken tanım koşulları açılır. Eğri sorularında çözümle birlikte eşit eksen ölçekli SVG örnek çizimleri gelir. Türkçe/İngilizce, 1–5 zorluk tahmini, çalışma oturumu ve defter kaydı desteklenir. Formül çekmecesine 26 açıklamalı formül eklendi.
+
+Kaynak: `android/app/src/main/assets/web/math2-expanded.js`. Doğrulama: `node android/verify-math2.cjs` (21.248 soru örneği, bağımsız integral/türev/geometri kontrolleri), `android/verify-math2-ui.cjs` (83 alt konu, çözüm grafikleri, mobil/tablet, dil, formüller ve oturum/çizim geri yükleme). APK: `build/forma-android-1.37.0-debug.apk`. Fiziksel Android cihaz testi yapılmadı.
+
+## 1.36.7 — S Pen bırakma koruması
+
+Tuş bırakıldıktan sonra 250 ms kalem mürekkebi beklemesi geri eklendi. Kalemi kaldırırken tuş da bırakılınca gelen son temas örnekleri nokta üretmez; koruma sırasında yeni kalem teması da boş başlar. Bekleme bitince bir sonraki hareket yeni konumdan çizer. Tuşa yeniden basmak silgiyi beklemeden etkinleştirir. 1.36.6'daki yerel temas kimliği, sıralı olay kuyruğu ve eksik Samsung tuş bitleri düzeltmeleri korunur.
+
+Doğrulama: `android/verify-stylus.cjs`, 250 ms sınırı, tuş bırakma ve kalem kaldırma, yeni temas, iki silgi modu, yeniden silme ve geri alma kontrollerini içerir. Fiziksel Galaxy Tab S / S Pen doğrulaması henüz yapılmadı. APK: `build/forma-android-1.36.7-debug.apk`.
+
+## 1.36.6 — S Pen tuşu ve silgi geçişi
+
+Kalem tuşu basılıyken başlayan temas seçili silgi modunu kullanır. Samsung temas olaylarında eksik tuş bitleri bırakma sayılmaz; açık bırakma ve tuşsuz hover durumu silgiyi kapatır. Android tuş değişimleri ve çizim örnekleri aynı sıralı kuyruğa alınır; araç değişiminde yerel temas kimliği korunur. WebView kalem olayları yerel çizimle çakışmaz. Tuş bırakıldıktan sonra 250 ms yazma beklemesi kaldırıldı; kalem yeni konumdan devam eder. Parmak/palm teması sırasında başlayan kalem ve eksik bitiş olayından sonra yeni temas ele alınır.
+
+Doğrulama: `android/verify-stylus.cjs` (tarayıcıda yerel örnekler, iki silgi modu, gerçek tuval pikselleri, tuş bırakma, iptal, geri alma gruplaması ve tarayıcı kalemi); `android/StylusButtonStateTest.java` (Android tuş olayları). Fiziksel Galaxy Tab S / S Pen doğrulaması henüz yapılmadı. APK: `build/forma-android-1.36.6-debug.apk`.
+
 ## 1.36.5 — AMOLED sayfa rengi ve varsayılanı
 
 AMOLED yeni ayarlarda varsayılan açık; kaydedilmiş kapatma tercihi korunur. Koyu sayfa rengi de AMOLED açıkken gerçek siyah, kapalıyken önceki koyu renktir; renk seçeneğinin önizlemesi aynı şekilde değişir. Tema testi varsayılanı, tercih kaydını ve sayfa rengini doğrular. APK: build/forma-android-1.36.5-debug.apk.

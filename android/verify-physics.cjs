@@ -1,6 +1,6 @@
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict');
 const root=path.join(__dirname,'app/src/main/assets/web'),context={console,translations:{},localStorage:{getItem:()=>null}};vm.createContext(context);
-for(const file of ['math.js','question-engine.js','university.js','math1.js','math2.js','analytic.js','geometry.js','linear.js','discrete.js','differential.js','math1-slides.js','question-difficulty.js','math1-expanded.js','science-catalog.js','physics1.js'])vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context,{filename:file});
+for(const file of ['math.js','question-engine.js','university.js','math1.js','math2.js','analytic.js','geometry.js','linear.js','discrete.js','differential.js','math1-slides.js','question-difficulty.js','math1-expanded.js','math2-expanded.js','science-catalog.js','physics1.js'])vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context,{filename:file});
 const source=fs.readFileSync(path.join(root,'simulations.js'),'utf8');vm.runInContext(source.slice(0,source.indexOf('const toolbar=document.createElement'))+'})();',context);
 const bank=context.Physics1Bank,near=(a,b)=>assert(Math.abs(a-b)<1e-7*Math.max(1,Math.abs(a),Math.abs(b)),`${a} != ${b}`),f=x=>Number(x.toFixed(4)).toLocaleString('tr-TR');let questions=0,checks=0;const seen=new Set();
 for(const topic of bank.catalog)for(const sub of topic.subtopics)for(let seed=0;seed<80;seed++)for(let index=0;index<4;index++){
