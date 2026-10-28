@@ -2,7 +2,7 @@
 
 Forma’nın matematik yazımı, kalem ve sonsuz defter sistemi üzerine kurulu çevrimdışı Android uygulaması. Uygulama içindeki ad **Açı**, başlatıcıdaki ad **Açı - Trigonometri Soruları**. Açılışta tek **Trigonometri** düğmesi bulunur.
 
-Varsayılan vurgu **Turuncu (#b65b32)**, logo **A.**. Renk menüsünde **Hiçbiri** her zaman ilk sıradadır; renk adları Turkuaz ve Turuncu gibi basittir. Konular ve kalem düğmeleri diğer araçlarla aynı dairesel şablonu kullanır; geri ve ayarlar simgeleri hizalıdır. Simülasyonlar yüklenmez.
+Varsayılan vurgu **Turuncu (#b65b32)**, logo **A.**. Harf çizimi Forma’nın F. simgesiyle aynı eğim, gövde kalınlığı, düz uç kesimleri ve nokta ölçülerini kullanır. Renk menüsünde **Hiçbiri** her zaman ilk sıradadır; renk adları Turkuaz ve Turuncu gibi basittir. Konular ve kalem düğmeleri diğer araçlarla aynı dairesel şablonu kullanır; geri ve ayarlar simgeleri hizalıdır. Simülasyonlar yüklenmez.
 
 | Bölüm | Konu | Matematik ailesi | Soru şablonu | Formül |
 | --- | ---: | ---: | ---: | ---: |
@@ -16,7 +16,7 @@ Temel ve ileri trigonometrik oranlar, birim çember, özel/yönlü açılar, ind
 
 Konular listesinde MEB 2018 genel lise kapsamı önce, başlıksız ince çizgiden sonra üniversite kapsamı gösterilir; [eşleme notu](docs/curriculum-2018.md). Açık/koyu/AMOLED, Türkçe/İngilizce arayüz, basınçlı kalemler, S Pen tuşuyla geçici silgi ve 250 ms bırakma koruması, cetvel, geri al/ileri al, otomatik kayıt, Defterim ve PNG dışa aktarma korunur. Yeni ayrıntılı çözüm metinleri Türkçedir.
 
-Paket **com.sapsoft.aci**, sürüm **1.1.0**, minimum Android 8/API 26, compile/target API 36. Forma ve diğer uygulama ile yan yana kurulabilir. Java namespace ve FormaAndroid köprüsü kalem uyumluluğu için korunur. Hesap ve internet izni gerekmez.
+Paket **com.sapsoft.aci**, sürüm **1.1.1**, minimum Android 8/API 26, compile/target API 36. Forma ve diğer uygulama ile yan yana kurulabilir. Java namespace ve FormaAndroid köprüsü kalem uyumluluğu için korunur. Hesap ve internet izni gerekmez.
 
 Varsayılan açık/koyu tema **Sistem** seçeneğidir. Cihazın teması izlenir; kullanıcı ayrıca açık/koyu seçerse tercih saklanır. Grafik sorularında genlik/periyot/değer aralığı okuma ve sinüs/kosinüs/tanjant grafiklerini iki periyot boyunca deftere çizme görevleri bulunur. Tanjant asimptotları örnek çözümde gösterilir. Çizim çözümü açılmadan örnek grafik gösterilmez. Formüllerde boş parçalardan oluşan `undefined` ve türev işareti gösterim hataları giderilmiştir.
 
@@ -24,7 +24,7 @@ Varsayılan açık/koyu tema **Sistem** seçeneğidir. Cihazın teması izlenir;
 
 JDK 17/21 ve Android SDK API 36 gerekir. Linux/macOS: `ANDROID_HOME=/path/to/sdk ./build-android.sh`. Windows: `powershell -ExecutionPolicy Bypass -File .\build-android.ps1`.
 
-Çıktı: `build/aci-android-1.1.0-debug.apk`. Debug APK geliştirme anahtarıyla imzalanır; mağaza için [release rehberi](android/PLAY-STORE.md).
+Çıktı: `build/aci-android-1.1.1-debug.apk`. Debug APK geliştirme anahtarıyla imzalanır; mağaza için [release rehberi](android/PLAY-STORE.md).
 
 - `node android/verify-trigonometry.cjs`: 7.020 soru, 157.203 bağımsız kontrol; sayısal sonuçlar, kök ailelerinin tamlığı, eşitsizlik aralıkları, ispat özdeşlikleri ve konu filtreleri.
 - `node android/verify-workbooks-ui.cjs`: menü, modlar, konu ayracı, seçili yeni ailelerin soru/çözüm matematik gösterimi, kesirler, tam formül çekmecesi, çizim/geri al/ileri al, renk sırası ve mobil koyu tema. Playwright/Chromium gerekir; görseller `build/workbook-ui/` altında oluşur.

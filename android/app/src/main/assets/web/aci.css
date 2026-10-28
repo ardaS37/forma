@@ -35,8 +35,8 @@ body[data-screen="practice-menu"] .header{display:none!important}
 .practice-mode-buttons button:hover,.practice-mode-buttons button:focus-visible{background:var(--soft);border-color:var(--accent)}
 .turev-logo{width:76px;height:76px;stroke:none;margin-bottom:20px;flex-shrink:0}
 .turev-logo rect{fill:var(--accent)}
-.turev-logo .logo-letter{fill:var(--paper)}
-.turev-logo .logo-dot{fill:var(--paper);opacity:.8}
+.turev-logo .logo-letter{fill:#fff}
+.turev-logo .logo-dot{fill:#c6d5e3}
 .practice-mode-buttons button{color:var(--accent);background:var(--soft);border-color:var(--accent)}
 .practice-mode-buttons button{border-radius:8px}
 /* Match the pen's selected state to the same circular surface as the other tools. */

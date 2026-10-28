@@ -87,7 +87,7 @@
   const oldNotes=$('notes-nav').onclick;
   $('notes-nav').onclick=()=>{oldNotes();$('home-nav').hidden=false;};
   const menu=document.createElement('main');menu.id='practice-menu';menu.className='practice-menu';menu.hidden=true;
-  menu.innerHTML='<svg class="turev-logo" viewBox="0 0 108 108" role="img" aria-label="Açı A. logosu"><rect width="108" height="108" rx="18"/><path class="logo-letter" fill-rule="evenodd" d="M26 76L43 32H57L73 76H62L58 64H41L37 76ZM44 55H55L50 41Z"/><path class="logo-dot" d="M80 67A4 4 0 1 1 80 75A4 4 0 1 1 80 67"/></svg><h1>Açı<span class="brand-period">.</span></h1><div class="practice-mode-buttons"><button data-practice-mode="trigonometry">Trigonometri</button></div>';
+  menu.innerHTML='<svg class="turev-logo" viewBox="0 0 108 108" role="img" aria-label="Açı A. logosu"><rect width="108" height="108" rx="18"/><path class="logo-letter" fill-rule="evenodd" d="M29 76L51 32L61 32L66 76L56 76L55.45 64L43.45 64L37 76Z M47.59 56L55.09 56L54.45 42Z"/><path class="logo-dot" d="M76 66A5 5 0 1 1 76 76A5 5 0 1 1 76 66"/></svg><h1>Açı<span class="brand-period">.</span></h1><div class="practice-mode-buttons"><button data-practice-mode="trigonometry">Trigonometri</button></div>';
   document.body.append(menu);
   function showMenu(){
     $('workspace').hidden=true;$('notes-page').hidden=true;$('home').hidden=true;menu.hidden=false;setScreen('practice-menu');refresh();window.scrollTo(0,0);
