@@ -55,7 +55,7 @@ public final class MainActivity extends Activity {
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         pendingLauncherAccent = LauncherIconPalette.select(
-                getSharedPreferences("forma-launcher", MODE_PRIVATE).getString("launcherAccent", "lavender"), null);
+                getSharedPreferences("forma-launcher", MODE_PRIVATE).getString("launcherAccent", "teal"), null);
         root = new FrameLayout(this);
         root.setBackgroundColor(Color.WHITE);
         webView = new DrawingWebView(this);
@@ -303,9 +303,9 @@ public final class MainActivity extends Activity {
                 + "const rp=document.getElementById('ruler-palette');if(rp&&!rp.hidden){closeRulerPalette();return true;}"
                 + "const ep=document.getElementById('eraser-palette');if(ep&&!ep.hidden){closeEraserPalette();return true;}"
                 + "const pp=document.getElementById('pen-palette');if(pp&&!pp.hidden){closePenPalette();return true;}"
-                + "const n=document.getElementById('notes-page');if(n&&!n.hidden){home();return true;}"
+                + "const n=document.getElementById('notes-page');if(n&&!n.hidden){enter();return true;}"
                 + "const w=document.getElementById('workspace');"
-                + "if(w&&!w.hidden&&typeof save==='function')save();return false;})()",
+                + "if(w&&!w.hidden){home();return true;}return false;})()",
                 handled -> { if (!"true".equals(handled)) finish(); });
     }
     @Override public void onBackPressed() { handleBack(); }
@@ -367,7 +367,7 @@ public final class MainActivity extends Activity {
     private boolean launcherAliasEnabled(PackageManager manager, String alias) {
         int state = manager.getComponentEnabledSetting(new ComponentName(this, getPackageName() + "." + alias));
         return state == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                || state == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT && alias.equals("LauncherLavender");
+                || state == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT && alias.equals("LauncherTeal");
     }
 
     @Override protected void onResume() {

@@ -14,7 +14,8 @@
     ['exponential','Üstel fonksiyonlar','Exponential functions','exp(x) → exp(x); a^x → a^x*ln(a)'],
     ['logarithm','Logaritmik fonksiyonlar','Logarithmic functions','ln(x) → 1/x; log_a(x) → 1/(x*ln(a))'],
     ['logdiff','Logaritmik türev','Logarithmic differentiation',"u(x)^v(x) → u^v*(v′*ln(u)+v*u′/u)"],
-    ['higher','İkinci ve yüksek türev','Higher derivatives',"f″(x) = (f′(x))′"],
+    ['second','İkinci türev','Second derivatives',"f″(x) = (f′(x))′"],
+    ['higher','Yüksek mertebeden türev','Higher derivatives',"f″(x) = (f′(x))′"],
     ['point','Bir noktadaki türev','Derivative at a point',"f′(a): önce türev al, sonra x=a yaz."],
     ['tangent','Teğet ve normal','Tangent and normal',"y-f(a) = f′(a)*(x-a)"],
     ['definition','Tanımdan türev','Derivative from the definition',"f′(a) = lim_(h→0) (f(a+h)-f(a))/h"],
@@ -54,7 +55,8 @@
       case 'atan': return div(da,add(C(1),pow(a,2)));
       case 'acot': return neg(div(da,add(C(1),pow(a,2))));
       case 'exp': return mul(e,da);
-      case 'ln': return div(da,a);
+      case 'ln': case 'lnabs': return div(da,a);
+      case 'abs': return div(mul(a,da),fn('abs',a));
       default: throw Error('Unsupported expression: '+e.op);
     }
   }
@@ -64,7 +66,7 @@
       case 'c':return e.value;case 'x':return x;case 'add':return a+b;case 'mul':return a*b;
       case 'div':return a/b;case 'pow':return a**e.n;case 'vpow':return a**b;
       case 'sin':case 'cos':case 'tan':case 'asin':case 'acos':case 'atan':case 'exp':return Math[e.op](a);
-      case 'ln':return Math.log(a);case 'cot':return 1/Math.tan(a);case 'sec':return 1/Math.cos(a);case 'csc':return 1/Math.sin(a);case 'acot':return Math.PI/2-Math.atan(a);
+      case 'ln':return Math.log(a);case 'lnabs':return Math.log(Math.abs(a));case 'abs':return Math.abs(a);case 'cot':return 1/Math.tan(a);case 'sec':return 1/Math.cos(a);case 'csc':return 1/Math.sin(a);case 'acot':return Math.PI/2-Math.atan(a);
       default:throw Error('Unsupported expression: '+e.op);
     }
   }
@@ -74,7 +76,7 @@
     switch(e.op) {
       case 'c':return num(e.value);case 'x':return v;case 'add':return e.b.op==='c'&&e.b.value<0?`(${a} - ${num(-e.b.value)})`:`(${a} + ${b})`;case 'mul':return `(${a} * ${b})`;
       case 'div':return `(${a})/(${b})`;case 'pow':return `(${a})^(${num(e.n)})`;case 'vpow':return `(${a})^(${b})`;
-      default:return `${e.op}(${a})`;
+      case 'lnabs':return `ln(abs(${a}))`;default:return `${e.op}(${a})`;
     }
   }
   function latex(e,v='x') {
@@ -84,6 +86,7 @@
       case 'add':return e.b.op==='c'&&e.b.value<0?`\\left(${a}-${num(-e.b.value)}\\right)`:`\\left(${a}+${b}\\right)`;case 'mul':return is(e.a,-1)?`-\\left(${b}\\right)`:`${a}\\cdot ${b}`;
       case 'div':return `\\frac{${a}}{${b}}`;case 'pow':return e.n===.5?`\\sqrt{${a}}`:`\\left(${a}\\right)^{${num(e.n)}}`;
       case 'vpow':return `\\left(${a}\\right)^{${b}}`;case 'exp':return `e^{${a}}`;
+      case 'lnabs':return `\\ln\\left|${a}\\right|`;case 'abs':return `\\left|${a}\\right|`;
       case 'asin':case 'acos':case 'atan':case 'acot':return `\\operatorname{arc${e.op.slice(1)}}\\left(${a}\\right)`;
       default:return `\\${e.op}\\left(${a}\\right)`;
     }
@@ -139,7 +142,7 @@
   register('power-of-x',['logdiff','logarithm'],c=>variablePower(X,X));
   register('variable-power',['logdiff','logarithm','polynomial'],c=>variablePower(c.positive,X));
   register('trig-variable-power',['logdiff','logarithm','trig'],c=>variablePower(X,fn('sin',X)));
-  for(const kind of ['point','tangent','normal','definition','higher']) {
+  for(const kind of ['point','tangent','normal','definition','second','higher']) {
     register(kind+'-polynomial',[kind==='normal'?'tangent':kind,'polynomial'],c=>c.poly,kind);
     if(kind!=='definition') {
       register(kind+'-trig',[kind==='normal'?'tangent':kind,'trig'],c=>mul(C(c.a),fn('sin',X)),kind);
@@ -171,12 +174,12 @@
     const label=id=>topics.find(t=>t.id===id)?.label||id;
     let expression=built,answer,eq,eqLatex,solutionLatex=null,text='Fonksiyonun x’e göre türevini bulun.',en='Differentiate the function with respect to x.',solution='',solutionEn='',verification;
     const at=c.int(1,3);
-    if(['differentiate','higher','point','tangent','normal','definition','rates'].includes(template.kind)) {
+    if(['differentiate','second','higher','point','tangent','normal','definition','rates'].includes(template.kind)) {
       answer=derivative(expression);eq=`f(x) = ${ascii(expression)}`;eqLatex=`f(x)=${latex(expression)}`;
       solution=`f′(x) = ${ascii(answer)}.`;solutionEn=solution;solutionLatex=`f'(x)=${latex(answer)}`;
       verification={kind:'derivative',expression,answer};
-      if(template.kind==='higher') {
-        const order=c.int(2,3);for(let n=1;n<order;n++)answer=derivative(answer);
+      if(template.kind==='higher'||template.kind==='second') {
+        const order=template.kind==='second'?2:c.int(3,4);for(let n=1;n<order;n++)answer=derivative(answer);
         text=`Fonksiyonun ${order}. türevini bulun.`;en=`Find derivative number ${order} of the function.`;
         solution+=` Ardışık türevlerle f^(${order})(x) = ${ascii(answer)}.`;solutionEn+=` Repeated differentiation: f^(${order})(x) = ${ascii(answer)}.`;
         solutionLatex=`f^{(${order})}(x)=${latex(answer)}`;verification={kind:'higher',expression,answer,order};
@@ -251,9 +254,10 @@
     }
     const rules=required.map(label).join(' · '),rulesEn=required.map(id=>topics.find(t=>t.id===id).en).join(' · ');
     const conditions=required.includes('trig')?' Trigonometrik açılar radyandır.':'';
-    const domain=template.kind==='differentiate'||template.kind==='higher'?' Fonksiyonun ve istenen türevin tanımlı olduğu açık aralıklarda çalışın. Paydalar sıfırdan farklı olmalıdır.'+(required.includes('logarithm')?' Logaritma içleri pozitif olmalıdır.':''):'';
-    const domainEn=template.kind==='differentiate'||template.kind==='higher'?' Work on open intervals where the function and requested derivative exist. Denominators must be nonzero.'+(required.includes('logarithm')?' Logarithm arguments must be positive.':''):'';
+    const domain=template.kind==='differentiate'||template.kind==='higher'||template.kind==='second'?' Fonksiyonun ve istenen türevin tanımlı olduğu açık aralıklarda çalışın. Paydalar sıfırdan farklı olmalıdır.'+(required.includes('logarithm')?' Logaritma içleri pozitif olmalıdır.':''):'';
+    const domainEn=template.kind==='differentiate'||template.kind==='higher'||template.kind==='second'?' Work on open intervals where the function and requested derivative exist. Denominators must be nonzero.'+(required.includes('logarithm')?' Logarithm arguments must be positive.':''):'';
     return {id:`derivatives-v1-${seed>>>0}-${index}`,generatorVersion:'derivatives-v1',program:'derivatives',educationMode:'university',topicId:required[0],subtopicId:template.id,template:template.id,index,scope:{program:'derivatives',topics:enabled},requiredTopics:required.slice(),parameters:{a:c.a,b:c.b,n:c.n},text:text+conditions,eq,eqLatex,solution:`${rules}\n${solution}${domain}`,solutionLatex,choices:[],correct:null,supportsChoices:false,responseType:'expression',difficultyProfile:{base:Math.min(4.5,1.2+required.length*.65+(['higher','implicit','parametric','match','optimization'].includes(template.kind)?.8:0)),steps:2+required.length},english:{text:en+(required.includes('trig')?' Angles are in radians.':''),solution:`${rulesEn}\n${solutionEn}${domainEn}`},verification};
   }
+  globalThis.PracticeMath={C,X,add,mul,neg,sub,div,pow,fn,variablePower,derivative,evaluate,ascii,latex,generator,choose};
   globalThis.DerivativeBank={topics,defaults,normalize,available,generate,derivative,evaluate,ascii,latex,templates:templates.map(({id,required,kind})=>({id,required,kind})),version:1};
 })();

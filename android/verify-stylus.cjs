@@ -26,6 +26,7 @@ const server = http.createServer((req, res) => {
       window.FormaAndroid = {setDrawingBounds(){}, setTheme(){}, getSystemTheme(){return 'light';}};
     });
     await page.goto(`http://127.0.0.1:${server.address().port}`);
+    await page.locator('[data-practice-mode="derivatives"]').click();
     await page.locator('#workspace').waitFor({state:'visible'});
     await page.waitForFunction(() => typeof handleNativePenBatch === 'function' && canvas.width > 0);
     const report = await page.evaluate(() => {

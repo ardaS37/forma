@@ -8,5 +8,5 @@
         <item name="android:colorAccent">#607E99</item>
     </style>
     <style name="AppTheme" parent="AppThemeBase"/>
-    <color name="launcher_background">#8578a0</color>
+    <color name="launcher_background">#247c78</color>
 </resources>

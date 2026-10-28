@@ -13,10 +13,10 @@ const server=http.createServer((req,res)=>{
   const context=await browser.newContext({viewport:{width:1180,height:900}}),page=await context.newPage(),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
   try{
-    await page.goto(`http://127.0.0.1:${server.address().port}`);await page.locator('#workspace').waitFor({state:'visible'});
+    await page.goto(`http://127.0.0.1:${server.address().port}`);await page.locator('[data-practice-mode="derivatives"]').click();await page.locator('#workspace').waitFor({state:'visible'});
     assert.equal(await page.title(),'Türev Al');assert.equal(await page.locator('#home').isVisible(),false);
     assert.equal(await page.locator('#simulations-tool').count(),0);assert.equal(await page.locator('#simulations-catalog').count(),0);
-    assert.equal(await page.locator('#workspace-back').isVisible(),false);assert.equal(await page.locator('#answers').isVisible(),false);
+    assert.equal(await page.locator('#workspace-back').isVisible(),true);assert.equal(await page.locator('#answers').isVisible(),false);
     await page.screenshot({path:path.join(output,'tablet.png')});
     const first=await page.evaluate(()=>structuredClone(activeQuestion));
     await page.locator('#solution-toggle').click();assert(await page.locator('#solution').isVisible());
@@ -27,7 +27,7 @@ const server=http.createServer((req,res)=>{
     const ink=await page.evaluate(()=>structuredClone(strokes));assert(ink.length>0);
     await page.locator('#undo').click();assert.equal(await page.evaluate(()=>strokes.length),0);
     await page.locator('#redo').click();assert.deepEqual(await page.evaluate(()=>strokes),ink);
-    await page.evaluate(()=>save());await page.reload();await page.locator('#workspace').waitFor({state:'visible'});
+    await page.evaluate(()=>save());await page.reload();await page.locator('[data-practice-mode="derivatives"]').click();await page.locator('#workspace').waitFor({state:'visible'});
     assert.deepEqual(await page.evaluate(()=>strokes),ink);assert.deepEqual(await page.evaluate(()=>activeQuestion),first);
     // Dialog cancel leaves both the current question and ink unchanged.
     await page.locator('#derivative-topics-tool').click();await page.locator('#derivative-topic-logarithm').uncheck();
@@ -40,7 +40,7 @@ const server=http.createServer((req,res)=>{
     await page.locator('#derivative-topics-apply').click();
     assert(!(await page.evaluate(()=>universitySelection.topics)).includes('logarithm'));
     const filter=await page.evaluate(()=>Array.from({length:300},(_,i)=>DerivativeBank.generate(971,i,universitySelection.topics)).every(q=>!q.requiredTopics.includes('logarithm')&&!/\bln\(/.test(q.eq)));
-    assert(filter);await page.reload();await page.locator('#workspace').waitFor({state:'visible'});
+    assert(filter);await page.reload();await page.locator('[data-practice-mode="derivatives"]').click();await page.locator('#workspace').waitFor({state:'visible'});
     assert(!(await page.evaluate(()=>universitySelection.topics)).includes('logarithm'));
     // Empty and prerequisite-only selections cannot produce an invalid stream.
     await page.locator('#derivative-topics-tool').click();await page.locator('#derivative-select-none').click();
@@ -49,12 +49,12 @@ const server=http.createServer((req,res)=>{
     await page.locator('#derivative-topic-polynomial').check();assert(!(await page.locator('#derivative-topics-apply').isDisabled()));
     await page.locator('#derivative-topics-apply').click();assert.deepEqual(await page.evaluate(()=>universitySelection.topics),['polynomial','product']);
     await page.locator('#next').click();const second=await page.evaluate(()=>activeQuestion.id);
-    await page.reload();await page.locator('#workspace').waitFor({state:'visible'});assert.equal(await page.evaluate(()=>activeQuestion.id),second);
+    await page.reload();await page.locator('[data-practice-mode="derivatives"]').click();await page.locator('#workspace').waitFor({state:'visible'});assert.equal(await page.evaluate(()=>activeQuestion.id),second);
     // Saved sessions retain their own selection and ink when reopened.
     await page.locator('#workspace-notes').click();await page.locator('.saved-note').first().click();
     assert.deepEqual(await page.evaluate(()=>strokes),ink);assert.deepEqual(await page.evaluate(()=>activeQuestion),first);
     assert((await page.evaluate(()=>universitySelection.topics)).includes('logarithm'));
-    await page.reload();await page.locator('#workspace').waitFor({state:'visible'});assert.deepEqual(await page.evaluate(()=>strokes),ink);
+    await page.reload();await page.locator('[data-practice-mode="derivatives"]').click();await page.locator('#workspace').waitFor({state:'visible'});assert.deepEqual(await page.evaluate(()=>strokes),ink);
     // Every template renders an equation and an openable solution without a JS error.
     const count=await page.evaluate(()=>DerivativeBank.templates.length);
     for(let i=0;i<count;i++){
@@ -79,7 +79,7 @@ const server=http.createServer((req,res)=>{
     await page.locator('#derivative-topics-cancel').click();
     await page.locator('#paper-settings').click();await page.locator('[data-theme-choice="light"]').click();await page.locator('[data-language-choice="tr"]').click();await page.locator('#settings-close').click();await page.locator('#settings-modal').waitFor({state:'hidden'});
     await page.screenshot({path:path.join(output,'mobile.png'),fullPage:true});
-    await page.evaluate(()=>localStorage.setItem('forma-university-selection',JSON.stringify({topics:[]})));await page.reload();await page.locator('#workspace').waitFor({state:'visible'});assert(await page.evaluate(()=>activeQuestion&&universitySelection.topics.length===DerivativeBank.topics.length),'invalid saved selection recovery');
+    await page.evaluate(()=>localStorage.setItem('forma-university-selection',JSON.stringify({topics:[]})));await page.reload();await page.locator('[data-practice-mode="derivatives"]').click();await page.locator('#workspace').waitFor({state:'visible'});assert(await page.evaluate(()=>activeQuestion&&universitySelection.topics.length===DerivativeBank.topics.length),'invalid saved selection recovery');
     assert.deepEqual(errors,[]);console.log(`PASS: ${count} templates, topic filtering, cancel/apply, prerequisites, saved sessions, canvas ink/undo/redo, reload, English/Turkish, light/dark, mobile/tablet.`);
   }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1;});

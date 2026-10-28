@@ -4,7 +4,7 @@ $taskConfig = Get-Content -LiteralPath (Join-Path $taskRoot 'android/app/build.g
 $taskFiles = [ordered]@{}
 $taskSources = @(
     'README.md', 'build-android.sh', '.gitignore', 'build-android.ps1', 'update-source-manifest.ps1',
-    'android/verify-derivatives.cjs', 'android/verify-derivatives-ui.cjs', 'android/README.md', 'android/PLAY-STORE.md', 'android/.gitignore',
+    'docs/curriculum-2018.md', 'android/verify-calculus.cjs', 'android/verify-calculus-ui.cjs', 'android/verify-derivatives.cjs', 'android/verify-derivatives-ui.cjs', 'android/README.md', 'android/PLAY-STORE.md', 'android/.gitignore',
     'android/build.gradle', 'android/settings.gradle', 'android/gradle.properties',
     'android/gradlew', 'android/gradlew.bat', 'android/app/build.gradle',
     'android/keystore.properties.example', 'android/verify-math1.cjs', 'android/verify-ui.cjs',
