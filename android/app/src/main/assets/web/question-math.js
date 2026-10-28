@@ -6,7 +6,7 @@ function expressionLatex(core){
  const normalized=ExactMath.rewrite(normalize(core)).replace(/\b(sin|cos|tan|cot|sec|csc|sinh|cosh|tanh)\^\((\d+)\)([xyαβθ])/g,'$1($3)^$2');
  if(globalThis.math&&!/[∫∑∏∂°]/.test(normalized)){
   try{const pieces=normalized.split(/([=<>≤≥≠≈])/),relations={'=':'=','<':'<','>':'>','≤':'\\le ','≥':'\\ge ','≠':'\\ne ','≈':'\\approx '};
-   return pieces.map((piece,i)=>i%2?relations[piece]:math.parse(piece.trim()).toTex({parenthesis:'auto',implicit:'hide'})).join('');
+   return pieces.map((piece,i)=>i%2?relations[piece]:!piece.trim()?'':math.parse(piece.trim()).toTex({parenthesis:'auto',implicit:'hide'})).join('');
   }catch{}
  }
  // The ASCII converter reads bare function calls next to '/' as individual
@@ -16,12 +16,12 @@ function expressionLatex(core){
  const atoms=[];let match;
  while((match=call.exec(normalized))){let depth=1,end=call.lastIndex;while(end<normalized.length&&depth){if(normalized[end]==='(')depth++;else if(normalized[end]===')')depth--;end++;}if(!depth&&(normalized.slice(end).trimStart().startsWith('/')||normalized.slice(0,match.index).trimEnd().endsWith('/')))atoms.push([match.index,end]);}
  for(const[start,end]of atoms.reverse())grouped=grouped.slice(0,start)+'('+grouped.slice(start,end)+')'+grouped.slice(end);
- return MathLive.convertAsciiMathToLatex(grouped);
+ return MathLive.convertAsciiMathToLatex(grouped).replace(/′/g,'^{\\prime}').replace(/″/g,'^{\\prime\\prime}').replace(/±/g,'\\pm ').replace(/∓/g,'\\mp ');
 }
 function render(node,source,enabled,latex){source=globalThis.ExactMath?ExactMath.rewrite(String(source||'')):String(source||'');if(latex&&globalThis.ExactMath)latex=ExactMath.rewrite(latex,true);node.replaceChildren();node.dataset.mathSource=source;if(!enabled){node.textContent=source;return;}
 if(!latex&&globalThis.MatrixVisual&&MatrixVisual.append(node,source,render))return;
 if(latex){try{const span=document.createElement('span');span.className='question-math-expression';span.setAttribute('role','math');span.setAttribute('aria-label',source);span.innerHTML=MathLive.convertLatexToMarkup(latex,{displayMode:false});node.append(span);return;}catch{}}
 const tokens=source.match(/\d+(?:[.,]\d+)?|[\p{L}]+|[\s]+|[^\p{L}\d\s]/gu)||[];let buffer='';function flush(){if(!buffer)return;const text=buffer;buffer='';if(!/[\/√^²³⁴¹⁰₀-₉=<>≤≥∫∑ΣΠπ½⅓⅔¼¾]/.test(text)&&!/(?:sin|cos|tan|ln|log)/.test(text)){node.append(document.createTextNode(text));return;}const leading=text.match(/^\s*/)[0],trailing=text.match(/\s*$/)[0],core=text.trim();if(leading)node.append(document.createTextNode(leading));try{const span=document.createElement('span');span.className='question-math-expression';span.setAttribute('role','math');span.setAttribute('aria-label',core);span.innerHTML=MathLive.convertLatexToMarkup(expressionLatex(core),{displayMode:false});node.append(span);}catch{node.append(document.createTextNode(core));}if(trailing)node.append(document.createTextNode(trailing));}
-for(const token of tokens){const allowed=/^\s+$/.test(token)||/^\d/.test(token)||names.has(token)||/^[a-zA-Zα-ωΑ-Ωπ]$/.test(token)||/^[+\-−–*/÷×·^_=<>≤≥≠≈()[\]{}|%!,;:√∞∫∑∏∂ΣΠ∈ℝ→⁰¹²³⁴⁵⁶⁷⁸⁹⁻₀₁₂₃₄₅₆₇₈₉½⅓⅔¼¾]$/.test(token);if(allowed)buffer+=token;else{flush();node.append(document.createTextNode(token));}}flush();}
+for(const token of tokens){if(token===';'){flush();node.append(document.createTextNode(token));continue;}const allowed=/^\s+$/.test(token)||/^\d/.test(token)||names.has(token)||/^[a-zA-Zα-ωΑ-Ωπ]$/.test(token)||/^[+\-−–*/÷×·^_=<>≤≥≠≈()[\]{}|%!,;:√∞∫∑∏∂ΣΠ∈ℝ→⁰¹²³⁴⁵⁶⁷⁸⁹⁻₀₁₂₃₄₅₆₇₈₉½⅓⅔¼¾′″±∓]$/.test(token);if(allowed)buffer+=token;else{flush();node.append(document.createTextNode(token));}}flush();}
 globalThis.QuestionMath={render};
 })();
