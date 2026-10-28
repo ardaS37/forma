@@ -1,6 +1,6 @@
 # Açı — Play Store release hazırlığı
 
-Paket: `com.sapsoft.aci` · sürüm: `1.1.1` · versionCode: `3` · minimum API: `26` · hedef API: `36`.
+Paket: `com.sapsoft.aci` · sürüm: `1.1.2` · versionCode: `4` · minimum API: `26` · hedef API: `36`.
 Sürümün tek kaynağı `app/build.gradle`; derleme betiği dosya adlarını buradan okur. Her yeni Play yüklemesinde versionCode artırılır. `source-manifest.json` güncel kaynakların özetidir; eski APK raporları tarihsel kayıttır.
 
 ## 1. Upload anahtarını gir
@@ -19,12 +19,12 @@ Proje kökünden:
 powershell -ExecutionPolicy Bypass -File .\build-android.ps1 -Mode Release
 ```
 
-Komut `bundleRelease` ve `lintRelease` çalıştırır, imza kaydını kontrol eder ve `build/aci-android-1.1.1-release.aab` oluşturur. Android Studio çıktısı `android/app/build/outputs/bundle/release/app-release.aab` konumundadır.
+Komut `bundleRelease` ve `lintRelease` çalıştırır, imza kaydını kontrol eder ve `build/aci-android-1.1.2-release.aab` oluşturur. Android Studio çıktısı `android/app/build/outputs/bundle/release/app-release.aab` konumundadır.
 
 İmza kontrolü için JDK'nın `jarsigner` aracını kullanabilirsin:
 
 ```powershell
-jarsigner -verify -verbose -certs .\build\aci-android-1.1.1-release.aab
+jarsigner -verify -verbose -certs .\build\aci-android-1.1.2-release.aab
 ```
 
 Upload sertifikası kendinden imzalı olduğundan sertifika zinciri uyarısı çıkabilir; dosyanın imzası doğrulanmalı ve kullanılan sertifika senin upload anahtarınla eşleşmeli.
