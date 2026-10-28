@@ -9,7 +9,7 @@ cd "$project_root/android"
 sh ./gradlew assembleDebug lintDebug --console=plain
 version=$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)
 mkdir -p "$project_root/build"
-artifact="$project_root/build/turev-al-android-$version-debug.apk"
+artifact="$project_root/build/aci-android-$version-debug.apk"
 cp app/build/outputs/apk/debug/app-debug.apk "$artifact"
 echo "Artifact: $artifact"
 sha256sum "$artifact"

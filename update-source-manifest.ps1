@@ -3,7 +3,7 @@ $taskRoot = $PSScriptRoot
 $taskConfig = Get-Content -LiteralPath (Join-Path $taskRoot 'android/app/build.gradle') -Raw
 $taskFiles = [ordered]@{}
 $taskSources = @(
-    'README.md', 'build-android.sh', '.gitignore', 'build-android.ps1', 'update-source-manifest.ps1',
+    'android/verify-workbooks-ui.cjs', 'android/verify-trigonometry.cjs', 'android/verify-expanded-math.cjs', 'README.md', 'build-android.sh', '.gitignore', 'build-android.ps1', 'update-source-manifest.ps1',
     'docs/curriculum-2018.md', 'android/verify-calculus.cjs', 'android/verify-calculus-ui.cjs', 'android/verify-derivatives.cjs', 'android/verify-derivatives-ui.cjs', 'android/README.md', 'android/PLAY-STORE.md', 'android/.gitignore',
     'android/build.gradle', 'android/settings.gradle', 'android/gradle.properties',
     'android/gradlew', 'android/gradlew.bat', 'android/app/build.gradle',

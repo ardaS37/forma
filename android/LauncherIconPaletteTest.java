@@ -5,7 +5,7 @@ public final class LauncherIconPaletteTest {
         if (!expected.equals(actual)) throw new AssertionError(expected + " != " + actual);
     }
     public static void main(String[] args) {
-        String[] colors = {"#8578a0", "#6c8c77", "#6888ae", "#aa8658", "#a87588", "#737b86", "#247c78"};
+        String[] colors = {"#8578a0", "#6c8c77", "#6888ae", "#aa8658", "#a87588", "#737b86", "#247c78", "#b65b32"};
         for (int i = 0; i < colors.length; i++) {
             equal(LauncherIconPalette.KEYS[i], LauncherIconPalette.select(LauncherIconPalette.KEYS[i], null));
             equal(LauncherIconPalette.KEYS[i], LauncherIconPalette.select("custom", colors[i]));
@@ -13,9 +13,9 @@ public final class LauncherIconPaletteTest {
         }
         equal("lavender", LauncherIconPalette.select("custom", "#8679A1"));
         for (String value : new String[]{null, "", "#FFF", "#gggggg", "#abcdef00", "../launcher"})
-            equal("teal", LauncherIconPalette.select("custom", value));
-        equal("teal", LauncherIconPalette.select("unknown", "#ff0000"));
-        equal("LauncherTeal", LauncherIconPalette.alias(null));
+            equal("orange", LauncherIconPalette.select("custom", value));
+        equal("orange", LauncherIconPalette.select("unknown", "#ff0000"));
+        equal("LauncherOrange", LauncherIconPalette.alias(null));
         System.out.println("PASS: fixed/custom icon palette, case handling, nearest color, invalid-input fallback.");
     }
 }
