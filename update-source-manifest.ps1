@@ -3,8 +3,8 @@ $taskRoot = $PSScriptRoot
 $taskConfig = Get-Content -LiteralPath (Join-Path $taskRoot 'android/app/build.gradle') -Raw
 $taskFiles = [ordered]@{}
 $taskSources = @(
-    'README.md', '.gitignore', 'build-android.ps1', 'update-source-manifest.ps1',
-    'android/README.md', 'android/PLAY-STORE.md', 'android/.gitignore',
+    'README.md', 'build-android.sh', '.gitignore', 'build-android.ps1', 'update-source-manifest.ps1',
+    'android/verify-derivatives.cjs', 'android/verify-derivatives-ui.cjs', 'android/README.md', 'android/PLAY-STORE.md', 'android/.gitignore',
     'android/build.gradle', 'android/settings.gradle', 'android/gradle.properties',
     'android/gradlew', 'android/gradlew.bat', 'android/app/build.gradle',
     'android/keystore.properties.example', 'android/verify-math1.cjs', 'android/verify-ui.cjs',
@@ -23,6 +23,7 @@ foreach ($taskFolder in @('android/app/src/main', 'android/gradle', 'web/dist'))
 }
 foreach ($taskRelative in ($taskSources | Sort-Object -Unique)) {
     $taskPath = Join-Path $taskRoot $taskRelative
+    if (!(Test-Path -LiteralPath $taskPath -PathType Leaf)) { continue }
     $taskFiles[$taskRelative] = (Get-FileHash -LiteralPath $taskPath -Algorithm SHA256).Hash.ToLowerInvariant()
 }
 $taskManifest = [ordered]@{

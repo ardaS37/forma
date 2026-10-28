@@ -22,11 +22,11 @@ android {
     namespace 'com.sapsoft.forma'
     compileSdk 36
     defaultConfig {
-        applicationId 'com.sapsoft.forma'
+        applicationId 'com.sapsoft.tureval'
         minSdk 26
         targetSdk 36
-        versionCode 49
-        versionName '1.40.0'
+        versionCode 1
+        versionName '1.0.0'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

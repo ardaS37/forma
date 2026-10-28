@@ -305,7 +305,7 @@ public final class MainActivity extends Activity {
                 + "const pp=document.getElementById('pen-palette');if(pp&&!pp.hidden){closePenPalette();return true;}"
                 + "const n=document.getElementById('notes-page');if(n&&!n.hidden){home();return true;}"
                 + "const w=document.getElementById('workspace');"
-                + "if(w&&!w.hidden){document.getElementById('back').click();return true;}return false;})()",
+                + "if(w&&!w.hidden&&typeof save==='function')save();return false;})()",
                 handled -> { if (!"true".equals(handled)) finish(); });
     }
     @Override public void onBackPressed() { handleBack(); }
@@ -451,7 +451,7 @@ public final class MainActivity extends Activity {
             if (bytes.length < 8 || bytes[0] != (byte) 137 || bytes[1] != 80 || bytes[2] != 78 || bytes[3] != 71) {
                 runOnUiThread(() -> exportResult("failed")); return;
             }
-            final String safeName = fileName == null ? "forma-not.png" : fileName.replaceAll("[\\\\/\\r\\n]", "_");
+            final String safeName = fileName == null ? "turev-al-not.png" : fileName.replaceAll("[\\\\/\\r\\n]", "_");
             runOnUiThread(() -> {
                 if (exportBusy) { exportResult("busy"); return; }
                 exportBusy = true;

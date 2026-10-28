@@ -17,7 +17,7 @@ const server = http.createServer((req, res) => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   let browser;
   try {
-    browser = await chromium.launch({headless:true, channel:'chrome'});
+    browser = await chromium.launch({headless:true, channel:process.env.FORMA_CHROME_CHANNEL||undefined});
     const page = await browser.newPage({viewport:{width:1100,height:900}});
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
       window.FormaAndroid = {setDrawingBounds(){}, setTheme(){}, getSystemTheme(){return 'light';}};
     });
     await page.goto(`http://127.0.0.1:${server.address().port}`);
-    await page.locator('#start').click();
+    await page.locator('#workspace').waitFor({state:'visible'});
     await page.waitForFunction(() => typeof handleNativePenBatch === 'function' && canvas.width > 0);
     const report = await page.evaluate(() => {
       const results = [];

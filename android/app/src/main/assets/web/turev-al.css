@@ -1,0 +1,27 @@
+/* Keep the inherited type, paper, brushes, theme, and notebook layout. */
+#home,#back,#workspace-back,.workspace-title,.formula-filters,
+[data-education-choice],[data-question-choice],#choice-count-section {display:none!important}
+.derivative-heading{display:flex;flex-direction:column;gap:8px;margin:0 0 28px}
+.derivative-heading>span{font-size:25px;font-weight:700;letter-spacing:-1px;color:var(--ink)}
+.derivative-heading small{font-size:12px;color:var(--muted)}
+.derivative-topics-tool{width:auto!important;min-width:42px;gap:7px;padding:0 10px!important}
+.derivative-topics-tool span{font-size:12px;white-space:nowrap}
+.derivative-answer{border-top:1px solid var(--line);padding-top:16px;overflow-x:auto}
+.solution{white-space:pre-line}
+.derivative-topics-dialog{width:min(620px,calc(100vw - 28px));max-height:calc(100dvh - 32px);padding:24px;border:1px solid var(--line);border-radius:22px;color:var(--ink);background:var(--paper);overflow:auto}
+.derivative-topics-dialog::backdrop{background:rgb(0 0 0 / .35)}
+.derivative-topics-dialog h2{font-size:20px;line-height:1.4}
+.derivative-topics-description{font-size:13px;line-height:1.65;color:var(--muted);margin:12px 0 20px}
+.derivative-topic-actions{display:flex;gap:16px;margin-bottom:14px}
+.derivative-topic-actions button{font-size:12px;color:var(--accent);min-height:38px}
+.derivative-topic-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.derivative-topic-option{display:flex;align-items:center;gap:10px;min-height:54px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font-size:12px;line-height:1.5;cursor:pointer}
+.derivative-topic-option:has(:checked){background:var(--soft);border-color:var(--accent)}
+.derivative-topic-option input{accent-color:var(--accent);width:18px;height:18px;flex-shrink:0}
+.derivative-topic-footer{display:flex;justify-content:flex-end;gap:20px;position:sticky;bottom:-24px;background:var(--paper);padding:16px 0 8px}
+#derivative-topic-status{font-size:12px;color:var(--muted);margin-top:16px}
+#derivative-topic-error{font-size:12px;line-height:1.5;color:var(--ink)}
+#derivative-topics-apply:disabled{opacity:.4;cursor:default}
+@media(max-width:520px){.derivative-topics-dialog{padding:18px}.derivative-topic-list{grid-template-columns:1fr}.derivative-topic-footer{bottom:-18px}.derivative-heading{margin-bottom:14px}.derivative-topics-dialog h2{font-size:17px}}
+
+body[data-screen="workspace"] #home-nav{display:none!important}
