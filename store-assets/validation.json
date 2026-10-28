@@ -6,8 +6,8 @@
       "width": 512,
       "height": 512,
       "channels": 3,
-      "bytes": 8201,
-      "sha256": "149b07fc40f132f78cb87ec20efac3df8c2d4665da6bb69cc4fb58d1259a67f3"
+      "bytes": 8177,
+      "sha256": "3a00c3036e27699bfc6b1cb4a56ce135b01dbe1ead0116314982b5b70bc6569b"
     },
     {
       "file": "feature-1024x500.png",

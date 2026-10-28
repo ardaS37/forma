@@ -22,7 +22,7 @@ Türev: temel kurallar ve uygulamalar; sayısal tabanlı a^x ve log_a(x), bileş
 
 Konular listesinde MEB 2018 genel lise kapsamı önce, başlıksız ince çizgiden sonra üniversite kapsamı gösterilir; [eşleme notu](docs/curriculum-2018.md). Açık/koyu/AMOLED, Türkçe/İngilizce arayüz, basınçlı kalemler, S Pen tuşuyla geçici silgi ve 250 ms bırakma koruması, cetvel, geri al/ileri al, otomatik kayıt, Defterim ve PNG dışa aktarma korunur. Yeni ayrıntılı çözüm metinleri Türkçedir.
 
-Paket **com.sapsoft.tureval**, sürüm **1.3.1**, minimum Android 8/API 26, compile/target API 36. Forma ve diğer uygulama ile yan yana kurulabilir. Java namespace ve FormaAndroid köprüsü kalem uyumluluğu için korunur. Hesap ve internet izni gerekmez.
+Paket **com.sapsoft.tureval**, sürüm **1.3.2**, minimum Android 8/API 26, compile/target API 36. Forma ve diğer uygulama ile yan yana kurulabilir. Java namespace ve FormaAndroid köprüsü kalem uyumluluğu için korunur. Hesap ve internet izni gerekmez.
 
 Varsayılan açık/koyu tema **Sistem** seçeneğidir. İlk açılış cihazı izler; kullanıcı açık/koyu seçerse o tercih kaydedilir. Uygulama adı Kavis’e dönüşürken `com.sapsoft.tureval` paket kimliği korunur; önceki Türev Al kurulumunun üzerine güncellenebilir ve defter kayıtları korunur. Bölüm başlıkları Limit Al./Türev Al./İntegral Al. olarak kalır.
 
@@ -34,7 +34,7 @@ Fotoğraftaki `undefined` hatası, türev işaretinin yanındaki boş eşitlik p
 
 JDK 17/21 ve Android SDK API 36 gerekir. Linux/macOS: `ANDROID_HOME=/path/to/sdk ./build-android.sh`. Windows: `powershell -ExecutionPolicy Bypass -File .\build-android.ps1`.
 
-Çıktı: `build/kavis-android-1.3.1-debug.apk`. Debug APK geliştirme anahtarıyla imzalanır; mağaza için [release rehberi](android/PLAY-STORE.md).
+Çıktı: `build/kavis-android-1.3.2-debug.apk`. Debug APK geliştirme anahtarıyla imzalanır; mağaza için [release rehberi](android/PLAY-STORE.md).
 
 - `node android/verify-expanded-math.cjs`: 6.132 soru, 33.503 bağımsız kontrol; sembolik türev, asal fonksiyon, sayısal integral, limit yaklaşımı, kısmi/karışık türev, sonlu farkla gradyan/Hessian/Jacobi, yol boyunca yönlü türev ve Leibniz sınır/parametre katkıları.
 - `node android/verify-workbooks-ui.cjs`: menü, modlar, konu ayracı, seçili yeni ailelerin soru/çözüm matematik gösterimi, kesirler, tam formül çekmecesi, çizim/geri al/ileri al, renk sırası ve mobil koyu tema. Playwright/Chromium gerekir; görseller `build/workbook-ui/` altında oluşur.
