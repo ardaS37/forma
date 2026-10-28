@@ -5,9 +5,9 @@
       "file": "icon-512.png",
       "width": 512,
       "height": 512,
-      "channels": 4,
-      "bytes": 10063,
-      "sha256": "b957158cceca3904c85fb1902d6720e383222254f6a4e85eec50b0955412465e"
+      "channels": 3,
+      "bytes": 8177,
+      "sha256": "3a00c3036e27699bfc6b1cb4a56ce135b01dbe1ead0116314982b5b70bc6569b"
     },
     {
       "file": "feature-1024x500.png",
