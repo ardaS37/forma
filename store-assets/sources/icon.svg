@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 108 108">
-  <rect width="108" height="108" fill="#354B60"/>
-  <path fill="#FFFFFF" d="M43 32H70L68 40H51L49 49H63L61 57H47L43 76H34Z"/>
-  <path fill="#C6D5E3" d="M70 66A5 5 0 1 1 70 76A5 5 0 1 1 70 66"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 108 108" role="img" aria-label="Kavis K. logosu">
+  <rect width="108" height="108" fill="#247c78"/>
+  <path fill="#FFFFFF" fill-rule="evenodd" d="M41 32L50 32L46.32 50L64 32L75 32L52.5 54L61 76L50 76L44.48 59L41 76L32 76Z"/>
+  <path fill="#C6D5E3" d="M75 66A5 5 0 1 1 75 76A5 5 0 1 1 75 66"/>
 </svg>
