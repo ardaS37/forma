@@ -6,8 +6,8 @@
   // the divider; continuous elementary limit evaluations remain above it.
   const highSchool={
     limits:['direct','polynomial','rational','factorization','radical','trig','exponential','logarithm','onesided','absolute','piecewise','continuity'],
-    derivatives:['polynomial','roots','negative','product','quotient','chain','second','point','tangent','definition','piecewise','extrema','rates'],
-    integrals:['power','roots','reciprocal','substitution','definite','area','fundamental','initial']
+    derivatives:['graphs','polynomial','roots','negative','product','quotient','chain','second','point','tangent','definition','piecewise','extrema','rates'],
+    integrals:['graphs','power','roots','reciprocal','substitution','definite','area','fundamental','initial']
   };
   for(const [mode,bank] of Object.entries(PracticeBanks)){
     for(const topic of bank.topics)topic.level=highSchool[mode].includes(topic.id)?'high-school':'university';

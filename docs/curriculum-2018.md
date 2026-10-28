@@ -11,3 +11,5 @@ Listede önce lise kapsamı, ardından başlıksız ince çizgi ve üniversite k
 Karışık başlıklar ayrıştırılmıştır: ikinci türev yüksek mertebeden türevden; sonlu tek taraflı limit sonsuz sonuçlardan; sürekli fonksiyonlarda yerine koyma özel belirsizliklerden ayrıdır. Yalnız üstteki konular seçildiğinde alttaki bir beceriyi isteyen şablonlar üretilmez. Kapsam eşlemesi `practice-banks.js` içinde tutulur; programın başlıklarına dayalı bir uygulama eşlemesidir.
 
 Ek üniversite seçenekleri: kısmi/karışık türev, toplam diferansiyel, çift/üç katlı integral, Leibniz/İleri Leibniz, hiperbolikler, ters hiperbolikler ve seriler ayraçtan sonra gösterilir.
+
+Kavis ekleri: gradyan, yönlü türev, Hessian, çok değişkenli zincir/Jacobi ve parametreli belirsiz integral üniversite grubundadır. Temel türev ve integral grafikleri lise grubundadır.

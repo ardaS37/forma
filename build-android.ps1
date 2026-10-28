@@ -35,11 +35,11 @@ $outputDirectory = Join-Path $PSScriptRoot 'build'
 New-Item -ItemType Directory -Path $outputDirectory -Force | Out-Null
 if ($Mode -eq 'Debug') {
     $sourcePath = Join-Path $projectDirectory 'app\build\outputs\apk\debug\app-debug.apk'
-    $outputPath = Join-Path $outputDirectory "turev-al-android-$version-debug.apk"
+    $outputPath = Join-Path $outputDirectory "kavis-android-$version-debug.apk"
 } else {
     $sourcePath = Join-Path $projectDirectory 'app\build\outputs\bundle\release\app-release.aab'
     $suffix = if ($Mode -eq 'ReleaseUnsigned') { '-unsigned' } else { '-release' }
-    $outputPath = Join-Path $outputDirectory "turev-al-android-$version$suffix.aab"
+    $outputPath = Join-Path $outputDirectory "kavis-android-$version$suffix.aab"
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $archive = [IO.Compression.ZipFile]::OpenRead($sourcePath)
     try {

@@ -9,7 +9,8 @@
   function audit(q,correct){
     const v=q.verification,M=globalThis.PracticeMath,delta=correct?0:1;
     let claim,candidate=null;
-    if(['derivative','higher','parametric','inverse-derivative'].includes(v.kind)){
+    const extra=globalThis.GraphPractice?.audit(v,correct)||globalThis.MultivariablePractice?.audit(v,correct);
+    if(extra){candidate=extra.candidate;claim=extra.claim;}else if(['derivative','higher','parametric','inverse-derivative'].includes(v.kind)){
       candidate=correct?v.answer:M.add(v.answer,M.C(1));claim=`${v.kind==='parametric'?'dy/dx':'İstenen türev'} = ${M.ascii(candidate)}`;
     }else if(['antiderivative','initial'].includes(v.kind)){
       candidate=correct?v.F:M.add(v.F,M.X);claim=`F(x) = ${M.ascii(candidate)}${v.kind==='antiderivative'?' + C':''}`;
@@ -59,6 +60,8 @@
     q.verification={kind:'review',correct,candidate,claim,base:v};return q;
   }
   function derivativeTransfer(q,seed,index){
+    const graph=globalThis.GraphPractice?.transfer(q);if(graph)return graph;
+    const multivariable=globalThis.MultivariablePractice?.transfer(q);if(multivariable)return multivariable;
     const M=PracticeMath,{C,X,add,mul,derivative,evaluate,ascii,latex}=M,v=q.verification,h=.01*((index%3)+1);
     let expression=v.expression,at=1,value,slope,answer,verification;
     if(v.kind==='partial'||v.kind==='total-differential'){const f=v.f,px=globalThis.math.derivative(f,'x').toString(),py=globalThis.math.derivative(f,'y').toString(),x=1,y=2,k=.02,value=globalThis.math.evaluate(f,{x,y}),dx=globalThis.math.evaluate(px,{x,y}),dy=globalThis.math.evaluate(py,{x,y});answer=value+h*dx+k*dy;q.text=`Verilen iki değişkenli fonksiyon için (1,2) noktasında toplam diferansiyelle f(1+${h},2+${k}) yaklaşımını bulun.`;q.english.text=q.text;q.solution=`f(1,2)=${value}; f_x=${px}; f_y=${py}. Yaklaşık değer f+f_x*h+f_y*k=${fmt(answer)}.`;q.english.solution=q.solution;q.solutionLatex=null;q.verification={kind:'multivariable-linearization',f,x,y,h,k,answer};return q;}else if(expression&&expression.op){
@@ -94,6 +97,8 @@
     q.solutionLatex=`L(${fmt(at+h)})\\approx ${fmt(value)}+${h}\\cdot(${fmt(slope)})\\approx ${fmt(answer)}`;q.verification=verification;return q;
   }
   function integralTransfer(q,index){
+    const graph=globalThis.GraphPractice?.transfer(q);if(graph)return graph;
+    const multivariable=globalThis.MultivariablePractice?.transfer(q);if(multivariable)return multivariable;
     const M=PracticeMath,{C,X,add,mul,derivative,evaluate,ascii,latex}=M,v=q.verification,a=2+index%3,b=1;
     if(v.kind==='numeric-transfer'&&v.family==='advanced-leibniz'){const answer=2*v.answer;q.text='Verilen integralin iki katını parametreye göre diferansiyelleme yöntemiyle hesaplayın.';q.english.text=q.text;q.solution=`Önce I değeri bulunur; iki katı 2I=${fmt(answer)}.`;q.english.solution=q.solution;q.verification={kind:'numeric-transfer',expression:`2*(${v.expression})`,answer,base:v};return q;}
     if(v.kind==='leibniz'){const answerExpression=globalThis.math.derivative(v.answerExpression,'x').toString();q.text=`Verilen H fonksiyonunun ${(v.order||1)+1}. türevini, Leibniz kuralını uyguladıktan sonra bir kez daha türev alarak bulun.`;q.english.text=q.text;q.solution=`Önce H′=${v.answerExpression}. Bir kez daha türev alınır: H″=${answerExpression}.`;q.english.solution=q.solution;q.solutionLatex=null;q.verification={kind:'expression-transfer',expression:answerExpression,sourceExpression:v.closed,order:(v.order||1)+1};return q;}
@@ -145,6 +150,7 @@
     v.original=clone(q.verification);v.outer=style;v.multiplier=a;v.shift=b;q.solutionLatex=null;q.english.text=q.text;q.english.solution=q.solution;q.verification=v;return q;
   }
   function trigTransfer(q,other){
+    const graph=globalThis.GraphPractice?.transfer(q);if(graph)return graph;
     const v=q.verification;
     if(v.kind==='numeric'){
       const w=other.verification,answer=v.answer-w.answer;

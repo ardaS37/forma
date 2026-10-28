@@ -138,6 +138,8 @@
     if(v.kind==='review'){
       const inner=build({...q,verification:v.base,taskStyle:'base'});return[S('Öğrencinin iddiasını ayırın',v.claim),...inner,S('İddiayı değerlendirin',v.correct?'Önerilen sonuç doğrudur.':'Önerilen sonuç yanlıştır; yukarıdaki adımlar doğru sonucu verir.')];
     }
+    const advanced=globalThis.MultivariablePractice?.steps(q,v);if(advanced)return advanced;
+    const graphical=globalThis.GraphPractice?.steps(q,v);if(graphical)return graphical;
     let result=q.program==='derivatives'?derivative(q,v):q.program==='integrals'?integral(q,v):q.program==='limits'?limits(q,v):trigonometry(q,v);
     if(!result?.length)result=[S('Verilenleri yazın',q.eq,q.eqLatex),S('Bağıntıyı uygulayın',q.solution),S('Sonucu kontrol edin','Tanım koşullarını ve birimleri doğrulayın.')];
     return result;

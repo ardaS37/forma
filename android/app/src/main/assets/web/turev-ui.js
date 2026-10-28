@@ -87,7 +87,7 @@
   const oldNotes=$('notes-nav').onclick;
   $('notes-nav').onclick=()=>{oldNotes();$('home-nav').hidden=false;};
   const menu=document.createElement('main');menu.id='practice-menu';menu.className='practice-menu';menu.hidden=true;
-  menu.innerHTML='<svg class="turev-logo" viewBox="0 0 108 108" role="img" aria-label="Türev Al T. logosu"><rect width="108" height="108" rx="18"/><path class="logo-letter" d="M31 32H79L77 41H61L53 76H42L50 41H29Z"/><path class="logo-dot" d="M73 66A5 5 0 1 1 73 76A5 5 0 1 1 73 66"/></svg><h1>Türev Al<span class="brand-period">.</span></h1><div class="practice-mode-buttons"><button data-practice-mode="limits">Limit</button><button data-practice-mode="derivatives">Türev</button><button data-practice-mode="integrals">İntegral</button></div>';
+  menu.innerHTML='<svg class="turev-logo" viewBox="0 0 108 108" role="img" aria-label="Kavis K. logosu"><rect width="108" height="108" rx="18"/><path class="logo-letter" d="M26 32H37V50L53 32H67L47 53L69 76H54L37 57V76H26Z"/><path class="logo-dot" d="M80 67A4 4 0 1 1 80 75A4 4 0 1 1 80 67"/></svg><h1>Kavis<span class="brand-period">.</span></h1><div class="practice-mode-buttons"><button data-practice-mode="limits">Limit</button><button data-practice-mode="derivatives">Türev</button><button data-practice-mode="integrals">İntegral</button></div>';
   document.body.append(menu);
   function showMenu(){
     $('workspace').hidden=true;$('notes-page').hidden=true;$('home').hidden=true;menu.hidden=false;setScreen('practice-menu');refresh();window.scrollTo(0,0);
