@@ -18,7 +18,7 @@ const server = http.createServer((req,res) => {
 });
 (async()=>{
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
-  const browser = await chromium.launch({headless:true,channel:'chrome'});
+  const browser = await chromium.launch({headless:true,channel:process.env.FORMA_CHROME_CHANNEL||undefined});
   const context = await browser.newContext({viewport:{width:412,height:915},hasTouch:true,deviceScaleFactor:1});
   await context.addInitScript(()=>localStorage.setItem('forma-tutorial-v1','done'));
   const page=await context.newPage(),errors=[];
@@ -32,9 +32,10 @@ const server = http.createServer((req,res) => {
     await page.screenshot({path:path.join(output,'home-mobile.png'),fullPage:true});
     await context.addInitScript(()=>{window.iconCalls=[];window.FormaAndroid={setTheme:()=>{},getSystemTheme:()=> 'light',setLauncherAccent:(accent,color)=>window.iconCalls.push({accent,color})};});
     await page.reload();await page.waitForTimeout(150);
-    assert.equal(await page.evaluate(()=>window.iconCalls.at(-1).accent),'lavender');
-    await page.locator('#settings-open').click();assert((await page.locator('.launcher-accent-note').innerText()).includes('en yakın'));
-    for(const accent of ['green','blue','amber','rose','none','lavender']){
+    assert.equal(await page.evaluate(()=>window.iconCalls.at(-1).accent),'teal');
+    assert.equal(await page.evaluate(()=>settings.accent),'teal');assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()),'#247c78');assert.equal(await page.locator('#practice-menu .turev-logo').count(),1);
+    await page.locator('[data-practice-mode="derivatives"]').click();await page.locator('#paper-settings').click();assert((await page.locator('.launcher-accent-note').filter({hasText:'en yakın'}).innerText()).includes('en yakın'));
+    for(const accent of ['green','blue','amber','rose','none','lavender','teal']){
         await page.locator(`[data-accent-choice="${accent}"]`).click();assert.equal(await page.evaluate(()=>window.iconCalls.at(-1).accent),accent);
         assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('forma-settings')).accent),accent);
     }
@@ -44,6 +45,7 @@ const server = http.createServer((req,res) => {
     await page.locator('#accent-custom-color').evaluate(el=>{el.value='#001122';el.dispatchEvent(new Event('input',{bubbles:true}));});assert.equal(await page.evaluate(()=>window.iconCalls.at(-1).color),'#001122');
     const beforeTheme=await page.evaluate(()=>window.iconCalls.length);await page.locator('[data-theme-choice="dark"]').click();assert.equal(await page.evaluate(()=>window.iconCalls.length),beforeTheme);
     await page.reload();assert.deepEqual(await page.evaluate(()=>window.iconCalls.at(-1)),{accent:'custom',color:'#001122'});
+    await page.evaluate(()=>{settings.accent='lavender';storeSettings();});await page.reload();assert.equal(await page.evaluate(()=>settings.accent),'lavender');
     assert.deepEqual(errors,[]);console.log('PASS: accent UI forwards all colors, custom color updates, no redundant calls, dark theme preserves tone, saved accent is restored.');
   }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1;});

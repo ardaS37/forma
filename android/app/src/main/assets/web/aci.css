@@ -1,0 +1,75 @@
+/* Keep the inherited type, paper, brushes, theme, and notebook layout. */
+:root[data-accent="teal"]{--accent:#247c78;--soft:#eaf5f2}
+:root[data-theme="dark"][data-accent="teal"]{--accent:#7fd2c9;--soft:#173b39}
+#home,#back,.workspace-title,.formula-filters,
+[data-education-choice],[data-question-choice],#choice-count-section {display:none!important}
+.derivative-heading{display:flex;flex-direction:column;gap:8px;margin:0 0 28px}
+.derivative-heading>span{font-size:25px;font-weight:700;letter-spacing:-1px;color:var(--ink)}
+.derivative-heading small{font-size:12px;color:var(--muted)}
+.derivative-answer{border-top:1px solid var(--line);padding-top:16px;overflow-x:auto}
+.solution{white-space:pre-line}
+.derivative-topics-dialog{width:min(620px,calc(100vw - 28px));max-height:calc(100dvh - 32px);padding:24px;border:1px solid var(--line);border-radius:22px;color:var(--ink);background:var(--paper);overflow:auto}
+.derivative-topics-dialog::backdrop{background:rgb(0 0 0 / .35)}
+.derivative-topics-dialog h2{font-size:20px;line-height:1.4}
+.derivative-topics-description{font-size:13px;line-height:1.65;color:var(--muted);margin:12px 0 20px}
+.derivative-topic-actions{display:flex;gap:16px;margin-bottom:14px}
+.derivative-topic-actions button{font-size:12px;color:var(--accent);min-height:38px}
+.derivative-topic-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.topic-level-divider{grid-column:1 / -1;width:100%;height:0;border:0;border-top:1px solid var(--line);margin:14px 0}
+.derivative-topic-option{display:flex;align-items:center;gap:10px;min-height:54px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font-size:12px;line-height:1.5;cursor:pointer}
+.derivative-topic-option:has(:checked){background:var(--soft);border-color:var(--accent)}
+.derivative-topic-option input{accent-color:var(--accent);width:18px;height:18px;flex-shrink:0}
+.derivative-topic-footer{display:flex;justify-content:flex-end;gap:20px;position:sticky;bottom:-24px;background:var(--paper);padding:16px 0 8px}
+#derivative-topic-status{font-size:12px;color:var(--muted);margin-top:16px}
+#derivative-topic-error{font-size:12px;line-height:1.5;color:var(--ink)}
+#derivative-topics-apply:disabled{opacity:.4;cursor:default}
+@media(max-width:520px){.derivative-topics-dialog{padding:18px}.derivative-topic-list{grid-template-columns:1fr}.derivative-topic-footer{bottom:-18px}.derivative-heading{margin-bottom:14px}.derivative-topics-dialog h2{font-size:17px}}
+
+body[data-screen="workspace"] #home-nav{display:none!important}
+
+body[data-screen="practice-menu"] .header{display:none!important}
+.practice-menu{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;background:var(--paper)}
+.practice-menu h1{font-family:'Manrope',sans-serif;font-size:34px;letter-spacing:-1.4px;margin:0 0 38px;font-weight:700}
+.practice-mode-buttons{display:flex;flex-direction:column;width:min(320px,100%);gap:14px}
+.practice-mode-buttons button{min-height:68px;border:1px solid var(--line);border-radius:14px;background:var(--paper);color:var(--ink);font-size:18px;font-weight:500;transition:background .15s,border-color .15s}
+.practice-mode-buttons button:hover,.practice-mode-buttons button:focus-visible{background:var(--soft);border-color:var(--accent)}
+.turev-logo{width:76px;height:76px;stroke:none;margin-bottom:20px;flex-shrink:0}
+.turev-logo rect{fill:var(--accent)}
+.turev-logo .logo-letter{fill:#fff}
+.turev-logo .logo-dot{fill:#ffe4ce}
+.practice-mode-buttons button{color:var(--accent);background:var(--soft);border-color:var(--accent)}
+.practice-mode-buttons button{border-radius:8px}
+/* Match the pen's selected state to the same circular surface as the other tools. */
+.drawing-toolbar #pen-tool{background:#fff;box-shadow:0 2px 7px #17283c10}
+.drawing-toolbar #pen-tool svg{stroke-width:1.5}
+:root[data-theme="dark"] .drawing-toolbar #pen-tool{background:transparent;box-shadow:none}
+.drawing-toolbar #pen-tool[aria-expanded="true"]{background:var(--soft);border-color:var(--accent)}
+.notebook{--toolbar-top:10px}
+.drawing-toolbar{top:var(--toolbar-top)}
+#paper-settings.workspace-settings{top:calc(var(--toolbar-top) + 2px)}
+.drawing-toolbar #workspace-back svg{transform:rotate(180deg)}
+@media(max-width:760px){.notebook{--toolbar-top:8px}}
+
+:root[data-accent="orange"]{--accent:#b65b32;--soft:#fcf0e8}
+:root[data-theme="dark"][data-accent="orange"]{--accent:#f2af7a;--soft:#422b20}
+.question-diagram:has(.trig-visual){display:block}
+.question-diagram .trig-visual{width:100%;height:auto;stroke:var(--ink);stroke-width:1.4;fill:none}
+.trig-visual text{fill:var(--ink);stroke:none;font:12px var(--font)}
+
+/* Readable notebook working: numbered steps and genuine stacked fractions. */
+.solution{white-space:normal;background:transparent;padding:0;line-height:1.85}
+.solution-steps{list-style:none;margin:0;padding:0;font-family:var(--font)}
+.solution-steps>li{padding:15px 0;border-bottom:1px solid var(--line)}
+.solution-steps>li:last-child{border-bottom:0}
+.solution-steps h4{font:600 13px/1.5 var(--font);color:var(--accent);margin:0 0 9px}
+.solution-steps p{font:400 13px/1.9 var(--font);color:var(--ink);margin:0 0 8px}
+.solution-step-equation{font-size:18px;line-height:2.1;overflow-x:auto;padding:5px 1px;color:var(--ink);max-width:100%}
+.question-equation{max-width:100%;overflow-x:auto}
+.formula-topic-heading{grid-column:1 / -1;color:var(--accent);font-size:14px;margin:18px 0 4px}
+.formula-card{min-width:0}.formula-card p{overflow-x:auto;max-width:100%}
+
+/* Preserve tall fractions when long worked solutions expand in the flex panel. */
+.question-content>*{flex-shrink:0}
+.question-math-expression{padding-block:.2em}
+
+.practice-graph{margin:16px 0;color:var(--ink);width:100%}.practice-graph svg{display:block;width:100%;height:auto;overflow:visible}.practice-graph path{fill:none}.practice-graph .graph-grid{stroke:var(--line);stroke-width:.6}.practice-graph .graph-axis{stroke:var(--ink);stroke-width:1}.practice-graph .graph-curve{stroke:var(--accent);stroke-width:2.2}.practice-graph .graph-curve-1{stroke:var(--ink);stroke-dasharray:6 4}.practice-graph .graph-tangent{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4}.practice-graph text{fill:var(--ink);font:14px sans-serif}.practice-graph circle{fill:var(--ink)}.practice-graph figcaption{font-size:11px;line-height:1.6;color:var(--muted);margin-top:8px}.question-diagram:has(.practice-graph){display:block}.question-diagram:has(.practice-graph):empty{display:none}

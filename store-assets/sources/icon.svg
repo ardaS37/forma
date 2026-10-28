@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 108 108">
-  <rect width="108" height="108" fill="#354B60"/>
-  <path fill="#FFFFFF" d="M43 32H70L68 40H51L49 49H63L61 57H47L43 76H34Z"/>
-  <path fill="#C6D5E3" d="M70 66A5 5 0 1 1 70 76A5 5 0 1 1 70 66"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 108 108" role="img" aria-label="Açı A. logosu">
+  <rect width="108" height="108" fill="#b65b32"/>
+  <path fill="#FFFFFF" fill-rule="evenodd" d="M29 76L51 32L61 32L66 76L56 76L55.45 64L43.45 64L37 76Z M47.59 56L55.09 56L54.45 42Z"/>
+  <path fill="#FFE4CE" d="M76 66A5 5 0 1 1 76 76A5 5 0 1 1 76 66"/>
 </svg>

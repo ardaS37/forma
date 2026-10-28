@@ -1,6 +1,6 @@
-# Forma — Play Store release hazırlığı
+# Açı — Play Store release hazırlığı
 
-Paket: `com.sapsoft.forma` · sürüm: `1.36.5` · versionCode: `43` · minimum API: `26` · hedef API: `36`.
+Paket: `com.sapsoft.aci` · sürüm: `1.1.2` · versionCode: `4` · minimum API: `26` · hedef API: `36`.
 Sürümün tek kaynağı `app/build.gradle`; derleme betiği dosya adlarını buradan okur. Her yeni Play yüklemesinde versionCode artırılır. `source-manifest.json` güncel kaynakların özetidir; eski APK raporları tarihsel kayıttır.
 
 ## 1. Upload anahtarını gir
@@ -19,12 +19,12 @@ Proje kökünden:
 powershell -ExecutionPolicy Bypass -File .\build-android.ps1 -Mode Release
 ```
 
-Komut `bundleRelease` ve `lintRelease` çalıştırır, imza kaydını kontrol eder ve `build/forma-android-1.36.5-release.aab` oluşturur. Android Studio çıktısı `android/app/build/outputs/bundle/release/app-release.aab` konumundadır.
+Komut `bundleRelease` ve `lintRelease` çalıştırır, imza kaydını kontrol eder ve `build/aci-android-1.1.2-release.aab` oluşturur. Android Studio çıktısı `android/app/build/outputs/bundle/release/app-release.aab` konumundadır.
 
 İmza kontrolü için JDK'nın `jarsigner` aracını kullanabilirsin:
 
 ```powershell
-jarsigner -verify -verbose -certs .\build\forma-android-1.36.5-release.aab
+jarsigner -verify -verbose -certs .\build\aci-android-1.1.2-release.aab
 ```
 
 Upload sertifikası kendinden imzalı olduğundan sertifika zinciri uyarısı çıkabilir; dosyanın imzası doğrulanmalı ve kullanılan sertifika senin upload anahtarınla eşleşmeli.
@@ -41,7 +41,7 @@ Arayüz testi Playwright ve Chrome gerektirir; gerekirse `FORMA_PLAYWRIGHT` ile 
 
 ## 3. Play Console akışı
 
-1. Forma uygulamasını oluştur, varsayılan dili ve ücretsiz/ücretli seçimini belirle. İlk AAB paket kimliğini sabitler: `com.sapsoft.forma`.
+1. Forma uygulamasını oluştur, varsayılan dili ve ücretsiz/ücretli seçimini belirle. İlk AAB paket kimliğini sabitler: `com.sapsoft.aci`.
 2. Play App Signing'i etkinleştir. AAB senin upload anahtarınla imzalanır; kullanıcılara dağıtılan paketleri Google uygulama imzalama anahtarıyla imzalar.
 3. Önce dahili test kanalına imzalı AAB yükle. Gerçek telefonda/tablette açılış, geri tuşu, çizim/S Pen, PNG kaydetme, oturum geri yükleme, büyük ekran ve çevrimdışı kullanımı kontrol et. Pre-launch report sonuçlarını incele.
 4. Mağaza açıklaması, uygulama simgesi, ekran görüntüleri, tanıtım görseli ve destek e-postasını tamamla.

@@ -1,4 +1,10 @@
-# Forma — Play Store görsel paketi
+# Açı — uygulama ikonu
+
+Güncel `icon-512.png` ve `sources/icon.svg`, Açı uygulamasının eğik **A.** simgesidir. Harf yüksekliği, gövde kalınlığı, eğim ve 10 birim çapındaki noktanın taban hizası Forma’nın F. simgesini referans alır. Android launcher ve menü aynı harf/nokta çizimini kullanır. Nokta rengi Açı için açık turuncu (#FFE4CE) olarak uygulamanın kendi vurgu rengine uyarlandı.
+
+Aşağıdaki tanıtım görselleri ve ekran görüntüleri Forma’dan devralınan arşiv materyalleridir.
+
+## Forma — arşiv görsel paketi
 
 Bu paket `com.sapsoft.forma`, sürüm `1.33.0` için hazırlanmıştır. Görseller Türkçedir.
 

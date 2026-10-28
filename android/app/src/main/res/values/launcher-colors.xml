@@ -5,4 +5,6 @@
     <color name="launcher_amber">#aa8658</color>
     <color name="launcher_rose">#a87588</color>
     <color name="launcher_gray">#737b86</color>
+    <color name="launcher_teal">#247c78</color>
+    <color name="launcher_orange">#b65b32</color>
 </resources>
