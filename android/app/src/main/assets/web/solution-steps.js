@@ -136,8 +136,9 @@
   function build(q){
     const v=q.verification||{};
     if(v.kind==='review'){
-      const inner=build({...q,verification:v.base,taskStyle:'base'});return[S('Öğrencinin iddiasını ayırın',v.claim),...inner,S('İddiayı değerlendirin',v.correct?'Önerilen sonuç doğrudur.':'Önerilen sonuç yanlıştır; yukarıdaki adımlar doğru sonucu verir.')];
+      const inner=build({...q,verification:v.base,taskStyle:'base'});return[S('Öğrencinin iddiasını ayırın',v.claim),...inner,...(globalThis.LimitProofs?.reviewSteps(v)||[]),S('İddiayı değerlendirin',v.correct?'Önerilen sonuç doğrudur.':'Önerilen sonuç yanlıştır; yukarıdaki adımlar doğru sonucu verir.')];
     }
+    const proof=globalThis.LimitProofs?.steps(q,v);if(proof)return proof;
     const advanced=globalThis.MultivariablePractice?.steps(q,v);if(advanced)return advanced;
     const graphical=globalThis.GraphPractice?.steps(q,v);if(graphical)return graphical;
     let result=q.program==='derivatives'?derivative(q,v):q.program==='integrals'?integral(q,v):q.program==='limits'?limits(q,v):trigonometry(q,v);

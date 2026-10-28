@@ -13,3 +13,5 @@ Karışık başlıklar ayrıştırılmıştır: ikinci türev yüksek mertebeden
 Ek üniversite seçenekleri: kısmi/karışık türev, toplam diferansiyel, çift/üç katlı integral, Leibniz/İleri Leibniz, hiperbolikler, ters hiperbolikler ve seriler ayraçtan sonra gösterilir.
 
 Kavis ekleri: gradyan, yönlü türev, Hessian, çok değişkenli zincir/Jacobi ve parametreli belirsiz integral üniversite grubundadır. Temel türev ve integral grafikleri lise grubundadır.
+
+Limitte epsilon–delta tanımı, limit ispatları/karşı örnekler ve grafikli sıkıştırma ayrı seçenekler olarak üniversite grubunda gösterilir.

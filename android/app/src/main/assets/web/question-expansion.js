@@ -9,7 +9,7 @@
   function audit(q,correct){
     const v=q.verification,M=globalThis.PracticeMath,delta=correct?0:1;
     let claim,candidate=null;
-    const extra=globalThis.GraphPractice?.audit(v,correct)||globalThis.MultivariablePractice?.audit(v,correct);
+    const extra=globalThis.LimitProofs?.audit(v,correct)||globalThis.GraphPractice?.audit(v,correct)||globalThis.MultivariablePractice?.audit(v,correct);
     if(extra){candidate=extra.candidate;claim=extra.claim;}else if(['derivative','higher','parametric','inverse-derivative'].includes(v.kind)){
       candidate=correct?v.answer:M.add(v.answer,M.C(1));claim=`${v.kind==='parametric'?'dy/dx':'İstenen türev'} = ${M.ascii(candidate)}`;
     }else if(['antiderivative','initial'].includes(v.kind)){
@@ -124,6 +124,7 @@
     q.eq=q.text;q.eqLatex=null;q.english.text=q.text;q.english.solution=q.solution;q.solutionLatex=null;q.verification={kind:'numeric-transfer',expression:expr,answer,base:v};return q;
   }
   function limitTransfer(q,style,index){
+    const proof=globalThis.LimitProofs?.transfer(q,style);if(proof)return proof;
     const M=PracticeMath,{C,add,mul,pow,ascii,latex}=M,v=clone(q.verification),a=2+index%3,b=1;
     const transform=e=>style==='affine'?add(mul(C(a),e),C(b)):pow(e,2),value=n=>style==='affine'?a*n+b:n*n;
     if(v.result==='parameter'){

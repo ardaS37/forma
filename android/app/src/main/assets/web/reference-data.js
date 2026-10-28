@@ -66,6 +66,39 @@
     'multivariable-integral':[['Parametreli belirsiz integral','∫f(x,y)dx=F(x,y)+C(y)','y sabittir; C(y)’nin x’e göre kısmi türevi sıfırdır.','\\int f(x,y)\\,dx=F(x,y)+C(y)'],['Diğer değişkene göre integral','∫f(x,y)dy=G(x,y)+C(x)','x sabit parametredir.'],['Başlangıç koşulu','u_x=f; u(a,y)=0 ⇒ u=F(x,y)−F(a,y)','Sabit yerine parametreye bağlı fonksiyon belirlenir.']],
     graphs:[['İşaretli integral','∫f(x)dx=A_+−A_−','Belirtilen aralıkta eksenin altındaki alan çıkarılır.'],['Geometrik alan','A=∫|f(x)|dx=A_++A_−','Gerekirse köklerde aralıkları ayırın.'],['Üçgen alanı','A=taban*yükseklik/2'],['Biriken alan','F(x)=∫_a^x f(t)dt ⇒ F′(x)=f(x)','f sürekli olduğu noktalarda.'],['Asal fonksiyonun grafiği','f>0 ⇒ F artan; f<0 ⇒ F azalan']]
   });
+  Object.assign(limit,{
+    'epsilon-delta':[
+      ['Sonlu limit tanımı','∀ε>0 ∃δ>0: 0<|x−a|<δ ⇒ |f(x)−L|<ε','a tanım kümesinin yığılma noktasıdır; x tanım kümesinde seçilir. δ, x’e bağlı olamaz.','\\forall\\varepsilon>0\\;\\exists\\delta>0:\\quad 0<|x-a|<\\delta\\;\\Rightarrow\\;|f(x)-L|<\\varepsilon'],
+      ['Tek taraflı tanım','Sağ: 0<x−a<δ; sol: 0<a−x<δ','Yalnız belirtilen taraftaki tanım kümesi noktaları kullanılır.'],
+      ['Doğrusal seçim','f(x)=m*x+b ⇒ δ=ε/|m|','m≠0; m=0 ise her pozitif δ yeterlidir.','f(x)=mx+b,\\quad\\delta=\\frac{\\varepsilon}{|m|}'],
+      ['Karesel seçim','f(x)=k*x²+b ⇒ δ=min(1,ε/(|k|*(2|a|+1)))','k≠0; |x−a|<1 ile |x+a|≤2|a|+1.'],
+      ['Kuvvetli hata sınırı','|f(x)−L|≤C*|x−a|^p ⇒ δ=(ε/C)^(1/p)','C>0, p>0; yerel ek koşul varsa yarıçapla minimum alınır.'],
+      ['Ters fonksiyon sınırı','f(x)=k/(x−b), d=|a−b| ⇒ δ=min(d/2,ε*d²/(2|k|))','a≠b; k≠0. Paydanın mutlak değeri d/2’den büyük tutulur.'],
+      ['Pozitif noktada kök','|sqrt(x)−sqrt(a)|≤|x−a|/sqrt(a)','a>0; örneğin δ=min(a/2,ε*sqrt(a)).'],
+      ['Sıfırda sağ kök','sqrt(x)→0 (x→0+) ⇒ δ=ε²'],
+      ['Daha küçük δ','δ₀ yeterliyse 0<δ≤δ₀ da yeterlidir.','Uygun δ genellikle tek değildir.']
+    ],
+    proofs:[
+      ['Nicelik sırası','Önce ε; sonra δ; sonra bütün uygun x’ler.','δ, ε ve sabit verilere bağlı olabilir; x’e bağlı olamaz.'],
+      ['Limitin tekliği','ε=|L−M|/3 ⇒ |L−M|<2|L−M|/3','Çelişki L=M sonucunu verir; ortak delinmiş komşuluk kullanılır.'],
+      ['Toplam ispatı','|(f+g)−(L+M)|≤|f−L|+|g−M|','Her hata için ε/2, ardından iki yarıçapın minimumu.'],
+      ['Sabit çarpan ispatı','|cf−cL|=|c||f−L|','c≠0 için ε/|c|; c=0 ayrı ele alınır.'],
+      ['Çarpım ispatı','fg−LM=f(g−M)+M(f−L)','Önce |f|<|L|+1; sonra iki hata bütçesi ve ortak δ.'],
+      ['Sınırlı çarpan','f→0, |g|≤B ⇒ f*g→0','B>0; f için ε/B kullanın, sınırlılık komşuluğunu da koruyun.'],
+      ['Limitin olmamasının tanımı','Her L için ∃ε₀>0 ∀δ>0 ∃x: 0<|x−a|<δ, |f(x)−L|≥ε₀','Bu sonlu limit yokluğudur; bir ispatta nicelikler ters sıraya çevrilemez.'],
+      ['Dizisel ölçüt','x_n→a, y_n→a; f(x_n)→A≠B←f(y_n) ⇒ limit yok','Diziler tanım kümesindedir ve hiçbir terim a değildir.'],
+      ['Nokta değerinin etkisi','Yalnız f(a)’yı değiştirmek limiti değiştirmez.','Tanım 0<|x−a| koşuluyla a noktasını dışlar.']
+    ],
+    'graph-squeeze':[
+      ['Sıkıştırma koşulları','g(x)≤f(x)≤h(x), lim g=lim h=L ⇒ lim f=L','Eşitsizlik bütün ortak delinmiş komşulukta geçerli olmalıdır; çizimde örnek noktalar yeterli değildir.'],
+      ['Zarf farkı','lim g=lim h=L ⇒ lim(h−g)=0','Sadece farkın sıfıra gitmesi ortak sonlu L’nin varlığını tek başına sağlamaz.'],
+      ['Karesel zarf','L−C*(x−a)²≤f(x)≤L+C*(x−a)² ⇒ f→L','C>0. Salınımın sıklaşması genliğin sıfıra gitmesini bozmaz.'],
+      ['Mutlak değer zarfı','L−C*|x−a|≤f(x)≤L+C*|x−a| ⇒ f→L','C>0.'],
+      ['Sinüs standardının zarfı','cos(x)≤sin(x)/x≤1 ⇒ sin(x)/x→1','0<|x|<π/2, açılar radyan.'],
+      ['Sonsuzda sıkıştırma','L−C/x≤f(x)≤L+C/x ⇒ f→L','x≥1 ve x→+∞; C>0.'],
+      ['Farklı zarf limitleri','lim g≠lim h ⇒ bu zarf bilgisi yetersiz olabilir.','Buradan f’nin limitinin olmadığı sonucuna varılmaz; uyumlu karşı örnekler kurulabilir.']
+    ]
+  });
   for(const[name,data]of[['DerivativeBank',derivative],['IntegralBank',integral],['LimitBank',limit],['TrigonometryBank',trig]]){
     const bank=globalThis[name];if(!bank)continue;
     for(const topic of bank.topics)topic.formulas=(data[topic.id]||[[topic.label,topic.formula]]).map(([title,expression,note='',latex=null])=>({title,expression,note,latex}));
