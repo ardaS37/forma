@@ -22,6 +22,7 @@
     ['trig-standard','Özel trigonometrik limitler','Special trigonometric limits','sin(x)/x → 1; (1−cos(x))/x^2 → 1/2'],
     ['exp-standard','Özel üstel limitler','Special exponential limits','(exp(x)−1)/x → 1'],
     ['log-standard','Özel logaritmik limitler','Special logarithmic limits','ln(1+x)/x → 1'],
+    ['inverse','Ters trigonometrik limitler','Inverse trigonometric limits','atan(x)/x → 1'],
     ['lhopital','L’Hôpital ve yüksek mertebe','L’Hôpital and higher-order limits','Yalnız 0/0 veya ∞/∞ biçiminde ve teorem koşullarıyla pay/payda türevleri alınır.']
   ].map(([id,label,en,formula])=>({id,label,en,formula}));
   const defaults=topics.map(t=>t.id),normalize=value=>Array.isArray(value)?defaults.filter(id=>value.includes(id)):defaults.slice(),templates=[];
@@ -88,10 +89,16 @@
   register('higher-exp',['lhopital','exponential'],c=>finite(div(sub(sub(fn('exp',scale(c.a,X)),C(1)),scale(c.a,X)),pow(X,2)),0,c.a*c.a/2,'0/0 biçimi iki kez sürer. İki L’Hôpital adımından sonra a²*exp(a*x)/2 → a²/2.','Apply L’Hôpital twice to obtain a²*exp(a*x)/2 → a²/2.'));
   register('higher-log',['lhopital','logarithm'],c=>finite(div(sub(fn('ln',add(C(1),scale(c.a,X))),scale(c.a,X)),pow(X,2)),0,-c.a*c.a/2,'0/0 biçiminde iki L’Hôpital adımıyla −a²/(2*(1+a*x)²) → −a²/2.','Two applications of L’Hôpital give -a²/(2*(1+a*x)²) → -a²/2.'));
   register('higher-sine',['lhopital','trig'],c=>finite(div(sub(fn('sin',scale(c.a,X)),scale(c.a,X)),pow(X,3)),0,-(c.a**3)/6,'0/0 biçimi korunarak üç kez türev alınır; −a³*cos(a*x)/6 → −a³/6.','Apply L’Hôpital three times to obtain -a³*cos(a*x)/6 → -a³/6.'));
+  register('exponential-ratio-zero',['exponential','exp-standard'],c=>finite(div(sub(fn('exp',scale(c.a,X)),C(1)),sub(fn('exp',scale(c.b,X)),C(1))),0,c.a/c.b,'Payı ve paydayı x ile ölçekleyip standart üstel limiti uygulayın.','Divide both numerator and denominator by x and use the exponential limit.'));
+  register('logarithmic-ratio-zero',['logarithm','log-standard'],c=>finite(div(fn('ln',add(C(1),scale(c.a,X))),fn('ln',add(C(1),scale(c.b,X)))),0,c.a/c.b,'Her iki logaritmayı x ile ölçekleyip standart limite indirgeyin.','Scale both logarithms by x.'));
+  register('radical-second-order',['radical'],c=>finite(div(sub(pow(add(pow(X,2),C(c.a*c.a)),.5),C(c.a)),pow(X,2)),0,1/(2*c.a),'Eşlenikle çarpınca 1/(sqrt(x²+a²)+a) kalır.','Rationalize the numerator.'));
+  register('logarithm-scale-infinity',['logarithm','infinity'],c=>finite(div(fn('ln',scale(c.a,X)),fn('ln',X)),'inf',1,'ln(a*x)=ln(a)+ln(x); sabit/ln(x) sıfıra gider.','Split the numerator into ln(a)+ln(x).'));
+  register('binomial-difference',['factorization','polynomial'],c=>finite(div(sub(pow(add(C(1),X),c.k),C(1)),X),0,c.k,'Binom açılımında sabitler götürülür; x ile bölününce kalan sabit katsayı n olur.','Expand and cancel the common x factor.'));
+  register('inverse-tangent-zero',['inverse'],c=>finite(div(fn('atan',scale(c.a,X)),X),0,c.a,'u=a*x dönüşümüyle atan(u)/u → 1 standart limiti uygulanır.','Set u=a*x and use atan(u)/u → 1.'));
   function available(selected){const set=new Set(normalize(selected));return templates.filter(t=>t.required.every(id=>set.has(id)));}
-  function generate(seed,index,selected=defaults){
+  function generate(seed,index,selected=defaults,forcedId=null){
     const enabled=normalize(selected),pool=available(enabled);if(!pool.length)throw Error('Select compatible limit topics.');
-    const template=M.choose(seed,index,pool),random=M.generator(seed,index+1733),int=(a,b)=>a+Math.floor(random()*(b-a+1)),c={a:int(2,5),b:int(1,4),s:int(1,4),k:int(1,5)};
+    const template=(forcedId?pool.find(t=>t.id===forcedId):M.choose(seed,index,pool)),random=M.generator(seed,index+1733),int=(a,b)=>a+Math.floor(random()*(b-a+1)),c={a:int(2,5),b:int(1,4),s:int(1,4),k:int(1,5)};
     const q=template.build(c),required=template.required,infinitePoint=typeof q.point==='string',point=infinitePoint?(q.point==='inf'?'∞':'−∞'):String(q.point),side=q.side==='left'?'−':q.side==='right'?'+':'',latexPoint=infinitePoint?(q.point==='inf'?'\\infty':'-\\infty'):`${q.point}${side?`^{${side==='−'?'-':'+'}}`:''}`;
     let text='Limiti bulun; limit yoksa nedenini belirtin.',en='Find the limit, or explain why it does not exist.',eq=`lim_(x→${point}${side}) ${q.f?ascii(q.f):'f(x)'}`,eqLatex=`\\lim_{x\\to${latexPoint}}${q.f?latex(q.f):'f(x)'}`,solution=q.tr,solutionEn=q.en,solutionLatex=null;
     if(q.piecewise){

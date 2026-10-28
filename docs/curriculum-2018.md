@@ -9,3 +9,5 @@ Listede önce lise kapsamı, ardından başlıksız ince çizgi ve üniversite k
 - İntegral: kuvvet/kök, negatif kuvvetin n≠−1 biçimi, değişken değiştirme, belirli integral, alan, temel teorem ve başlangıç koşulu üstte. Logaritmik, trigonometrik, ters trigonometrik, üstel, kısmi integrasyon, basit kesir, hacim, ortalama değer ve uygunsuz integral altta.
 
 Karışık başlıklar ayrıştırılmıştır: ikinci türev yüksek mertebeden türevden; sonlu tek taraflı limit sonsuz sonuçlardan; sürekli fonksiyonlarda yerine koyma özel belirsizliklerden ayrıdır. Yalnız üstteki konular seçildiğinde alttaki bir beceriyi isteyen şablonlar üretilmez. Kapsam eşlemesi `practice-banks.js` içinde tutulur; programın başlıklarına dayalı bir uygulama eşlemesidir.
+
+Ek üniversite seçenekleri: kısmi/karışık türev, toplam diferansiyel, çift/üç katlı integral, Leibniz/İleri Leibniz, hiperbolikler, ters hiperbolikler ve seriler ayraçtan sonra gösterilir.

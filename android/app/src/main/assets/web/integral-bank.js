@@ -20,6 +20,13 @@
     ['average','Ortalama değer','Average value','f_ort = (1/(b−a))*∫_a^b f(x) dx'],
     ['improper','Uygunsuz integral','Improper integrals','Sonsuz sınır veya tekillik için ayrı limit alın.'],
     ['fundamental','Analizin temel teoremi','Fundamental theorem of calculus','(∫_a^g(x) f(t) dt)′ = f(g(x))*g′(x)'],
+    ['leibniz-advanced','İleri Leibniz','Advanced Leibniz differentiation','Parametre türevi: baskın yakınsaklık ve uç terimleri birlikte kontrol edilir.'],
+    ['leibniz','Leibniz: değişken sınır ve parametre','Leibniz integral rule','H′=f(x,b)b′−f(x,a)a′+∫_a^b f_x dt'],
+    ['differential','d(ax+b) ve diferansiyelle integral','Integrals with differential notation','∫f(x)d(g(x))=∫f(x)*g′(x)dx'],
+    ['double-rect','Çift katlı: dikdörtgen bölge','Double integrals over rectangles','∫∫_D f(x,y)dA'],
+    ['double-region','Çift katlı: sınırlar ve sıra','Double integrals and order reversal','Bölgeyi önce çizip iç/dış sınırları belirleyin.'],
+    ['double-polar','Çift katlı: kutupsal dönüşüm','Double integrals in polar coordinates','x=r*cosθ; y=r*sinθ; dA=r dr dθ'],
+    ['triple','Üç katlı integral','Triple integrals','dV=dx dy dz; silindirikte dV=r dr dθ dz'],
     ['initial','Başlangıç koşullu integral','Antiderivatives with initial conditions','F′ = f ve F(a)=b ile C sabitini bulun.']
   ].map(([id,label,en,formula])=>({id,label,en,formula}));
   const defaults=topics.map(t=>t.id),normalize=value=>Array.isArray(value)?defaults.filter(id=>value.includes(id)):defaults.slice(),templates=[];
@@ -84,17 +91,70 @@
   register('fundamental-polynomial',['fundamental','power'],c=>({f:pow(X,c.n),F:scale(1/(c.n+1),pow(X,c.n+1)),bound:c.u}),'fundamental');
   register('fundamental-sine',['fundamental','trig'],c=>({f:fn('sin',X),F:scale(-1,fn('cos',X)),bound:pow(X,2)}),'fundamental');
   for(const id of ['polynomial','cosine','natural-exponential']){const b=base.find(t=>t.id===id);register('initial-'+id,['initial',...b.required],b.build,'initial');}
+  register('parts-arctangent',['inverse','parts','logarithm'],c=>({f:fn('atan',X),F:sub(mul(X,fn('atan',X)),scale(.5,fn('ln',add(C(1),pow(X,2)))))}));
+  register('exponential-sine',['parts','exponential','trig'],c=>({f:mul(fn('exp',X),fn('sin',X)),F:scale(.5,mul(fn('exp',X),sub(fn('sin',X),fn('cos',X))))}));
+  register('exponential-cosine',['parts','exponential','trig'],c=>({f:mul(fn('exp',X),fn('cos',X)),F:scale(.5,mul(fn('exp',X),add(fn('sin',X),fn('cos',X))))}));
+  register('sine-cubed',['trig','trigpowers','substitution'],c=>({f:pow(fn('sin',X),3),F:add(scale(-1,fn('cos',X)),scale(1/3,pow(fn('cos',X),3)))}));
+  register('cosine-cubed',['trig','trigpowers','substitution'],c=>({f:pow(fn('cos',X),3),F:sub(fn('sin',X),scale(1/3,pow(fn('sin',X),3)))}));
+  register('sine-fourth',['trig','trigpowers'],c=>({f:pow(fn('sin',X),4),F:add(sub(scale(3/8,X),scale(.25,fn('sin',scale(2,X)))),scale(1/32,fn('sin',scale(4,X))))}));
+  register('cosine-fourth',['trig','trigpowers'],c=>({f:pow(fn('cos',X),4),F:add(add(scale(3/8,X),scale(.25,fn('sin',scale(2,X)))),scale(1/32,fn('sin',scale(4,X))))}));
+  register('tangent-squared',['trig','trigpowers'],c=>({f:pow(fn('tan',X),2),F:sub(fn('tan',X),X),bounds:[0,.5]}));
+  register('cotangent-squared',['trig','trigpowers'],c=>({f:pow(fn('cot',X),2),F:sub(scale(-1,fn('cot',X)),X),bounds:[.5,1]}));
+  register('rational-double-pole',['rational','reciprocal'],c=>({f:div(C(1),pow(c.u,2)),F:scale(-1/c.a,div(C(1),c.u)),bounds:[1,2]}));
+  register('quadratic-power-substitution',['power','substitution'],c=>({f:mul(X,pow(c.positive,c.n)),F:scale(1/(2*(c.n+1)),pow(c.positive,c.n+1))}));
+  register('nested-log-substitution',['logarithm','reciprocal','substitution'],c=>({f:div(C(1),mul(X,fn('ln',X))),F:fn('lnabs',fn('ln',X)),bounds:[2,3]}));
+  register('root-rational-substitution',['inverse','roots','substitution'],c=>({f:div(C(1),mul(pow(X,.5),add(C(1),X))),F:scale(2,fn('atan',pow(X,.5))),bounds:[1,2]}));
+  register('d-linear-measure',['differential','power'],c=>({f:mul(C(c.a),pow(X,c.n)),F:scale(c.a/(c.n+1),pow(X,c.n+1)),displayIntegrand:pow(X,c.n),differential:c.u}));
+  register('d-quadratic-measure',['differential','power'],c=>({f:scale(2,pow(X,2)),F:scale(2/3,pow(X,3)),displayIntegrand:X,differential:pow(X,2)}));
+  register('d-composite-measure',['differential','substitution','power'],c=>({f:scale(c.a,pow(c.u,c.n)),F:scale(1/(c.n+1),pow(c.u,c.n+1)),displayIntegrand:pow(c.u,c.n),differential:c.u}));
+  for(const m of [0,1,2])for(const n of [0,1])register(`double-box-${m}-${n}`,['double-rect','power'],c=>({coefficient:c.a,m,n,A:c.b,B:c.k}),'double');
+  for(const m of [0,1,2])register('double-triangle-'+m,['double-region','power'],c=>({coefficient:c.a,m,n:1,A:c.b,shape:'under-x'}),'double-region');
+  register('reverse-integration-order',['double-region','double-rect','power'],c=>({coefficient:c.a,m:1,n:1,A:c.b,shape:'under-x',reverse:true}),'double-region');
+  for(const n of [0,1,2])register('double-disk-'+n,['double-polar','power'],c=>({coefficient:c.a,n,A:c.b,inner:0,angle:2*Math.PI}),'double-polar');
+  register('double-annulus',['double-polar','power'],c=>({coefficient:c.a,n:1,A:c.b+1,inner:1,angle:2*Math.PI}),'double-polar');
+  register('double-sector',['double-polar','power'],c=>({coefficient:c.a,n:1,A:c.b,inner:0,angle:Math.PI/2}),'double-polar');
+  for(const p of [0,1,2])register('triple-box-'+p,['triple','power'],c=>({coefficient:c.a,m:1,n:1,p,A:c.b,B:c.k,C:c.n}),'triple');
+  register('leibniz-both-bounds',['leibniz','power'],c=>({integrand:'t^2',lower:'x',upper:'2*x',closed:'7*x^3/3',answerExpression:'7*x^2',boundary:'(2*x)^2*2-x^2',inside:'0'}),'leibniz');
+  register('leibniz-parameter-inside',['leibniz','power'],c=>({integrand:'x*t^2',lower:'0',upper:'1',closed:'x/3',answerExpression:'1/3',boundary:'0',inside:'t^2'}),'leibniz');
+  register('leibniz-parameter-upper',['leibniz','power'],c=>({integrand:'x*t',lower:'0',upper:'x',closed:'x^3/2',answerExpression:'3*x^2/2',boundary:'x^2',inside:'t'}),'leibniz');
+  register('leibniz-parameter-both',['leibniz','power'],c=>({integrand:'x+t',lower:'x',upper:'x^2',closed:'x^4/2+x^3-3*x^2/2',answerExpression:'2*x^3+3*x^2-3*x',boundary:'(x+x^2)*2*x-2*x',inside:'1'}),'leibniz');
+  register('leibniz-exponential',['leibniz','exponential'],c=>({integrand:'exp(x*t)',lower:'0',upper:'1',closed:'(exp(x)-1)/x',answerExpression:'((x-1)*exp(x)+1)/x^2',boundary:'0',inside:'t*exp(x*t)',positive:true}),'leibniz');
+  register('leibniz-trigonometric',['leibniz','trig'],c=>({integrand:'sin(x*t)',lower:'0',upper:'1',closed:'(1-cos(x))/x',answerExpression:'(x*sin(x)-1+cos(x))/x^2',boundary:'0',inside:'t*cos(x*t)',positive:true}),'leibniz');
+  register('leibniz-lower-bound',['leibniz','inverse'],c=>({integrand:'1/(1+t^2)',lower:'x',upper:'1',closed:'atan(1)-atan(x)',answerExpression:'-1/(1+x^2)',boundary:'-1/(1+x^2)',inside:'0'}),'leibniz');
+  for(const op of ['sin','cos'])register('quadratic-inner-'+op,['trig','substitution','power'],c=>({f:mul(scale(2,X),fn(op,c.positive)),F:op==='sin'?scale(-1,fn('cos',c.positive)):fn('sin',c.positive)}));
+  register('quadratic-sec-square',['trig','substitution','power'],c=>({f:mul(scale(2,X),pow(fn('sec',c.positive),2)),F:fn('tan',c.positive),bounds:[.1,.2]}));
+  register('log-inner-sine',['trig','logarithm','reciprocal','substitution'],c=>({f:div(fn('cos',fn('ln',X)),X),F:fn('sin',fn('ln',X)),bounds:[1,2]}));
+  register('log-inner-cosine',['trig','logarithm','reciprocal','substitution'],c=>({f:div(fn('sin',fn('ln',X)),X),F:scale(-1,fn('cos',fn('ln',X))),bounds:[1,2]}));
+  register('exp-inner-sine',['trig','exponential','substitution'],c=>({f:mul(fn('exp',X),fn('cos',fn('exp',X))),F:fn('sin',fn('exp',X))}));
+  register('exp-inner-cosine',['trig','exponential','substitution'],c=>({f:mul(fn('exp',X),fn('sin',fn('exp',X))),F:scale(-1,fn('cos',fn('exp',X)))}));
+  register('trig-inner-exponential',['trig','exponential','substitution'],c=>({f:mul(fn('cos',X),fn('exp',fn('sin',X))),F:fn('exp',fn('sin',X))}));
+  register('trig-rational-substitution',['trig','rational','logarithm','substitution'],c=>({f:div(fn('cos',X),add(C(c.a),fn('sin',X))),F:fn('ln',add(C(c.a),fn('sin',X)))}));
+  register('cosine-polynomial-power',['trig','power','substitution'],c=>({f:mul(fn('sin',X),pow(add(C(c.a),fn('cos',X)),c.n)),F:scale(-1/(c.n+1),pow(add(C(c.a),fn('cos',X)),c.n+1))}));
+  register('sine-square-exponential',['trig','exponential','substitution'],c=>({f:mul(mul(scale(2,fn('sin',X)),fn('cos',X)),fn('exp',pow(fn('sin',X),2))),F:fn('exp',pow(fn('sin',X),2))}));
+  register('inverse-quadratic-inner',['inverse','power','substitution'],c=>({f:div(scale(2,X),add(C(1),pow(c.positive,2))),F:fn('atan',c.positive)}));
+  register('root-exponential-inner',['roots','exponential','substitution'],c=>({f:div(fn('exp',X),pow(add(C(c.a),fn('exp',X)),.5)),F:scale(2,pow(add(C(c.a),fn('exp',X)),.5))}));
+  register('advanced-leibniz-second',['leibniz-advanced','leibniz','power'],c=>({integrand:'(x-t)^2',lower:'0',upper:'x',closed:'x^3/3',firstDerivative:'x^2',answerExpression:'2*x',boundary:'0',inside:'2*(x-t)',order:2}),'leibniz');
+  register('advanced-leibniz-two-moving-exponential',['leibniz-advanced','leibniz','exponential'],c=>({integrand:'exp(x*t)',lower:'x',upper:'2*x',closed:'(exp(2*x^2)-exp(x^2))/x',answerExpression:'((4*x^2-1)*exp(2*x^2)+(1-2*x^2)*exp(x^2))/x^2',boundary:'2*exp(2*x^2)-exp(x^2)',inside:'t*exp(x*t)',positive:true}),'leibniz');
+  register('advanced-leibniz-trig-bounds',['leibniz-advanced','leibniz','trig'],c=>({integrand:'x*t^2',lower:'sin(x)',upper:'cos(x)',closed:'x*(cos(x)^3-sin(x)^3)/3',answerExpression:'(cos(x)^3-sin(x)^3)/3-x*(cos(x)^2*sin(x)+sin(x)^2*cos(x))',boundary:'-x*cos(x)^2*sin(x)-x*sin(x)^2*cos(x)',inside:'t^2'}),'leibniz');
+  register('advanced-leibniz-exponential-moments',['leibniz-advanced','leibniz','improper','exponential'],c=>({a:c.a,n:c.n}),'leibniz-moment');
+  register('advanced-leibniz-sine-transform',['leibniz-advanced','leibniz','improper','exponential','trig'],c=>({a:c.a,b:c.b,n:1}),'leibniz-transform');
+  register('advanced-leibniz-uniform-bound',['leibniz-advanced','leibniz','power'],c=>({integrand:'x^2*t^2',lower:'0',upper:'1',closed:'x^2/3',firstDerivative:'2*x/3',answerExpression:'2/3',boundary:'0',inside:'2*x*t^2',order:2}),'leibniz');
+  register('number-base-quadratic-integral',['exponential','power','substitution'],c=>({f:mul(scale(2,X),variablePower(C(c.a),c.positive)),F:div(variablePower(C(c.a),c.positive),fn('ln',C(c.a)))}));
+  register('number-base-linear-integral',['exponential','substitution'],c=>({f:variablePower(C(c.a),c.u),F:div(variablePower(C(c.a),c.u),scale(c.a,fn('ln',C(c.a))))}));
+  register('number-base-log-integral',['logarithm','parts'],c=>({f:div(fn('ln',X),fn('ln',C(c.a))),F:div(sub(mul(X,fn('ln',X)),X),fn('ln',C(c.a))),bounds:[1,2]}));
+  for(const n of [2,3,4])register('tabular-parts-exponential-'+n,['parts','exponential','power'],c=>{let F=C(0),factor=1;for(let k=0;k<=n;k++){if(k)factor*=n-k+1;F=add(F,scale((k%2?-1:1)*factor/c.a**(k+1),pow(X,n-k)));}return{f:mul(pow(X,n),fn('exp',scale(c.a,X))),F:mul(fn('exp',scale(c.a,X)),F)};});
+  for(const op of ['sin','cos'])register('cyclic-parts-'+op,['parts','exponential','trig'],c=>{const ax=scale(c.a,X),bx=scale(c.b,X),term=op==='sin'?sub(scale(c.a,fn('sin',bx)),scale(c.b,fn('cos',bx))):add(scale(c.a,fn('cos',bx)),scale(c.b,fn('sin',bx)));return{f:mul(fn('exp',ax),fn(op,bx)),F:scale(1/(c.a*c.a+c.b*c.b),mul(fn('exp',ax),term))};});
   function available(selected){const set=new Set(normalize(selected));return templates.filter(t=>t.required.every(id=>set.has(id)));}
-  function generate(seed,index,selected=defaults){
+  function generate(seed,index,selected=defaults,forcedId=null){
     const enabled=normalize(selected),pool=available(enabled);if(!pool.length)throw Error('Select compatible integral topics.');
-    const template=M.choose(seed,index,pool),random=M.generator(seed,index+2341),int=(a,b)=>a+Math.floor(random()*(b-a+1));
+    const template=(forcedId?pool.find(t=>t.id===forcedId):M.choose(seed,index,pool)),random=M.generator(seed,index+2341),int=(a,b)=>a+Math.floor(random()*(b-a+1));
     const c={a:int(2,6),b:int(1,6),n:int(2,5),k:int(1,4)};c.u=linear(c.a,c.b);c.positive=add(pow(X,2),C(c.b));
     const q=template.build(c),f=q.f,F=q.F,[lo,hi]=q.bounds||[0,1],required=template.required;
     let text='Belirsiz integrali bulun. İntegrasyon sabitini unutmayın.',en='Find the indefinite integral, including the constant of integration.',eq=f?`∫ ${ascii(f)} dx`:'',eqLatex=f?`\\int ${latex(f)}\\,dx`:'',solution='',solutionEn='',solutionLatex=null,verification;
     if(template.kind==='indefinite'){
       solution=`Bir asal fonksiyon: ${ascii(F)}. Sonuç: ${ascii(F)} + C. Türev alarak integrandı geri elde edebilirsiniz.`;
       solutionEn=`An antiderivative is ${ascii(F)}. Answer: ${ascii(F)} + C. Differentiate to check.`;
-      solutionLatex=`${latex(F)}+C`;verification={kind:'antiderivative',f,F};
+      solutionLatex=`${latex(F)}+C`;verification={kind:'antiderivative',f,F};if(q.differential){eq=`∫ ${ascii(q.displayIntegrand)} d(${ascii(q.differential)})`;eqLatex=`\\int ${latex(q.displayIntegrand)}\\,d(${latex(q.differential)})`;verification.differential=q.differential;verification.displayIntegrand=q.displayIntegrand;}
     }else if(['definite','area','volume','average'].includes(template.kind)){
       const delta=sub(substitute(F,C(hi)),substitute(F,C(lo))),raw=evaluate(delta,0),factor=template.kind==='volume'?Math.PI:template.kind==='average'?1/(hi-lo):1,value=raw*factor;
       text=template.kind==='area'?(q.upper?'Verilen iki eğri arasında, belirtilen aralıktaki alanı bulun.':'Eğri ile x ekseni arasında, belirtilen aralıktaki alanı bulun.'):template.kind==='volume'?'Belirtilen aralıkta verilen eğri bölgesini x ekseni etrafında döndürün; hacmi bulun.':template.kind==='average'?'Fonksiyonun belirtilen aralıktaki ortalama değerini bulun.':'Belirli integrali hesaplayın.';
@@ -118,6 +178,39 @@
       text='F′(x) ifadesini, integrali açmadan temel teorem ile bulun.';en='Find F′(x) using the fundamental theorem, without evaluating the integral.';
       eq=`F(x) = ∫_0^(${ascii(q.bound)}) ${ascii(f,'t')} dt`;eqLatex=`F(x)=\\int_0^{${latex(q.bound)}}${latex(f,'t')}\\,dt`;
       solution=`Üst sınırın türeviyle integrandın üst sınırdaki değeri çarpılır. F′(x) = ${ascii(answer)}.`;solutionEn=`Multiply the integrand at the upper bound by the derivative of that bound. F′(x) = ${ascii(answer)}.`;solutionLatex=`F'(x)=${latex(answer)}`;verification={kind:'fundamental',f,exactPrimitive,answer,bound:q.bound};
+    }else if(template.kind==='leibniz-moment'||template.kind==='leibniz-transform'){
+      const factorial=n=>n<2?1:n*factorial(n-1),value=template.kind==='leibniz-moment'?factorial(q.n)/q.a**(q.n+1):2*q.a*q.b/(q.a*q.a+q.b*q.b)**2;
+      text='Parametreye göre diferansiyelleme yöntemini kullanarak integrali bulun. Türev ve integralin yer değiştirmesini a>0 koşuluyla gerekçelendirin.';en='Evaluate by differentiating under the integral sign, justifying the operation for a>0.';
+      eq=template.kind==='leibniz-moment'?`∫_0^∞ t^${q.n}*exp(−${q.a}t) dt`:`∫_0^∞ t*exp(−${q.a}t)*sin(${q.b}t) dt`;eqLatex=null;
+      solution=template.kind==='leibniz-moment'?`∫_0^∞ exp(−a*t)dt=1/a. n kez a türevi alınır; her türev −t çarpanı getirir. I_n=n!/a^(n+1). Sonuç ${value}.`:`∫_0^∞ exp(−a*t)sin(b*t)dt=b/(a²+b²). a'ya göre türev alıp işareti değiştirin: I=2ab/(a²+b²)²=${value}. a>0 civarında uygun üstel baskın fonksiyon seçilebilir.`;
+      solutionEn=solution;verification={kind:'numeric-transfer',family:'advanced-leibniz',type:template.kind,...q,answer:value,expression:template.kind==='leibniz-moment'?`${factorial(q.n)}/${q.a}^${q.n+1}`:`2*${q.a}*${q.b}/(${q.a}^2+${q.b}^2)^2`};
+    }else if(template.kind==='leibniz'){
+      text=(q.order===2?'H″(x)':'H′(x)')+' ifadesini Leibniz kuralıyla bulun. Sınır terimleri ile integral içindeki kısmi türevi ayrı yazın.'+(q.positive?' x>0 için çalışın.':'');en='Find H′ using the Leibniz rule. Separate moving-boundary terms and the parameter derivative.';
+      eq=`H(x)=∫_(${q.lower})^(${q.upper}) ${q.integrand} dt`;eqLatex=null;
+      solution=`Alt sınır a(x)=${q.lower}, üst sınır b(x)=${q.upper}. Sınır terimleri: ${q.boundary}. İntegrandın x'e kısmi türevi: ${q.inside}. H′=${q.answerExpression}.`;solutionEn=solution;verification={kind:'leibniz',...q};
+    }else if(['double','double-region','double-polar','triple'].includes(template.kind)){
+      const {coefficient:k,A}=q;let value,scaleCoeff,powerA;
+      if(template.kind==='double'){
+        scaleCoeff=k*q.B**(q.n+1)/((q.m+1)*(q.n+1));powerA=q.m+1;value=scaleCoeff*A**powerA;
+        text='Dikdörtgen bölgede çift katlı integrali hesaplayın.';en='Evaluate the double integral over the rectangle.';eq=`D: 0≤x≤${A}, 0≤y≤${q.B}; f=${k}x^${q.m}y^${q.n}`;eqLatex=`\\int_0^{${A}}\\int_0^{${q.B}}${k}x^{${q.m}}y^{${q.n}}\\,dy\\,dx`;
+        solution=`Önce y sabit sınırlarıyla integre edilir: ${k}*x^${q.m}*${q.B}^${q.n+1}/${q.n+1}. Sonra x integrali alınır. Sonuç ≈ ${value}.`;
+      }else if(template.kind==='double-region'){
+        scaleCoeff=k/((q.n+1)*(q.m+q.n+2));powerA=q.m+q.n+2;value=scaleCoeff*A**powerA;
+        text=q.reverse?'Bölgeyi tanımlayın, integralin sırasını değiştirin ve değerini hesaplayın.':'Üçgensel bölgedeki çift katlı integrali hesaplayın.';en='Describe the triangular region and evaluate; reverse the order when requested.';
+        eq=`0≤x≤${A}; 0≤y≤x; f=${k}x^${q.m}y^${q.n}`;eqLatex=`\\int_0^{${A}}\\int_0^x ${k}x^{${q.m}}y^{${q.n}}\\,dy\\,dx`;
+        solution=`Bölge 0≤y≤x≤${A}. Ters sırada 0≤y≤${A}, y≤x≤${A}. Önce y integrali ${k}x^${q.m+q.n+1}/${q.n+1}; dış integralden sonuç ≈ ${value}.`;
+      }else if(template.kind==='double-polar'){
+        powerA=2*q.n+2;scaleCoeff=k*q.angle/powerA;value=scaleCoeff*(A**powerA-q.inner**powerA);
+        text='Verilen bölgedeki çift katlı integrali kutupsal koordinatlarla hesaplayın. Jacobianı belirtin.';en='Use polar coordinates, including the Jacobian, to evaluate the double integral.';
+        eq=`D: ${q.inner}≤r≤${A}, 0≤θ≤${q.angle===2*Math.PI?'2π':'π/2'}; f(x,y)=${k}(x²+y²)^${q.n}`;eqLatex=`\\iint_D ${k}(x^2+y^2)^{${q.n}}\\,dA`;
+        solution=`x=r cosθ, y=r sinθ ve dA=r dr dθ. İntegrand ${k}r^${2*q.n+1} olur. r sınırları ${q.inner},${A}; θ sınırları 0,${q.angle===2*Math.PI?'2π':'π/2'}. Sonuç ≈ ${value}.`;
+      }else{
+        powerA=q.m+1;scaleCoeff=k*q.B**(q.n+1)*q.C**(q.p+1)/((q.m+1)*(q.n+1)*(q.p+1));value=scaleCoeff*A**powerA;
+        text='Dikdörtgenler prizması üzerinde üç katlı integrali hesaplayın.';en='Evaluate the triple integral over the box.';
+        eq=`0≤x≤${A},0≤y≤${q.B},0≤z≤${q.C}`;eqLatex=`\\int_0^{${A}}\\int_0^{${q.B}}\\int_0^{${q.C}}${k}x^{${q.m}}y^{${q.n}}z^{${q.p}}\\,dz\\,dy\\,dx`;
+        solution=`Önce z, sonra y ve x için kuvvet kuralı uygulanır. Sabit sınırlı dikdörtgen bölge olduğundan çarpanların tek katlı integralleri çarpılır. Sonuç ≈ ${value}.`;
+      }
+      solutionEn=solution;solutionLatex=null;verification={kind:template.kind,...q,value,scaleCoeff,powerA};
     }else{
       let value=null,converges=true;
       if(template.kind==='tail'){

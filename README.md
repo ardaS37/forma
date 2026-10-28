@@ -1,39 +1,38 @@
 # Türev Al
 
-Forma'nın matematik yazımı, kalem ve sonsuz defter sistemi üzerine kurulmuş çevrimdışı Android uygulaması. Açılış menüsünde yalnız **Limit**, **Türev**, **İntegral** düğmeleri bulunur. Uygulama içinde Türev Al adı korunur; telefonda görünen adı **Türev Al - Limit Türev İntegral** olur.
+Forma’nın matematik yazımı, kalem ve sonsuz defter sistemi üzerine kurulu çevrimdışı Android uygulaması. Uygulama içindeki ad **Türev Al**, başlatıcıdaki ad **Türev Al - Limit Türev İntegral**. Açılış menüsü yalnız **Limit**, **Türev**, **İntegral** düğmelerinden oluşur. Çalışma başlıkları Limit Al., Türev Al., İntegral Al. şeklindedir.
 
-Varsayılan vurgu rengi **petrol turkuazı (#247c78)**; uygulama simgesi Forma’ya benzer bir **T.** monogramıdır. Kullanıcının kayıtlı renk seçimi korunur. Her bölüm aynı soru/çizim ekranını kullanır; başlıkları **Limit Al.**, **Türev Al.**, **İntegral Al.** şeklindedir. Simülasyon düğmesinin yerindeki kalem dahil diğer araçlarla aynı dairesel şablondaki liste simgesinden açılan **Konular** penceresi, o bölümde bilinen konuları seçtirir. Önce lise konuları, ardından **başlıksız ince bir çizgi** ve üniversite konuları gelir. Ayrım [MEB'in 2018 genel lise matematik programına](docs/curriculum-2018.md) göre yapılır.
+Varsayılan tema **Turkuaz (#247c78)**, logo **T.**. Renk menüsünde **Hiçbiri** her zaman ilk sıradadır; renk adları Turkuaz ve Turuncu gibi basittir. Konular ve kalem düğmeleri diğer araçlarla aynı dairesel şablonu kullanır; geri ve ayarlar simgeleri hizalıdır. Simülasyonlar yüklenmez.
 
-| Bölüm | Konu | Parametreli şablon |
-| --- | ---: | ---: |
-| Limit | 20 | 69 |
-| Türev | 21 | 91 |
-| İntegral | 18 | 87 |
-| Toplam | 59 | 247 |
+| Bölüm | Konu | Matematik ailesi | Soru şablonu | Formül |
+| --- | ---: | ---: | ---: | ---: |
+| Limit | 21 | 75 | 300 | 32 |
+| Türev | 25 | 168 | 504 | 58 |
+| İntegral | 25 | 155 | 465 | 75 |
 
-Limit: yerine koyma, çarpanlara ayırma, eşlenik, sağ/sol limit, süreklilik, parçalı/mutlak değerli fonksiyonlar; ileri bölümde sonsuz, özel trigonometrik/üstel/logaritmik limitler, sıkıştırma ve L’Hôpital. Türev: temel kurallar, ikinci türev ve uygulamalar; ileri bölümde trigonometrik/ters trigonometrik, üstel/logaritmik, yüksek mertebe, kapalı ve parametrik türevler. İntegral: kuvvet/kök, değişken değiştirme, belirli integral, alan, temel teorem ve başlangıç koşulu; ileri bölümde diğer fonksiyon aileleri, kısmi integrasyon, basit kesirler, hacim, ortalama değer ve uygunsuz integral.
+Şablon sayıları yalnız sayı değiştirmeyi saymaz: temel çözüm, bağlantılı uygulama ve önerilen çözümü inceleme farklı görevlerdir; limitte iki farklı dış dönüşüm bulunur. Aynı aile birden çok görev biçimiyle kullanılır. Tohumlu seçim her uygun şablonu bir turda bir kez getirir; sonraki turlarda sayılar değişir. Her sorunun tüm konu bağımlılıkları filtrelenir. Seçili konulardan uygun şablon kalmazsa Uygula kapanır.
 
-Konu seçimi karma soruların bütün bağımlılıklarına uygulanır. Örneğin logaritmayı kapatmak, logaritma kullanan karma soruları da çıkarır. Yalnız üst gruptaki konular seçilirse ileri beceri gerektiren şablon üretilmez. Uygun şablon kalmazsa Uygula kapalıdır. Her bölümün seçimleri, soruları ve çizimleri ayrı saklanır; bölümler arasında geçişte ve uygulama yeniden açıldığında korunur. Kayıtlı oturumlar kendi bölüm ve konu seçimleriyle açılır. Her uygun şablon bir turda bir kez seçilir, sayılar sonraki turlarda değişir.
+Limit: temel ve özel limitler, süreklilik, tek taraflı/parçalı/mutlak değerli fonksiyonlar, sonsuzlar, sıkıştırma, L’Hôpital ve ters trigonometrik limitler.
 
-Açık uçlu çözümler, Türkçe/İngilizce, açık/koyu/AMOLED, basınçlı kalemler, S Pen tuşuyla geçici silgi ve 250 ms bırakma koruması, cetvel, geri al/ileri al, otomatik kayıt, Defterim ve PNG dışa aktarma korunur. Simülasyonlar yüklenmez. Android geri tuşu çalışma ekranından üç düğmeli menüye, menüden uygulama dışına döner.
+Türev: temel kurallar ve uygulamalar; sayısal tabanlı a^x ve log_a(x), bileşke sin(x²+1), değişken taban/üs, karışık çarpım/bölüm, dy/dx, dx/dy, diferansiyel, kapalı/parametrik türev. Kısmi türevlerde x/y, xx/xy/yy, trigonometrik, logaritmik, üstel, köklü, rasyonel ve değişken üslü iki değişkenli fonksiyonlar; toplam diferansiyel ve doğrusal yaklaşım bulunur.
 
-Android paket kimliği **com.sapsoft.tureval**, sürüm **1.1.0**, minimum Android 8 (API 26). Forma ile yan yana kurulabilir. Java namespace ve `FormaAndroid` köprüsü mevcut kalem sistemiyle uyum için korunur. Hesap veya internet izni gerekmez.
+İntegral: temel ve bileşke fonksiyonlar, diferansiyelle integral, değişken değiştirme, kısmi integrasyon (tablolu tekrarlı ve döngülü örnekler dahil), basit kesirler, belirli integral, alan/hacim, uygunsuz integral, temel teorem. Math2 seçeneklerinde dikdörtgen/değişken bölgede çift katlı integral, sıra değiştirme, kutupsal dönüşüm/Jacobian ve üç katlı integral vardır. Leibniz ve İleri Leibniz ayrı seçeneklerdir: hareketli sınırlar, integrand parametresi, ikinci parametre türevi ve sonsuz aralıkta üstel momentler. Türev çalışanın limit; integral çalışanın limit ve türev bildiği kabul edilir, başka bölümün filtreleriyle engellenmez.
 
-## Derleme
+Çözümler **1. adım, 2. adım…** biçiminde, kuralları ve ara işlemleri ayırarak gösterilir. Defter yazımı açıkken sorular, çözümler ve formüllerde kesirler alt alta yazılır; kesin küçük rasyonel sayılar ondalığa çevrilmez. Seri katsayıları da kesin kesir biçiminde korunur. Gereksiz `(x)²` ve çift parantezler kaldırılır; gerekli gruplamalar kalır. Optimizasyonda kurulması istenen alan modeli ve grafik okumada cevabı veren analitik denklem soru içinde gösterilmez. Formüller bölümünde kullanılan bütün konu ailelerinin kuralları ve tanım koşulları yer alır.
 
-JDK 17/21, Android SDK API 36 gerekir. Linux/macOS: `ANDROID_HOME=/path/to/sdk ./build-android.sh`. Windows: `powershell -ExecutionPolicy Bypass -File .\build-android.ps1`.
+Konular listesinde MEB 2018 genel lise kapsamı önce, başlıksız ince çizgiden sonra üniversite kapsamı gösterilir; [eşleme notu](docs/curriculum-2018.md). Açık/koyu/AMOLED, Türkçe/İngilizce arayüz, basınçlı kalemler, S Pen tuşuyla geçici silgi ve 250 ms bırakma koruması, cetvel, geri al/ileri al, otomatik kayıt, Defterim ve PNG dışa aktarma korunur. Yeni ayrıntılı çözüm metinleri Türkçedir.
 
-Çıktı: `build/turev-al-android-1.1.0-debug.apk`. Debug APK geliştirme anahtarıyla imzalanır. Play Store için kendi anahtarınızla imzalı release gerekir; mevcut [imzalama rehberi](android/PLAY-STORE.md) Forma'dan devralınan işlem adımlarını içerir.
+Paket **com.sapsoft.tureval**, sürüm **1.2.0**, minimum Android 8/API 26, compile/target API 36. Forma ve diğer uygulama ile yan yana kurulabilir. Java namespace ve FormaAndroid köprüsü kalem uyumluluğu için korunur. Hesap ve internet izni gerekmez.
 
-## Doğrulama
+## Derleme ve doğrulama
 
-- `node android/verify-derivatives.cjs`: 1.820 soru, 23.960 bağımsız kontrol; mathjs sembolik türevleri ve sonlu farklarla tüm 91 şablon.
-- `node android/verify-calculus.cjs`: 2.496 limit/integral sorusu, 22.904 bağımsız kontrol; türevle asal fonksiyon doğrulama, sayısal integrasyon, yaklaşım dizileri, yakınsak/ıraksak durumlar ve yalnız lise konularından üretim.
-- `node android/verify-derivatives-ui.cjs` ve `node android/verify-calculus-ui.cjs`: tüm 247 şablonun matematik gösterimi; tam üç düğmeli menü; başlıksız ayraç ve konu sırası; bölüm bazlı filtreler, çizim, geri al/ileri al, kayıt/geri yükleme, bölümler arası kayıt açma, mobil/tablet, iki dil ve iki tema. Playwright ve Chromium gerekir.
-- `node android/verify-icon-ui.cjs`: turkuaz varsayılan, yedi ikon rengi, özel renk ve kayıtlı tercihlerin korunması.
-- `node android/verify-stylus.cjs`: 56 tarayıcı/yerel kalem örneği kontrolü. Saf Java testleri: 45 S Pen dizisi ve ikon paleti.
-- Android: `assembleDebug lintDebug` başarılı; 0 lint hatası, devralınan 6 uyarı. Fiziksel Android tablet/S Pen testi yapılmadı.
+JDK 17/21 ve Android SDK API 36 gerekir. Linux/macOS: `ANDROID_HOME=/path/to/sdk ./build-android.sh`. Windows: `powershell -ExecutionPolicy Bypass -File .\build-android.ps1`.
 
-Görseller `build/turev-ui/` altında oluşur. `FORMA_PLAYWRIGHT` ile Playwright modül yolu, `FORMA_CHROME_CHANNEL` ile isteğe bağlı tarayıcı kanalı verilebilir. Forma'nın eski ders/simülasyon testleri bu uygulamanın kabul testleri değildir.
+Çıktı: `build/turev-al-android-1.2.0-debug.apk`. Debug APK geliştirme anahtarıyla imzalanır; mağaza için [release rehberi](android/PLAY-STORE.md).
 
-Temel dosyalar: [türev](android/app/src/main/assets/web/derivative-bank.js), [integral](android/app/src/main/assets/web/integral-bank.js), [limit](android/app/src/main/assets/web/limit-bank.js), [müfredat eşlemesi](android/app/src/main/assets/web/practice-banks.js), [menü ve konu seçimi](android/app/src/main/assets/web/turev-ui.js), [ortak çizim sistemi](android/app/src/main/assets/web/app.js).
+- `node android/verify-expanded-math.cjs`: 5.076 soru, 24.755 bağımsız kontrol; sembolik türev, asal fonksiyon, sayısal integral, limit yaklaşımı, kısmi/karışık türev ve Leibniz sınır/parametre katkıları.
+- `node android/verify-workbooks-ui.cjs`: menü, modlar, konu ayracı, seçili yeni ailelerin soru/çözüm matematik gösterimi, kesirler, tam formül çekmecesi, çizim/geri al/ileri al, renk sırası ve mobil koyu tema. Playwright/Chromium gerekir; görseller `build/workbook-ui/` altında oluşur.
+- `node android/verify-stylus.cjs`: 56 kalem kontrolü. Saf Java testleri: 45 S Pen tuş dizisi ve başlatıcı renk paleti.
+- `assembleDebug lintDebug`: 0 hata, devralınan 6 uyarı. Fiziksel tablet/S Pen testi yapılmadı. Forma’dan kalan eski ders testleri bu uygulamanın kabul testleri değildir.
+
+Kaynaklar `android/app/src/main/assets/web/` altında; soru bankası, `question-expansion.js`, `math-display.js`, `solution-steps.js`, `reference-data.js` ve ortak `app.js` temel dosyalardır. `source-manifest.json` güncel dosya özetlerini tutar.

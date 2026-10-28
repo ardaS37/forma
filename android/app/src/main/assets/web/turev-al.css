@@ -49,3 +49,19 @@ body[data-screen="practice-menu"] .header{display:none!important}
 #paper-settings.workspace-settings{top:calc(var(--toolbar-top) + 2px)}
 .drawing-toolbar #workspace-back svg{transform:rotate(180deg)}
 @media(max-width:760px){.notebook{--toolbar-top:8px}}
+
+/* Readable notebook working: numbered steps and genuine stacked fractions. */
+.solution{white-space:normal;background:transparent;padding:0;line-height:1.85}
+.solution-steps{list-style:none;margin:0;padding:0;font-family:var(--font)}
+.solution-steps>li{padding:15px 0;border-bottom:1px solid var(--line)}
+.solution-steps>li:last-child{border-bottom:0}
+.solution-steps h4{font:600 13px/1.5 var(--font);color:var(--accent);margin:0 0 9px}
+.solution-steps p{font:400 13px/1.9 var(--font);color:var(--ink);margin:0 0 8px}
+.solution-step-equation{font-size:18px;line-height:2.1;overflow-x:auto;padding:5px 1px;color:var(--ink);max-width:100%}
+.question-equation{max-width:100%;overflow-x:auto}
+.formula-topic-heading{grid-column:1 / -1;color:var(--accent);font-size:14px;margin:18px 0 4px}
+.formula-card{min-width:0}.formula-card p{overflow-x:auto;max-width:100%}
+
+/* Preserve tall fractions when long worked solutions expand in the flex panel. */
+.question-content>*{flex-shrink:0}
+.question-math-expression{padding-block:.2em}
