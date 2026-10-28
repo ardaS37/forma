@@ -2,7 +2,7 @@
 
 Forma'nın matematik yazımı, kalem ve sonsuz defter sistemi üzerine kurulmuş çevrimdışı Android uygulaması. Açılış menüsünde yalnız **Limit**, **Türev**, **İntegral** düğmeleri bulunur. Uygulama içinde Türev Al adı korunur; telefonda görünen adı **Türev Al - Limit Türev İntegral** olur.
 
-Varsayılan vurgu rengi **petrol turkuazı (#247c78)**; uygulama simgesi Forma’ya benzer bir **T.** monogramıdır. Kullanıcının kayıtlı renk seçimi korunur. Her bölüm aynı soru/çizim ekranını kullanır; başlıkları **Limit Al.**, **Türev Al.**, **İntegral Al.** şeklindedir. Simülasyon düğmesinin yerindeki diğer araçlarla aynı dairesel şablondaki liste simgesinden açılan **Konular** penceresi, o bölümde bilinen konuları seçtirir. Önce lise konuları, ardından **başlıksız ince bir çizgi** ve üniversite konuları gelir. Ayrım [MEB'in 2018 genel lise matematik programına](docs/curriculum-2018.md) göre yapılır.
+Varsayılan vurgu rengi **petrol turkuazı (#247c78)**; uygulama simgesi Forma’ya benzer bir **T.** monogramıdır. Kullanıcının kayıtlı renk seçimi korunur. Her bölüm aynı soru/çizim ekranını kullanır; başlıkları **Limit Al.**, **Türev Al.**, **İntegral Al.** şeklindedir. Simülasyon düğmesinin yerindeki kalem dahil diğer araçlarla aynı dairesel şablondaki liste simgesinden açılan **Konular** penceresi, o bölümde bilinen konuları seçtirir. Önce lise konuları, ardından **başlıksız ince bir çizgi** ve üniversite konuları gelir. Ayrım [MEB'in 2018 genel lise matematik programına](docs/curriculum-2018.md) göre yapılır.
 
 | Bölüm | Konu | Parametreli şablon |
 | --- | ---: | ---: |

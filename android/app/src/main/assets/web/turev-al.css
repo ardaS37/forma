@@ -38,3 +38,14 @@ body[data-screen="practice-menu"] .header{display:none!important}
 .turev-logo .logo-letter{fill:var(--paper)}
 .turev-logo .logo-dot{fill:var(--paper);opacity:.8}
 .practice-mode-buttons button{color:var(--accent);background:var(--soft);border-color:var(--accent)}
+.practice-mode-buttons button{border-radius:8px}
+/* Match the pen's selected state to the same circular surface as the other tools. */
+.drawing-toolbar #pen-tool{background:#fff;box-shadow:0 2px 7px #17283c10}
+.drawing-toolbar #pen-tool svg{stroke-width:1.5}
+:root[data-theme="dark"] .drawing-toolbar #pen-tool{background:transparent;box-shadow:none}
+.drawing-toolbar #pen-tool[aria-expanded="true"]{background:var(--soft);border-color:var(--accent)}
+.notebook{--toolbar-top:10px}
+.drawing-toolbar{top:var(--toolbar-top)}
+#paper-settings.workspace-settings{top:calc(var(--toolbar-top) + 2px)}
+.drawing-toolbar #workspace-back svg{transform:rotate(180deg)}
+@media(max-width:760px){.notebook{--toolbar-top:8px}}
